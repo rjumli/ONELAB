@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('csf_ratings', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->integer('rating');
-            $table->integer('importance');
+            $table->integer('answer')->nullable();
+            $table->integer('rating')->nullable();
+            $table->integer('importance')->nullable();
             $table->integer('question_id')->unsigned()->index();
             $table->foreign('question_id')->references('id')->on('csf_questions')->onDelete('cascade');
             $table->bigInteger('csf_id')->unsigned()->index();

@@ -17,9 +17,14 @@ class CsfService
     }
 
     public function tsrs(){
-        $data = Tsr::where('status_id',2)->whereNotIn('code', function($query) {
+        $data = Tsr::where('status_id',2)->whereNotIn('id', function($query) {
             $query->select('tsr_id')->from('csf_entries');
-        })->pluck('code');
+        })->select('id','code')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'code' => $item->code
+            ];
+        });
         return $data;
     }
 
@@ -31,6 +36,7 @@ class CsfService
                 'is_overall' => $item->is_overall,
                 'is_rating' => $item->is_rating,
                 'is_active' => $item->is_active,
+                'is_comment' => false,
                 'rating' => null,
                 'importance' => null,
                 'answer' => null,
@@ -44,24 +50,34 @@ class CsfService
             'is_overall' => 0,
             'is_rating' => 0,
             'is_active' => 0,
-            'is_comment' => 1,
+            'is_comment' => true,
+            'is_submit' => true,
+            'is_disabled' => false
         ];
         return $data;
     }
 
     public function survey($request){
-        $ratings = $request->ratings;
+        $ratings = $request->questions;
         $data = CsfEntry::create($request->all());
         if($data){
             foreach($ratings as $rating){
-                $rate = new CsfRating;
-                $rate->rating = $rating->rating;
-                $rate->importance = $rating->importance;
-                $rate->question_id = $rating->question_id;
-                $rate->csf_id = $data->id;
-                $rate->save();
+                if(!$rating['is_comment']){
+                    $rate = new CsfRating;
+                    $rate->answer = $rating['answer'];
+                    $rate->rating = $rating['rating'];
+                    $rate->importance = $rating['importance'];
+                    $rate->question_id = $rating['id'];
+                    $rate->csf_id = $data->id;
+                    $rate->save();
+                }
             }
         }
+        return [
+            'data' => $data,
+            'message' => 'Suvery completed!', 
+            'info' => "You've successfully submitted the csf survey.",
+        ];
 
     }
 

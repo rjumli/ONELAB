@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('csf_entries', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('comments')->nullable();
-            $table->string('attributes')->nullable();
+            $table->string('comment')->nullable();
+            $table->string('attribute')->nullable();
             $table->bigInteger('tsr_id')->unsigned()->index();
             $table->foreign('tsr_id')->references('id')->on('tsrs')->onDelete('cascade');
             $table->timestamps();

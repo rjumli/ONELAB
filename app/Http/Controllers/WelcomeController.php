@@ -83,4 +83,8 @@ class WelcomeController extends Controller
             'analyses' => $analyses
         ]);
     }
+
+    public function csf(){
+        
+    }
 }

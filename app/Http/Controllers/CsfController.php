@@ -18,14 +18,8 @@ class CsfController extends Controller
     public function index(Request $request){
         $option = $request->option;
         switch($option){
-            case 'page':
-                return inertia('Modules/Csf/Index');
-            break;
             default: 
-                return inertia('Modules/Public/Csf',[
-                    'tsrs' => $this->csf->tsrs(),
-                    'questions' => $this->csf->questions(),
-                ]);
+                return inertia('Modules/Csf/Index');
         }
     }
 
@@ -46,6 +40,13 @@ class CsfController extends Controller
             'message' => $result['message'],
             'info' => $result['info'],
             'status' => $result['status'],
+        ]);
+    }
+
+    public function show(Request $request){
+        return inertia('Modules/Public/Csf',[
+            'tsrs' => $this->csf->tsrs(),
+            'questions' => $this->csf->questions(),
         ]);
     }
 
