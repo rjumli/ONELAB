@@ -1,6 +1,6 @@
 <template>
-    <Head title="Inventory"/>
-    <PageHeader title="Inventory" pageTitle="Menu" />
+    <Head title="List of Products"/>
+    <PageHeader title="Products" pageTitle="Inventory" />
      <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
             
