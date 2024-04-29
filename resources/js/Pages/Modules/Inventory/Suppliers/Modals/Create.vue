@@ -19,19 +19,19 @@
                 </BCol>
                 <BCol lg="6" class="mt-1">
                     <InputLabel for="region" value="Region" :message="form.errors.region_code"/>
-                    <Multiselect :options="dropdowns.regions" v-model="form.region_code" :message="form.errors.region_code" placeholder="Select Region"/>
+                    <Multiselect :options="dropdowns.regions" v-model="form.region_code" :message="form.errors.region_code" label="name" placeholder="Select Region"/>
                 </BCol>
                 <BCol lg="6" class="mt-1">
                     <InputLabel for="province" value="Province" :message="form.errors.province_code"/>
-                    <Multiselect :options="provinces" :searchable="true" v-model="form.province_code" :message="form.errors.province_code" placeholder="Select Province"/>
+                    <Multiselect :options="provinces" :searchable="true" v-model="form.province_code" :message="form.errors.province_code" label="name" placeholder="Select Province"/>
                 </BCol>
                 <BCol lg="6" class="mt-1">
                     <InputLabel for="municipality" value="Municipality" :message="form.errors.municipality_code"/>
-                    <Multiselect :options="municipalities" :searchable="true" v-model="form.municipality_code" :message="form.errors.municipality_code" placeholder="Select Municipality"/>
+                    <Multiselect :options="municipalities" :searchable="true" v-model="form.municipality_code" :message="form.errors.municipality_code" label="name" placeholder="Select Municipality"/>
                 </BCol>
                 <BCol lg="6" class="mt-1">
                     <InputLabel for="barangay" value="Barangay" />
-                    <Multiselect :options="barangays" :searchable="true" v-model="form.barangay_code" :message="form.errors.barangay_code" placeholder="Select Barangay"/>
+                    <Multiselect :options="barangays" :searchable="true" v-model="form.barangay_code" :message="form.errors.barangay_code" label="name" placeholder="Select Barangay"/>
                 </BCol>
                 <BCol lg="12" class="mt-1">
                     <InputLabel for="address" value="Address" :message="form.errors.address"/>
@@ -48,7 +48,8 @@
 <script>
 import _ from 'lodash';
 import { useForm } from '@inertiajs/vue3';
-import Multiselect from '@/Shared/Components/Forms/Multiselect.vue';
+import Multiselect from "@vueform/multiselect";
+import "@vueform/multiselect/themes/default.css";
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
@@ -89,6 +90,23 @@ export default {
     },
     methods: { 
         show(){
+            this.form.reset();
+            this.editable = false;
+            this.showModal = true;
+        },
+        edit(data){
+            this.form.id = data.id;
+            this.form.name = data.name;
+            this.form.email = data.email;
+            this.form.contact_no = data.contact_no;
+            this.form.address = data.address;
+            this.form.region_code = data.region.value;
+            this.fetchProvince(data.region.value);
+            this.form.province_code = data.province.value;
+            this.fetchMunicipality(data.province.value);
+            this.form.municipality_code = data.municipality.value;
+            this.form.barangay_code = (data.barangay) ? data.barangay.value : null;
+            this.editable = true;
             this.showModal = true;
         },
         submit(){
@@ -96,6 +114,8 @@ export default {
                 this.form.put('/inventory/update',{
                     preserveScroll: true,
                     onSuccess: (response) => {
+                        this.$emit('message',this.$page.props.flash.data);
+                        this.form.reset();
                         this.hide();
                     }
                 });
@@ -104,6 +124,7 @@ export default {
                     preserveScroll: true,
                     onSuccess: (response) => {
                         this.$emit('message',this.$page.props.flash.data);
+                        this.form.reset();
                         this.hide();
                     },
                 });

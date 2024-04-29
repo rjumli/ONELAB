@@ -38,9 +38,9 @@
                         </BCard>
                         <BCard no-body class="mt-n2">
                             <BCardBody class="ps-4 pe-4 mb-n3">
-                                   <b-progress class="progress-lg rounded-pill" style="height: 6px; margin-top: 20px; margin-bottom: -19px;">
-                                    <b-progress-bar :value="progressbarvalue" variant="primary" aria-valuemax="100" class="rounded-0" />
-                                </b-progress>
+                                   <b-progress class="progress-lg rounded-pill" style="height: 10px; margin-top: 20px; margin-bottom: -21px;">
+                                        <b-progress-bar :value="progressbarvalue" variant="primary" aria-valuemax="100" class="rounded-0" />
+                                    </b-progress>
                                 <div id="custom-progress-bar" class="progress-nav mb-4">
                                     <ul class="nav nav-pills progress-bar-tab custom-nav" role="tablist" style="z-index: 2;">
                                         <li class="nav-item" role="presentation" v-for="(tab, index) in questions" :key="index">
@@ -273,13 +273,14 @@ export default {
             setTimeout(() => { el.style.opacity = 1; }, 100); 
         },
         isTabDisabled(index,is_rating) {
-            
             if(is_rating === 1){
                 if(this.questions[index]){
                     if(!this.questions[index].rating || !this.questions[index].importance){
                         return true;
                     }else{
                         this.questions[index+1].is_disabled = false;
+                        
+                        setTimeout(() => { this.toggleTab(index+1+1); }, 800); 
                     }
                 }
             }else if(is_rating === 3){
@@ -288,6 +289,7 @@ export default {
                         return true;
                     }else{
                         this.questions[index+1].is_disabled = false;
+                         setTimeout(() => { this.toggleTab(index+1+1); }, 800); 
                     }
                 }
             }else{
@@ -295,8 +297,8 @@ export default {
                     if(this.questions[index].answer === null){
                         return true;
                     }else{
-                        var wew = index+1;
                         this.questions[index+1].is_disabled = false;
+                         setTimeout(() => { this.toggleTab(index+1+1); }, 800); 
                     }
                 }
             }

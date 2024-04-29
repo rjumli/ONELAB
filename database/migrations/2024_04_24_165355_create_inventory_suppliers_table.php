@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('inventory_suppliers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('email');
-            $table->string('contact_no',15);
+            $table->longText('name');
+            $table->longText('email');
+            $table->longText('contact_no');
             $table->string('address');
             $table->string('barangay_code')->nullable()->constrained();
             $table->foreign('barangay_code')->references('code')->on('location_barangays')->onDelete('cascade');

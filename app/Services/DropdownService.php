@@ -16,7 +16,8 @@ use App\Models\{
     ListDiscount,
     ListName,
     ListTestservice,
-    ListRole
+    ListRole,
+    InventorySupplier
 };
 use App\Http\Resources\TestserviceResource;
 
@@ -105,6 +106,26 @@ class DropdownService
 
     public function purposes(){
         $data = ListDropdown::where('classification','Purpose')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function inventory(){
+        $data = ListDropdown::where('classification','Inventory')->where('type','Category')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function units(){
+        $data = ListDropdown::where('classification','Inventory')->where('type','Unit')->get()->map(function ($item) {
             return [
                 'value' => $item->id,
                 'name' => $item->name

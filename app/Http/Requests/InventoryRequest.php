@@ -24,6 +24,10 @@ class InventoryRequest extends FormRequest
                 'municipality_code' => 'sometimes|required',
                 'barangay_code' => 'sometimes|nullable',
             ];
+        }else if($this->option == 'item'){
+            return [
+                'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
+            ];
         }
         return [];
     }
