@@ -30,8 +30,19 @@ class InventoryController extends Controller
             case 'items':
                 return $this->view->items($request);
             break;
+            case 'lists':
+                return $this->view->lists($request);
+            break;
+            case 'search':
+                return $this->view->search($request);
+            break;
             default:
-                return inertia('Modules/Inventory/Index'); 
+                return inertia('Modules/Inventory/Index',[
+                    'dropdowns' => [
+                        'statistics' => $this->view->statistics(),
+                        'suppliers' => $this->view->supplier_lists()
+                    ]
+                ]); 
         }   
     }
 

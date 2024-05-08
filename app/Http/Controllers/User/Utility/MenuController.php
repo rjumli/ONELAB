@@ -19,12 +19,12 @@ class MenuController extends Controller
 
     public function index(){
         $overall = []; $menus = []; $listahan = [];
-        $lists = ListMenu::where('is_mother',1)->where('group','Menu')->orderBy('order','ASC')->get();
+        $lists = ListMenu::where('is_active',1)->where('is_mother',1)->where('group','Menu')->orderBy('order','ASC')->get();
         foreach($lists as $list){
             
             $submenus = [];
             if($list['has_child']){
-                $subs = ListMenu::where('group',$list['name'])->get();
+                $subs = ListMenu::where('is_active',1)->where('group',$list['name'])->get();
                 foreach($subs as $menu){
                     $submenus[] = $menu;
                 }
@@ -35,12 +35,12 @@ class MenuController extends Controller
             ];
         }
 
-        $lists = ListMenu::where('is_mother',1)->where('group','Lists')->get();
+        $lists = ListMenu::where('is_active',1)->where('is_mother',1)->where('group','Lists')->get();
         foreach($lists as $list){
             
             $submenus = [];
             if($list['has_child']){
-                $subs = ListMenu::where('group',$list['name'])->get();
+                $subs = ListMenu::where('is_active',1)->where('group',$list['name'])->get();
                 foreach($subs as $menu){
                     $submenus[] = $menu;
                 }

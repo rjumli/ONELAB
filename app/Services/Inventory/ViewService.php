@@ -3,8 +3,10 @@
 namespace App\Services\Inventory;
 
 use App\Models\InventoryItem;
+use App\Models\InventoryStock;
 use App\Models\InventorySupplier;
 use App\Http\Resources\Inventory\ItemResource;
+use App\Http\Resources\Inventory\StockResource;
 use App\Http\Resources\Inventory\SupplierResource;
 
 class ViewService
@@ -50,6 +52,59 @@ class ViewService
                 'name' => $item->name
             ];
         });
+        return $data;
+    }
+
+    public function statistics(){
+        return [
+            [
+                'name' => 'Items',
+                'color' => 'text-success',
+                'icon' => 'ri-shopping-basket-2-fill',
+                'total' => 1
+            ],
+            [
+                'name' => 'Ouf of Stock',
+                'color' => 'text-warning',
+                'icon' => 'ri-alert-fill',
+                'total' => InventoryStock::whereHas('item', function ($query) {
+                    $query->whereColumn('reorder', '>', 'number');
+                })->count()
+            ],
+            [
+                'name' => 'Expired',
+                'color' => 'text-danger',
+                'icon' => 'ri-alarm-warning-fill',
+                'total' => 1
+            ],
+        ];
+    }
+
+    public function search($request){
+        $keyword = $request->keyword;
+        $data = InventoryItem::where('name', 'LIKE', "%{$keyword}%")->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function lists($request){
+        $data = StockResource::collection(
+            InventoryStock::query()
+            ->with('item.unittype','item.category','supplier')
+            ->when($request->keyword, function ($query, $keyword) {
+                $query->whereHas('item',function ($query) use ($keyword){
+                    $query->where('name', 'LIKE', "%{$keyword}%");
+                });
+            })
+            ->whereHas('item',function ($query){
+                $query ->where('laboratory_id',$this->laboratory)->where('laboratory_type',$this->type);
+            })
+            ->paginate($request->count)
+        );
         return $data;
     }
 }

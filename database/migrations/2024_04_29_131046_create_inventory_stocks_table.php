@@ -16,9 +16,9 @@ return new class extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('brand');
-            $table->integer('unit');
+            $table->integer('quantity');
             $table->string('number')->nullable();
-            $table->string('warranty')->nullable();
+            $table->date('date')->nullable();
             $table->decimal('price',12,2)->default(0.00);
             $table->integer('supplier_id')->unsigned()->index();
             $table->foreign('supplier_id')->references('id')->on('inventory_suppliers')->onDelete('cascade');
