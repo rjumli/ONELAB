@@ -28,6 +28,16 @@ class InventoryRequest extends FormRequest
             return [
                 'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
             ];
+        }else if($this->option == 'stock'){
+            return [
+                'item_id' => 'required',
+                'brand' => 'required',
+                'number' => 'required',
+                'quantity' => 'required',
+                'price' => 'required',
+                'supplier_id' => 'required',
+                'bought_at' => 'required'
+            ];
         }
         return [];
     }

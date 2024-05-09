@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_roles', function (Blueprint $table) {
+        Schema::create('finance_orseries', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('laboratory_id')->unsigned()->index();
-            $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
-            $table->tinyInteger('laboratory_type')->unsigned()->nullable();
-            $table->foreign('laboratory_type')->references('id')->on('list_dropdowns')->onDelete('cascade');
+            $table->string('name');
+            $table->string('start',20);
+            $table->string('next',20);
+            $table->string('end',20);
+            $table->boolean('is_active');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->tinyInteger('role_id')->unsigned()->index();
-            $table->foreign('role_id')->references('id')->on('list_roles')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_roles');
+        Schema::dropIfExists('finance_orseries');
     }
 };

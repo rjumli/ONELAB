@@ -16,6 +16,16 @@ class StockResource extends JsonResource
     {
         $name = $this->item->name.' '.$this->item->unit.''.$this->item->unittype->others;
         $category = $this->item->category->name;
+
+        if($category == 'Equipment'){
+            $warranty = ($this->date >= now()) ? true : false;
+            $outofstock = false;
+            $expired = false;
+        }else{
+            $expired = ($this->date <= now()) ? true : false;
+            $outofstock = ($this->quantity == 0) ? true : false;
+            $warranty = false;
+        }
         return [
             'id' => $this->id,
             'name' => $name,
@@ -31,7 +41,10 @@ class StockResource extends JsonResource
             'date' => $this->date,
             'price' => $this->price,
             'bought' => $this->bought_at,
-            'date' => $this->date,
+            'date' => $this->date,  
+            'expired' => $expired,
+            'warranty' => $warranty,
+            'outofstock' => $outofstock
         ];
     }
 }

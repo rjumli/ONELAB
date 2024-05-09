@@ -16,6 +16,7 @@ return new class extends Migration
             $table->tinyIncrements('id');
             $table->string('name',100);
             $table->text('description',20);   
+            $table->boolean('has_lab');
             $table->boolean('is_active')->default(1);
         });
     }

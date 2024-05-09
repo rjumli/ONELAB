@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventory_stocks', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('code')->unique();
             $table->string('brand');
             $table->integer('quantity');

@@ -2,11 +2,12 @@
 
 namespace App\Services\Inventory;
 
+use App\Models\Laboratory;
+use App\Models\ListDropdown;
 use App\Models\InventoryItem;
 use App\Models\InventoryStock;
 use App\Models\InventorySupplier;
-use App\Models\Laboratory;
-use App\Models\ListDropdown;
+use App\Models\InventoryWithdrawal;
 use App\Http\Resources\DefaultResource;
 use App\Http\Resources\Inventory\ItemResource;
 use App\Http\Resources\Inventory\SupplierResource;
@@ -51,6 +52,27 @@ class SaveService
             'message' => 'Stock was added successful!', 
             'info' => "You've successfully added the new stock."
         ];
+    }
+
+    public function withdraw($request){
+        $items = $request->carts;
+        foreach($items as $item){
+            $stock = InventoryStock::where('id',$item['id'])->first();
+            $stock->quantity = $stock->quantity - $item['qnty'];
+            if($stock->save()){
+                $withdrawal = new InventoryWithdrawal;
+                $withdrawal->quantity = $item['qnty'];
+                $withdrawal->stock_id = $item['id'];
+                $withdrawal->user_id = \Auth::user()->id;
+                if($withdrawal->save()){
+                    return [
+                        'data' => [],
+                        'message' => 'Withdraw was successful!', 
+                        'info' => "You've successfully updated the stock."
+                    ];
+                }
+            }
+        }
     }
 
     public function generateCode($request){

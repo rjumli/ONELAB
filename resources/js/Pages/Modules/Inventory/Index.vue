@@ -8,7 +8,7 @@
                 <b-col lg="4" md="6" v-for="(item, index) of dropdowns.statistics" :key="index">
                     <b-card no-body class="bg-white shadow-none border">
                         <b-card-body>
-                            <div class="d-flex align-items-center">
+                            <div @click="search(item.select)" class="d-flex align-items-center" style="cursor: pointer;">
                                 <div class="avatar-sm flex-shrink-0">
                                     <span class="avatar-title bg-light rounded-circle fs-3" :class="item.color">
                                         <i :class="`bx ${item.icon} align-middle`"></i>
@@ -56,7 +56,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(list,index) in lists" v-bind:key="index">
+                        <tr v-for="(list,index) in lists" v-bind:key="index" :class="[(list.expired) ? 'table-danger' : (list.outofstock) ? 'table-warning' : '']">
                             <td class="text-center"> 
                                 <div class="avatar-xs chat-user-img">
                                     <img :src="list.img" alt="" class="avatar-xs rounded-circle" />
@@ -72,7 +72,7 @@
                             <td class="text-center fs-12">{{list.quantity}}</td>
                             <td class="text-center fs-12">{{list.price}}</td>
                             <td class="text-end">
-                                <b-button @click="openView(list)" variant="primary" v-b-tooltip.hover title="Add to cart" size="sm" :disabled="(list.quantity > 0) ? false : true">
+                                <b-button @click="openView(list)" variant="primary" v-b-tooltip.hover title="Add to cart" size="sm" :disabled="(list.outofstock || list.expired) ? true : false">
                                     <i class="ri-logout-circle-r-fill align-bottom"></i>
                                 </b-button>
                             </td>
@@ -91,7 +91,7 @@
                                 <th class="text-end"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="carts.length > 0">
                             <tr v-for="(list,index) in carts" v-bind:key="index" :class="[(list.is_active == 0) ? 'table-warnings' : '']">
                                 <td class="fs-12">
                                     <h5 class="fs-12 mb-0 text-dark">{{list.name}}</h5>
@@ -107,11 +107,16 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="2" class="text-center text-muted">No items added</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div class="mt-auto">
                     <div class="d-grid gap-2" >
-                        <b-button @click="openWithdraw" variant="primary">Withdraw</b-button>
+                        <b-button @click="openWithdraw" variant="primary" :disabled="(carts.length == 0) ? true : false">Withdraw</b-button>
                     </div>
                 </div>
             </div>
@@ -119,7 +124,7 @@
     </div>
     <View @add="addNow" ref="view"/>
     <Add :suppliers="dropdowns.suppliers" ref="add"/>
-    <Withdraw ref="withdraw"/>
+    <Withdraw @message="clear()" ref="withdraw"/>
 </template>
 <script>
 import _ from 'lodash';
@@ -138,7 +143,8 @@ export default {
             links: {},
             carts: [],
             filter: {
-                keyword: null
+                keyword: null,
+                type: null,
             }
         }
     },
@@ -159,6 +165,7 @@ export default {
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
+                    type: this.filter.type,
                     count: ((window.innerHeight-350)/58),
                     option: 'lists'
                 }
@@ -169,6 +176,10 @@ export default {
                 this.links = response.data.links;     
             })
             .catch(err => console.log(err));
+        },
+        search(data){
+            this.filter.type = data;
+            this.fetch();
         },
         add(){
             this.$refs.add.show(true);
@@ -192,6 +203,10 @@ export default {
         },
         openView(data){
             this.$refs.view.show(data);
+        },
+        clear(){
+            this.fetch();
+            this.carts = [];
         }
     }
 }

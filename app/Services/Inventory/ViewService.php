@@ -61,21 +61,24 @@ class ViewService
                 'name' => 'Items',
                 'color' => 'text-success',
                 'icon' => 'ri-shopping-basket-2-fill',
-                'total' => 1
+                'total' => InventoryStock::count(),
+                'select' => null
             ],
             [
                 'name' => 'Ouf of Stock',
                 'color' => 'text-warning',
                 'icon' => 'ri-alert-fill',
                 'total' => InventoryStock::whereHas('item', function ($query) {
-                    $query->whereColumn('reorder', '>', 'number');
-                })->count()
+                    $query->whereColumn('reorder', '>', 'quantity');
+                })->count(),
+                'select' => 'outofstock'
             ],
             [
                 'name' => 'Expired',
                 'color' => 'text-danger',
                 'icon' => 'ri-alarm-warning-fill',
-                'total' => 1
+                'total' => InventoryStock::where('date', '<=', now())->count(),
+                'select' => 'expired'
             ],
         ];
     }
@@ -99,6 +102,15 @@ class ViewService
                 $query->whereHas('item',function ($query) use ($keyword){
                     $query->where('name', 'LIKE', "%{$keyword}%");
                 });
+            })
+            ->when($request->type, function ($query, $type) {
+                if($type == 'expired'){
+                    $query->where('date', '<=', now());
+                }else{
+                    $query->whereHas('item', function ($query) {
+                        $query->whereColumn('reorder', '>', 'quantity');
+                    });
+                }
             })
             ->whereHas('item',function ($query){
                 $query ->where('laboratory_id',$this->laboratory)->where('laboratory_type',$this->type);

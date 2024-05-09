@@ -1,22 +1,19 @@
 <template>
-    <b-modal v-model="showModal" style="--vz-modal-width: 800px;" header-class="p-3 bg-light" title="Withdraw" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" style="--vz-modal-width: 600px;" header-class="p-3 bg-light" title="Withdraw" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <div class="table-responsive">
             <table class="table table-nowrap align-middle mb-0">
                 <thead class="table-light">
                     <tr class="fs-11">
-                        <th style="width: 30%;">Item</th>
-                        <th style="width: 15%;" class="text-center">Price</th>
-                        <th style="width: 15%;" class="text-end">Quantity</th>
+                        <th style="width: 70%;">Item</th>
+                        <th style="width: 15%;" class="text-center">Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(list,index) in form.carts" v-bind:key="index" :class="[(list.is_active == 0) ? 'table-warnings' : '']">
-                        <!-- <td class="text-center">{{ index + 1 }}.</td> -->
                         <td class="fs-12">
                             {{list.name}}  
                         </td>
-                        <td class="text-center fs-12">{{list.price}}</td>
-                        <td class="text-end fs-12">{{list.qnty}}</td>
+                        <td class="text-center fs-12">{{list.qnty}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -37,7 +34,7 @@ export default {
             currentUrl: window.location.origin,
             form: useForm({
                 carts: [],
-                option: 'stock'
+                option: 'withdraw'
             }),
             items: [],
             showModal: false,
@@ -82,7 +79,7 @@ export default {
                 this.form.post('/inventory',{
                     preserveScroll: true,
                     onSuccess: (response) => {
-                        // this.$emit('message',true);
+                        this.$emit('message',true);
                         this.form.reset();
                         this.hide();
                     },
@@ -96,7 +93,6 @@ export default {
             this.form.errors[field] = false;
         },
         hide(){
-            this.editable = false;
             this.showModal = false;
         }
     }

@@ -85,6 +85,9 @@ class InventoryController extends Controller
                 case 'stock':
                     return $this->save->stock($request);
                 break;
+                case 'withdraw':
+                    return $this->save->withdraw($request);
+                break;
             }
         });
         return back()->with([
