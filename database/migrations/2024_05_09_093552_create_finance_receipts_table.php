@@ -15,13 +15,14 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('number')->unique();
-            $table->string('number')->unique();
             $table->bigInteger('op_id')->unsigned()->index();
             $table->foreign('op_id')->references('id')->on('finance_ops')->onDelete('cascade');
             $table->integer('orseries_id')->unsigned()->index();
             $table->foreign('orseries_id')->references('id')->on('finance_orseries')->onDelete('cascade');
             $table->tinyInteger('payment_id')->unsigned()->nullable();
             $table->foreign('payment_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
+            $table->bigInteger('payor_id')->unsigned()->index();
+            $table->foreign('payor_id')->references('id')->on('customers')->onDelete('cascade');
             $table->timestamps(); 
         });
     }
