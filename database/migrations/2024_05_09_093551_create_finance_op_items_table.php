@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('finance_op_items', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('code')->unique();
             $table->decimal('amount',12,2);
             $table->bigInteger('tsr_id')->unsigned()->index();
             $table->foreign('tsr_id')->references('id')->on('tsrs')->onDelete('cascade');

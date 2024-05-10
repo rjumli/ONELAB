@@ -23,6 +23,11 @@ class DashboardController extends Controller
                     'samples' => $this->analyst->samples()
                 ]);
             break;
+            case 'Accountant':
+                return inertia('Modules/Dashboard/Accountant/Index',[
+                    'laboratories' => $this->dropdown->laboratory_types(),
+                ]);
+            break;
             default:
                 return inertia('Modules/Dashboard/Index',[
                     'laboratories' => $this->dropdown->laboratory_types(),

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('code')->unique();
             $table->decimal('total',12,2);
+            $table->tinyInteger('status_id')->unsigned()->index();
+            $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
             $table->tinyInteger('collection_id')->unsigned()->nullable();
             $table->foreign('collection_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->bigInteger('customer_id')->unsigned()->index();
