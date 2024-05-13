@@ -2,75 +2,93 @@
     <b-modal v-model="showModal" style="--vz-modal-width: 700px;" header-class="p-3 bg-light" title="Create Order of Payment" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <form class="customform">
             <BRow class="g-3">
-                <BCol lg="12">
+                <BCol lg="12 mt-2">
                     <InputLabel for="customer" value="Customer" :message="form.errors.customer"/>
                     <Multiselect 
                     :options="customers" 
                     @search-change="fetchCustomer" 
-                    v-model="form.customer" 
-                    object label="name"
+                    v-model="form.customer_id" 
+                    label="name"
                     :searchable="true" 
                     placeholder="Select Customer"/>
                 </BCol>
-                <!-- <BCol lg="12" class="mt-1" v-if="form.customer">
-                    <div class="d-flex">
-                        <div style="width: 100%;">
-                            <InputLabel for="conforme" value="Conforme" :message="form.errors.conforme_id"/>
-                            <Multiselect 
-                            :options="form.customer.conformes" 
-                            v-model="form.conforme_id" 
-                            label="name"
-                            :searchable="true" 
-                            placeholder="Select Conforme"/>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <b-button @click="openAdd()" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
-                        </div>
-                    </div>
-                </BCol> -->
+                <BCol lg="6" class="mt-1">
+                    <InputLabel for="collection" value="Collection" :message="form.errors.collection_id"/>
+                    <Multiselect 
+                    :options="collections" 
+                    v-model="form.collection_id"
+                    label="name"
+                    placeholder="Select Collection type"/>
+                </BCol>
+                 <BCol lg="6" class="mt-1">
+                    <InputLabel for="payment" value="Payment" :message="form.errors.payment_id"/>
+                    <Multiselect 
+                    :options="payments" 
+                    v-model="form.payment_id"
+                    label="name"
+                    placeholder="Select Payment type"/>
+                </BCol>
+                <BCol lg="12" class="mt-1">
+                    <InputLabel for="customer" value="Subsidiary Customer/'s (Optional)" :message="form.errors.customer"/>
+                    <Multiselect 
+                    :options="subcustomers" 
+                    @search-change="fetchSubcustomer" 
+                    v-model="subcustomer_id" 
+                    mode="tags"
+                    label="name"
+                    :searchable="true" 
+                    placeholder="Select Subsidiary Customer"/>
+                </BCol>
                 <BCol lg="12">
                     <hr class="text-muted mt-0 mb-3"/>
                 </BCol>
-                <!-- <BCol lg="6" class="mt-n2">
-                    <InputLabel for="region" value="Laboratory" :message="form.errors.laboratory_id"/>
-                    <Multiselect 
-                    :options="dropdowns.laboratories" 
-                    v-model="form.laboratory_id"
-                    :searchable="true" label="name"
-                    placeholder="Select Laboratory"/>
-                </BCol>
-                <BCol lg="6" class="mt-n2">
-                    <InputLabel for="region" value="Purpose" :message="form.errors.purpose_id"/>
-                    <Multiselect 
-                    :options="dropdowns.purposes" 
-                    v-model="form.purpose_id" 
-                    :searchable="true" label="name"
-                    placeholder="Select Purpose"/>
-                </BCol>
-                 <BCol lg="6" class="mt-2">
-                    <InputLabel for="region" value="Discount" :message="form.errors.discount_id"/>
-                    <Multiselect 
-                    :options="dropdowns.discounts" 
-                    v-model="form.discount_id"
-                    :searchable="true" label="name"
-                    placeholder="Select Discount"/>
-                </BCol> -->
-                <BCol lg="6" class="mt-2">
-                    <InputLabel for="due" value="Report Due" :message="form.errors.due_at"/>
-                    <TextInput v-model="form.due_at" type="date" class="form-control" autofocus placeholder="Please enter email" autocomplete="email" required @input="handleInput('due_at')" :light="true"/>
-                </BCol>
-                <!-- <BCol lg="12" class="mt-1">
-                    <InputLabel for="region" value="Mode of Release" :message="form.errors.mode"/>
-                    <Multiselect 
-                    mode="tags" label="name"
-                    :options="dropdowns.modes" 
-                    v-model="form.mode"
-                    :searchable="true" 
-                    placeholder="Select Mode of Release"/>
-                </BCol> -->
+                <BCol lg="12">
+                    <div class="table-responsive mt-n3">
+                        <table class="table table-nowrap align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="fs-11">
+                                    <th width="5%" class="text-center">
+                                        <!-- <input class="form-check-input fs-16" v-model="mark" type="checkbox" value="option" /> -->
+                                    </th>
+                                    <th width="55%">TSR Number</th>
+                                    <th class="text-center" width="20%">Status</th>
+                                    <th class="text-center" width="20%">Subtotal</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <simplebar style="max-height: calc(100vh - 550px); overflow: auto;">
+                            <table class="table table-nowrap align-middle mb-0">
+                                <tbody>
+                                    <tr v-for="(list,index) in tsrs" v-bind:key="index">
+                                        <td width="5%" class="text-center">
+                                            <input type="checkbox" v-model="list.selected" class="form-check-input" />
+                                        </td>
+                                        <td width="55%">
+                                            <h5 class="fs-13 mb-0 text-dark">{{list.code}}</h5>
+                                            <p class="fs-12 text-muted mb-0">{{list.customer.name}}</p>
+                                        </td>
+                                        <td width="20%" class="text-center">
+                                           <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
+                                        </td>
+                                         <td width="20%" class="text-center">{{list.payment.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </simplebar>
+                        <table v-if="tsrs.length > 0" class="table table-nowrap align-middle mb-0">
+                            <tfoot class="table-light">
+                                <tr class="fs-11">
+                                    <th width="5%"></th>
+                                    <th width="55%"></th>
+                                    <th class="text-center" width="20%">Total</th>
+                                    <th class="text-center" width="20%">{{total}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </Bcol>
             </BRow>
-        </form>
-           
+        </form>  
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
             <b-button @click="submit('ok')" variant="primary" :disabled="form.processing" block>Submit</b-button>
@@ -79,30 +97,63 @@
 </template>
 <script>
 import _ from 'lodash';
+import simplebar from "simplebar-vue";
 import { useForm } from '@inertiajs/vue3';
 import Multiselect from "@vueform/multiselect";
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
-    components: { Multiselect, InputLabel, TextInput},
-    props: ['dropdowns'],
+    components: { Multiselect, InputLabel, TextInput, simplebar},
+    props: ['collections','payments'],
     data(){
         return {
             currentUrl: window.location.origin,
             form: useForm({
-                id: null,
-                customer: null,
-                conforme_id: null,
-                laboratory_id: null,
-                purpose_id: null,
-                discount_id: null,
-                mode: null,
-                due_at: null
+                customer_id: null,
+                collection_id: null,
+                payment_id: null,
+                selected: [],
+                total: null,
+                option: 'op'
             }),
+            customer_id: null,
+            subcustomer_id: null,
+            ids: [],
+            combinedIds: [],
             customers: [],
-            conformes: [],
+            subcustomers: [],
+            tsrs: [],
             showModal: false,
             editable: false
+        }
+    },
+    watch: {
+        "form.customer_id"(newVal){
+            this.form.selected = [];
+            this.subcustomer_id = null;
+            (newVal) ? this.ids.push(newVal) : this.ids = [];
+            this.combinedIds.push(newVal);
+            this.fetchTsrs();
+        },
+        "subcustomer_id"(newVal){
+            this.combinedIds = this.ids.concat(this.subcustomer_id);
+            this.fetchTsrs();
+        },
+        'tsrs': {
+            deep: true,
+            handler() {
+                this.form.selected = this.tsrs
+                .filter(item => item.selected)
+                .map(selectedItem => selectedItem);
+            }
+        }
+    },
+    computed: {
+        total(){
+            let s = this.form.selected.reduce((acc, item) => acc + parseInt(item.payment.total.replace('₱', '').replace(/,/g, '')), 0);
+            this.form.total = s;
+            let val = (s/1).toFixed(2).replace(',', '.')
+            return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }
     },
     methods: { 
@@ -110,7 +161,7 @@ export default {
             this.showModal = true;
         },
         submit(){
-            this.form.post('/drafts',{
+            this.form.post('/finance',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.hide();
@@ -129,19 +180,36 @@ export default {
             })
             .catch(err => console.log(err));
         },
-        openAdd(){
-            this.$refs.conforme.show(this.form.customer);
+        fetchSubcustomer(code){
+            axios.get('/customers',{
+                params: {
+                    option: 'pick',
+                    id: this.form.customer_id,
+                    keyword: code
+                }
+            })
+            .then(response => {
+                this.subcustomers = response.data;
+            })
+            .catch(err => console.log(err));
         },
-        set(data){
-            this.form.customer.conformes = data;
-            this.form.conforme_id = data;
+        fetchTsrs(code){
+            axios.get('/requests',{
+                params: {
+                    option: 'tsrs',
+                    customer_id: this.combinedIds
+                }
+            })
+            .then(response => {
+                this.tsrs = response.data.data;
+            })
+            .catch(err => console.log(err));
         },
         handleInput(field) {
             this.form.errors[field] = false;
         },
         hide(){
             this.form.reset();
-            this.editable = false;
             this.showModal = false;
         }
     }

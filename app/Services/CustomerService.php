@@ -97,9 +97,16 @@ class CustomerService
 
     public function pick($request){
         $keyword = $request->keyword;
-        $data = Customer::with('conformes')->with('customer_name')->where('name', 'LIKE', "%{$keyword}%")
-        ->orWhereHas('customer_name', function ($query) use ($keyword) {
-            $query->where('name', 'LIKE', "%$keyword%");
+        $id = $request->id;
+        $data = Customer::with('conformes')->with('customer_name')
+        ->where(function($query) use ($keyword,$id) {
+            $query->where('name', 'LIKE', "%{$keyword}%")
+                ->where('id','!=',$id)
+                ->orWhereHas('customer_name', function ($query) use ($keyword,$id) {
+                    $query->where('name', 'LIKE', "%$keyword%")->whereHas('customer', function ($query) use ($id) {
+                        $query->where('id','!=',$id);
+                    });
+                });
         })
         ->get()->map(function ($item) {
             return [
@@ -114,7 +121,11 @@ class CustomerService
                 })
             ];
         });
-        return $data;
+        if($keyword){
+            return $data;
+        }else{
+            return [];
+        }
     }
 
     public function counts($id){

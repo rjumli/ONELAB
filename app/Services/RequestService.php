@@ -10,6 +10,7 @@ use App\Models\Laboratory;
 use App\Models\ListDropdown;
 use App\Models\Configuration;
 use App\Http\Resources\TsrResource;
+use App\Http\Resources\Tsr\ListResource;
 
 class RequestService
 {
@@ -192,5 +193,20 @@ class RequestService
 
         $pdf = \PDF::loadView('reports.tsr',$array)->setPaper('a4', 'portrait');
         return $pdf->download($tsr->code.'.pdf');
+    }
+
+    public function tsrs($request){
+        $data = ListResource::collection(
+            Tsr::query()
+            ->with('customer:id,name_id,name,is_main','customer.customer_name:id,name,has_branches')
+            ->with('payment:tsr_id,id,total,subtotal,discount,or_number,is_paid,paid_at,status_id','payment.status:id,name,color,others')
+            ->whereHas('payment',function ($query){
+                $query->where('is_paid', 0)->where('payment_id',null)->where('collection_id',null);
+            })
+            ->whereIn('customer_id',$request->customer_id)
+            ->orderBy('created_at','DESC')
+            ->get()
+        );
+        return $data;
     }
 }

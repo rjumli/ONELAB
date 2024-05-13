@@ -214,4 +214,24 @@ class DropdownService
         });
         return $data;
     }
+
+    public function collections(){
+        $data = ListDropdown::where('classification','Collection Type')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function payments(){
+        $data = ListDropdown::where('classification','Payment Mode')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
 }

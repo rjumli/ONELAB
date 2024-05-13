@@ -179,7 +179,7 @@ export default {
             this.$emit('sum',data.fee);
         }
     },
-     watch: {
+    watch: {
         mark(){
             if(this.mark){
                 this.samples.forEach(item => {

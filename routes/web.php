@@ -36,3 +36,4 @@ Route::middleware(['2fa','auth','verified'])->group(function () {
 require __DIR__.'/auth.php';
 require __DIR__.'/utility.php';
 require __DIR__.'/inventory.php';
+require __DIR__.'/finance.php';

@@ -25,7 +25,20 @@ class DashboardController extends Controller
             break;
             case 'Accountant':
                 return inertia('Modules/Dashboard/Accountant/Index',[
-                    'laboratories' => $this->dropdown->laboratory_types(),
+                    'dropdowns' => [
+                        'laboratories' => $this->dropdown->laboratory_types(),
+                        'collections' => $this->dropdown->collections(),
+                        'payments' => $this->dropdown->payments(),
+                    ]
+                ]);
+            break;
+            case 'Cashier':
+                return inertia('Modules/Dashboard/Accountant/Index',[
+                    'dropdowns' => [
+                        'laboratories' => $this->dropdown->laboratory_types(),
+                        'collections' => $this->dropdown->collections(),
+                        'payments' => $this->dropdown->payments(),
+                    ]
                 ]);
             break;
             default:

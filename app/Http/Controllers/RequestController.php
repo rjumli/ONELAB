@@ -25,6 +25,9 @@ class RequestController extends Controller
             case 'print':
                 return $this->req->print($request);
             break;
+            case 'tsrs':
+                return $this->req->tsrs($request);
+            break;
             default :
             return inertia('Modules/Requests/Index',[
                 'dropdowns' => [

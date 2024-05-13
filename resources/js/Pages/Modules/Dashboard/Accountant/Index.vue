@@ -14,7 +14,7 @@
                                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                                 <select @change="changeLab()" v-model="laboratory" class="form-select">
                                     <option :value="null" selected>All Laboratory</option>
-                                    <option :value="list" v-for="list in laboratories" v-bind:key="list.id">{{list.name}}</option>
+                                    <option :value="list" v-for="list in dropdowns.laboratories" v-bind:key="list.id">{{list.name}}</option>
                                 </select>
                                 <b-button @click="openCreate" type="button" variant="primary">
                                     Create &nbsp;<i class="ri-add-circle-fill"></i>
@@ -29,7 +29,8 @@
             <div class="row g-3">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="height: calc(100vh - 305px); overflow: auto;">
+                            <Lists :collections="dropdowns.collections" :payments="dropdowns.payments"/>
                         </div>
                     </div>
                 </div>
@@ -42,23 +43,17 @@
             </div>
         </div>
     </b-row>
-    <Create ref="create"/>
 </template>
 <script>
-import Create from './Modals/Create.vue';
+import Lists from './Components/Lists.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
-    props: ['laboratories'],
-    components: { PageHeader, Create },
+    props: ['dropdowns'],
+    components: { PageHeader, Lists },
     data(){
         return {
             laboratory: null,
         }
     },
-    methods: {
-        openCreate(){
-            this.$refs.create.show();
-        }
-    }
 }
 </script>
