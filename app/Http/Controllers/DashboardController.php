@@ -38,6 +38,9 @@ class DashboardController extends Controller
                         'laboratories' => $this->dropdown->laboratory_types(),
                         'collections' => $this->dropdown->collections(),
                         'payments' => $this->dropdown->payments(),
+                        'deposits' => $this->dropdown->deposits(),
+                        'orseries' => $this->dropdown->orseries(),
+                        'statuses' => $this->dropdown->statuses('Payment'),
                     ]
                 ]);
             break;

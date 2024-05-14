@@ -53,6 +53,7 @@
                     <td class="text-center">{{list.payment.total}}</td>
                     <td class="text-center">
                         <i v-if="list.payment.is_paid" class="ri-checkbox-circle-fill text-success fs-18" v-b-tooltip.hover :title="list.payment.status.name"></i>
+                        <i v-else-if="list.payment.is_free" class="ri-checkbox-circle-fill text-warning fs-18" v-b-tooltip.hover title="Gratis"></i>
                         <i v-else class="ri-close-circle-fill text-danger fs-18" v-b-tooltip.hover :title="list.payment.status.name"></i>
                     </td>
                     <td class="text-end">

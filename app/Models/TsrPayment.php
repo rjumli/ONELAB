@@ -19,7 +19,8 @@ class TsrPayment extends Model
         'collection_id',
         'status_id',
         'paid_at',
-        'is_paid'
+        'is_paid',
+        'is_free'
     ];
 
     public function tsr()

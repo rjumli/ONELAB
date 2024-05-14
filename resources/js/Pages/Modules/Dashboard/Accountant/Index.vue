@@ -30,13 +30,20 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body" style="height: calc(100vh - 305px); overflow: auto;">
-                            <Lists :collections="dropdowns.collections" :payments="dropdowns.payments"/>
+                            <Lists 
+                            :collections="dropdowns.collections" 
+                            :payments="dropdowns.payments" 
+                            :deposits="dropdowns.deposits" 
+                            :orseries="dropdowns.orseries"
+                            :statuses="dropdowns.statuses"
+                            />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="height: calc(100vh - 305px); overflow: auto;">
+                            
                         </div>
                     </div>
                 </div>

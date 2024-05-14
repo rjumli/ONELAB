@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('logo_dark')->nullable();  
             $table->string('icon')->nullable();  
             $table->string('version');    
+            $table->integer('laboratory_id')->unsigned()->index();
+            $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
             $table->timestamp('updated_at')->nullable();
         });
     }

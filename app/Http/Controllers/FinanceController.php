@@ -19,6 +19,9 @@ class FinanceController extends Controller
             case 'lists':
                 return $this->finance->lists($request);
             break;
+            case 'print':
+                return $this->finance->print($request);
+            break;
         }
     }
 

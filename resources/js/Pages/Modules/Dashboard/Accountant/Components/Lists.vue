@@ -3,8 +3,11 @@
         <b-col lg>
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                <input type="text" v-model="filter.keyword" placeholder="Search Request" class="form-control" style="width: 55%;">
-              
+                <input type="text" v-model="filter.keyword" placeholder="Search Order of Payment" class="form-control" style="width: 55%;">
+                <select v-model="filter.status" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 140px;">
+                    <option :value="null" selected>Select Status</option>
+                    <option :value="list.value" v-for="list in statuses" v-bind:key="list.id">{{list.name}}</option>
+                </select>
                 <span @click="refresh" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
@@ -46,6 +49,9 @@
                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                             <i class="ri-eye-fill align-bottom"></i>
                         </b-button>
+                        <b-button @click="openPrint(list.id)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Print" size="sm">
+                            <i class="ri-printer-fill align-bottom"></i>
+                        </b-button>
                     </td>
                 </tr>
             </tbody>
@@ -53,7 +59,7 @@
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
     <Create :collections="collections" :payments="payments" ref="create"/>
-    <View ref="view"/>
+    <View :deposits="deposits" :orseries="orseries" ref="view"/>
 </template>
 <script>
 import _ from 'lodash';
@@ -62,7 +68,7 @@ import Create from '../Modals/Create.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     components: { Pagination, Create, View },
-    props: ['collections','payments'],
+    props: ['collections','payments','deposits','orseries','statuses'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -72,6 +78,7 @@ export default {
             index: null,
             filter: {
                 keyword: null,
+                status: null
             }
         }
     },
@@ -92,6 +99,7 @@ export default {
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
+                    status: this.filter.status,
                     count: ((window.innerHeight-350)/58),
                     option: 'lists'
                 }
@@ -110,7 +118,10 @@ export default {
         },
         openView(data){
             this.$refs.view.show(data);
-        }
+        },
+        openPrint(id){
+            window.open(this.currentUrl + '/finance?option=print&id='+id);
+        },
     }
 }
 </script>

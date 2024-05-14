@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+        {{ selected.or}}
         <hr class="text-muted"/>
         <div class="card-body text-center">
             <div class="row g-3">
@@ -62,12 +63,16 @@
         </table>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
-            <b-button v-if="$page.props.user.data.assigned_role == 'Cashier'" @click="submit('ok')" variant="primary" :disabled="form.processing" block>Create Receipt</b-button>
+            <b-button v-if="$page.props.user.data.assigned_role == 'Cashier' && selected.status.name == 'Pending'" @click="openOr" variant="primary" :disabled="form.processing" block>Create Receipt</b-button>
         </template>
     </b-modal>
+    <Or :deposits="deposits" :orseries="orseries" ref="or"/>
 </template>
 <script>
+import Or from './Or.vue';
 export default {
+    components: { Or },
+    props: ['deposits','orseries'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -99,6 +104,9 @@ export default {
         },
         hide(){
             this.showModal = false;
+        },
+        openOr(){
+            this.$refs.or.show(this.selected.customer.customer_name.name+' - '+this.selected.customer.name,this.selected);
         }
     }
 }

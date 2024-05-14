@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('is_active');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('laboratory_id')->unsigned()->index();
+            $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
             $table->timestamps();
         });
     }

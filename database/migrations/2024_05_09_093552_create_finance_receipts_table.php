@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('payor_id')->references('id')->on('customers')->onDelete('cascade');
             $table->integer('created_by')->unsigned()->index();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('laboratory_id')->unsigned()->index();
+            $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
             $table->timestamps(); 
         });
     }

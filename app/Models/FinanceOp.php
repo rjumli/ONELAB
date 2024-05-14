@@ -16,12 +16,18 @@ class FinanceOp extends Model
         'collection_id',
         'payment_id',
         'customer_id',
-        'created_by'
+        'created_by',
+        'laboratory_id'
     ];
 
     public function items()
     {
         return $this->hasMany('App\Models\FinanceOpItem', 'op_id');
+    }
+
+    public function or()
+    {
+        return $this->hasOne('App\Models\FinanceReceipt', 'op_id');
     }
 
     public function customer()

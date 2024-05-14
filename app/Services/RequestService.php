@@ -28,7 +28,7 @@ class RequestService
             ->with('laboratory','laboratory_type:id,name','purpose:id,name','status:id,name,color,others')
             ->with('customer:id,name_id,email,name,contact_no,is_main','customer.customer_name:id,name,has_branches','customer.address:address,addressable_id,region_code,province_code,municipality_code,barangay_code','customer.address.region:code,name,region','customer.address.province:code,name','customer.address.municipality:code,name','customer.address.barangay:code,name')
             ->with('conforme:id,name,contact_no')
-            ->with('payment:tsr_id,id,total,subtotal,discount,or_number,is_paid,paid_at,status_id,discount_id,collection_id,payment_id','payment.status:id,name,color,others','payment.collection:id,name','payment.type:id,name','payment.discounted:id,name,value')
+            ->with('payment:tsr_id,id,total,subtotal,discount,or_number,is_paid,is_free,paid_at,status_id,discount_id,collection_id,payment_id','payment.status:id,name,color,others','payment.collection:id,name','payment.type:id,name','payment.discounted:id,name,value')
             ->when($request->keyword, function ($query, $keyword) {
                 $query->where('code', 'LIKE', "%{$keyword}%")
                 ->orWhereHas('customer',function ($query) use ($keyword) {
@@ -61,9 +61,9 @@ class RequestService
             'customer_id' => $request->customer['value'],
             'received_by' => \Auth::user()->id
         ]));
-        $data->payment()->create(array_merge($request->all(),[
-            'status_id' => 6,
-        ]));
+        
+        $payment = (in_array($request->discount_id, [5, 6, 7])) ? ['status_id' => 6,'is_free' => 1] : ['status_id' => 6];
+        $data->payment()->create(array_merge($request->all(),$payment));
 
         return [
             'data' => $data,
@@ -201,7 +201,7 @@ class RequestService
             ->with('customer:id,name_id,name,is_main','customer.customer_name:id,name,has_branches')
             ->with('payment:tsr_id,id,total,subtotal,discount,or_number,is_paid,paid_at,status_id','payment.status:id,name,color,others')
             ->whereHas('payment',function ($query){
-                $query->where('is_paid', 0)->where('payment_id',null)->where('collection_id',null);
+                $query->where('is_paid', 0)->where('payment_id',null)->where('collection_id',null)->where('is_free',1);
             })
             ->whereIn('customer_id',$request->customer_id)
             ->orderBy('created_at','DESC')

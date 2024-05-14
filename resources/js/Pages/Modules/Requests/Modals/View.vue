@@ -120,7 +120,7 @@
                                             </div>
                                             <div class="flex-grow-1 overflow-hidden">
                                                 <p class="mb-1 fs-12 text-muted">OR Number :</p>
-                                                <h6 class="text-truncate mb-0 fs-12" v-if="selected.payment.or_number">{{selected.payment.or_numbert}}</h6>
+                                                <h6 class="text-truncate mb-0 fs-12" v-if="selected.payment.or_number">{{selected.payment.or_number}}</h6>
                                                 <span class="text-warning mb-0 fs-12" v-else>Not Available</span>
                                             </div>
                                         </div>

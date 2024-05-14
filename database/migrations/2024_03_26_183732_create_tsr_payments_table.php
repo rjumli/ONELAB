@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('discount',12,2)->default(0.00);
             $table->string('or_number')->nullable();
             $table->boolean('is_paid')->default(0);
+            $table->boolean('is_free')->default(0);
             $table->tinyInteger('discount_id')->unsigned()->index();
             $table->foreign('discount_id')->references('id')->on('list_discounts')->onDelete('cascade');
             $table->tinyInteger('payment_id')->unsigned()->nullable();

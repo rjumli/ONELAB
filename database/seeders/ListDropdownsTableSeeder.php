@@ -15,7 +15,7 @@ class ListDropdownsTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_dropdowns')->delete();
+        \DB::table('list_dropdowns')->truncate();
         
         \DB::table('list_dropdowns')->insert(array (
             0 => 
@@ -1083,6 +1083,206 @@ class ListDropdownsTableSeeder extends Seeder
                 'id' => 108,
                 'name' => 'Calibration Fee',
                 'classification' => 'Collection Type',
+                'type' => 'n/a',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            107 => 
+            array (
+                'id' => 109,
+                'name' => 'Equipment',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            108 => 
+            array (
+                'id' => 110,
+                'name' => 'Media',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            109 => 
+            array (
+                'id' => 111,
+                'name' => 'Indicator',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            110 => 
+            array (
+                'id' => 112,
+                'name' => 'Buffer Solution',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            111 => 
+            array (
+                'id' => 113,
+                'name' => 'Acid',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            112 => 
+            array (
+                'id' => 114,
+                'name' => 'Caustic',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            113 => 
+            array (
+                'id' => 115,
+                'name' => 'Liquid Reagents',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            114 => 
+            array (
+                'id' => 116,
+                'name' => 'Solid Reagents',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            115 => 
+            array (
+                'id' => 117,
+                'name' => 'Glassware',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            116 => 
+            array (
+                'id' => 118,
+                'name' => 'Standard',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            117 => 
+            array (
+                'id' => 119,
+                'name' => 'Certified Reference Materials',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            118 => 
+            array (
+                'id' => 120,
+                'name' => 'Micro Reagent',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            119 => 
+            array (
+                'id' => 121,
+                'name' => 'Rapid Test Kit',
+                'classification' => 'Inventory',
+                'type' => 'Category',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            120 => 
+            array (
+                'id' => 122,
+                'name' => 'Piece',
+                'classification' => 'Inventory',
+                'type' => 'Unit',
+                'color' => 'n/a',
+                'others' => 'pc',
+                'is_active' => 1,
+            ),
+            121 => 
+            array (
+                'id' => 123,
+                'name' => 'Liter',
+                'classification' => 'Inventory',
+                'type' => 'Unit',
+                'color' => 'n/a',
+                'others' => 'L',
+                'is_active' => 1,
+            ),
+            122 => 
+            array (
+                'id' => 124,
+                'name' => 'Milliliter',
+                'classification' => 'Inventory',
+                'type' => 'Unit',
+                'color' => 'n/a',
+                'others' => 'ml',
+                'is_active' => 1,
+            ),
+            123 => 
+            array (
+                'id' => 125,
+                'name' => 'Kilogram',
+                'classification' => 'Inventory',
+                'type' => 'Unit',
+                'color' => 'n/a',
+                'others' => 'kg',
+                'is_active' => 1,
+            ),
+            124 => 
+            array (
+                'id' => 126,
+                'name' => 'Gram',
+                'classification' => 'Inventory',
+                'type' => 'Unit',
+                'color' => 'n/a',
+                'others' => 'g',
+                'is_active' => 1,
+            ),
+            125 => 
+            array (
+                'id' => 127,
+                'name' => 'Bureau of Treasury',
+                'classification' => 'Deposit Type',
+                'type' => 'n/a',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            126 => 
+            array (
+                'id' => 128,
+                'name' => 'Project',
+                'classification' => 'Deposit Type',
                 'type' => 'n/a',
                 'color' => 'n/a',
                 'others' => 'n/a',
