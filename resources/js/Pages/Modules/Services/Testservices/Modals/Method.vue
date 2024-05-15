@@ -5,7 +5,7 @@
                 <BCol lg="12">
                     <div class="d-flex">
                         <div style="width: 100%;">
-                            <InputLabel for="method" value="Method"/>
+                            <InputLabel for="method" value="Method" :message="errors.method_id"/>
                             <Multiselect @search-change="searchMethod" 
                             :options="methods" label="name" :searchable="true" 
                             v-model="form.method_id" :message="errors.method_id" 

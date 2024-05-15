@@ -152,7 +152,7 @@ class ListMenusTableSeeder extends Seeder
             array (
                 'id' => 11,
                 'name' => 'Testservices',
-                'icon' => 'bx bxs-flask',
+                'icon' => '',
                 'route' => '/services/testservices',
                 'path' => '/services/testservices',
                 'group' => 'Services',
@@ -165,7 +165,7 @@ class ListMenusTableSeeder extends Seeder
             array (
                 'id' => 12,
                 'name' => 'Packages',
-                'icon' => 'bx bxs-flask',
+                'icon' => '',
                 'route' => '/services/packages',
                 'path' => '/services/packages',
                 'group' => 'Services',

@@ -32,6 +32,11 @@ class NameRequest extends FormRequest
                 'testname_id' => 'sometimes|required',
                 'method_id' => 'sometimes|required'
             ];
+        }else if($this->option == 'method'){
+            return [
+                'method_id' => 'sometimes|required|unique:list_methods,method_id,NULL,'.$this->id.',reference_id,'.$this->reference_id,
+                'reference_id' => 'sometimes|required'
+            ];
         }else{
             return [];
         }

@@ -24,6 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('is_active', [
             \App\Http\Middleware\ActiveMiddleware::class,
         ]);
+
+        $middleware->appendToGroup('menu', [
+            \App\Http\Middleware\MenuMiddleware::class,
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
