@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('suffix',10)->nullable();
             $table->string('gender',8);
             $table->string('mobile',15);
-            $table->string('avatar', 2048)->nullable();
+            $table->string('avatar', 2048)->default('avatar');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

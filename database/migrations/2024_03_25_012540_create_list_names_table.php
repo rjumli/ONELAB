@@ -15,12 +15,12 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('short')->nullable();
             $table->tinyInteger('type_id')->unsigned()->index();
             $table->foreign('type_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->tinyInteger('laboratory_type')->unsigned()->index();
             $table->foreign('laboratory_type')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->boolean('is_active')->default(1);
-            $table->boolean('is_synced')->default(0);
             $table->timestamps();
         });
     }

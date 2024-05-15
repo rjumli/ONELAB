@@ -210,7 +210,8 @@ class DropdownService
         $data = ListRole::where('is_active',1)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
-                'name' => $item->name
+                'name' => $item->name,
+                'has_lab' => $item->has_lab
             ];
         });
         return $data;

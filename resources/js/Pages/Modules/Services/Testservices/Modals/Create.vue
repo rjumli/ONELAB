@@ -4,8 +4,8 @@
         <form class="customform">
             <BRow>
                 <BCol lg="12" class="mt-1 mb-1">
-                    <InputLabel for="classification_id" value="Laboratory Type" />
-                    <Multiselect :options="dropdowns.types" :searchable="true" v-model="form.laboratory_type" :message="form.errors.laboratory_type" placeholder="Select Laboratory type"/>
+                    <InputLabel for="classification_id" value="Laboratory Type" :message="form.errors.laboratory_type"/>
+                    <Multiselect :options="dropdowns.types" :searchable="true" v-model="form.laboratory_type" :message="form.errors.laboratory_type" placeholder="Select Laboratory type" ref="multiselect1"/>
                     <InputError :message="form.errors.laboratory_type" />
                 </BCol>
                 <BCol lg="6" class="mt-1 mb-1">
@@ -67,7 +67,7 @@
                                 <td class="text-center"> 
                                     <input class="form-check-input me-1" v-model="form.method_id" name="method" type="radio" :value="list.id">
                                 </td>
-                                <td>{{list.method.name}}</td>
+                                <td>{{(list.method.short) ? list.method.short : list.method.name}}</td>
                                 <td class="text-center">{{list.reference.name}}</td>
                                 <td class="text-center">{{list.fee}}</td>
                             </tr>
@@ -227,6 +227,12 @@ export default {
             this.form.errors[field] = false;
         },
         hide(){
+            this.methods = [];
+            this.$refs.multiselect1.clear();
+            this.$refs.multiselectS.clear();
+            this.$refs.multiselectT.clear();
+            this.form.method_id = null;
+            this.filter.keyword = null;
             this.editable = false;
             this.showModal = false;
         }

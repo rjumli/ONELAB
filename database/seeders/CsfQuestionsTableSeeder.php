@@ -15,7 +15,7 @@ class CsfQuestionsTableSeeder extends Seeder
     {
         
 
-        \DB::table('csf_questions')->truncate();
+        \DB::table('csf_questions')->delete();
         
         \DB::table('csf_questions')->insert(array (
             0 => 

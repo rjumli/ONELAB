@@ -15,6 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->integer('sequence');
             $table->boolean('is_overall');
             $table->boolean('is_rating');
             $table->boolean('is_active');

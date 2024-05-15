@@ -15,7 +15,7 @@ class InventorySuppliersTableSeeder extends Seeder
     {
         
 
-        \DB::table('inventory_suppliers')->truncate();
+        \DB::table('inventory_suppliers')->delete();
         
         \DB::table('inventory_suppliers')->insert(array (
             0 => 

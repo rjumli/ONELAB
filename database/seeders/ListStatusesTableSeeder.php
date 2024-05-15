@@ -98,6 +98,17 @@ class ListStatusesTableSeeder extends Seeder
             7 => 
             array (
                 'id' => 8,
+                'name' => 'Gratis',
+                'type' => 'Payment',
+                'color' => 'bg-success-subtle',
+                'others' => 'text-success',
+                'is_active' => 1,
+                'created_at' => '2024-03-28 02:33:01',
+                'updated_at' => '2024-03-28 02:33:01',
+            ),
+            8 => 
+            array (
+                'id' => 9,
                 'name' => 'Cancelled',
                 'type' => 'Payment',
                 'color' => 'bg-danger-subtle',
@@ -106,9 +117,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            8 => 
+            9 => 
             array (
-                'id' => 9,
+                'id' => 10,
                 'name' => 'Pending',
                 'type' => 'Analysis',
                 'color' => 'bg-warning-subtle',
@@ -117,9 +128,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            9 => 
+            10 => 
             array (
-                'id' => 10,
+                'id' => 11,
                 'name' => 'Ongoing',
                 'type' => 'Analysis',
                 'color' => 'bg-secondary-subtle',
@@ -128,9 +139,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            10 => 
+            11 => 
             array (
-                'id' => 11,
+                'id' => 12,
                 'name' => 'Completed',
                 'type' => 'Analysis',
                 'color' => 'bg-success-subtle',
@@ -139,9 +150,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            11 => 
+            12 => 
             array (
-                'id' => 12,
+                'id' => 13,
                 'name' => 'Cancelled',
                 'type' => 'Analysis',
                 'color' => 'bg-danger-subtle',
@@ -150,9 +161,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            12 => 
+            13 => 
             array (
-                'id' => 13,
+                'id' => 14,
                 'name' => 'Pending',
                 'type' => 'Quotation',
                 'color' => 'bg-warning',
@@ -161,9 +172,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            13 => 
+            14 => 
             array (
-                'id' => 14,
+                'id' => 15,
                 'name' => 'Completed',
                 'type' => 'Quotation',
                 'color' => 'bg-success',
@@ -172,9 +183,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            14 => 
+            15 => 
             array (
-                'id' => 15,
+                'id' => 16,
                 'name' => 'Cancelled',
                 'type' => 'Quotation',
                 'color' => 'bg-danger',

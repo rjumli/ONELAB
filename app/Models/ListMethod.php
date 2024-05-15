@@ -30,11 +30,11 @@ class ListMethod extends Model
 
     public function setFeeAttribute($value)
     {
-        $this->attributes['fee'] = trim(str_replace(',','',$value),'₱ ');
+        $this->attributes['fee'] = trim(str_replace(',','',$value),'₱');
     }
 
     public function getFeeAttribute($value)
     {
-        return '₱ '.$value;
+        return '₱'.$value;
     }
 }

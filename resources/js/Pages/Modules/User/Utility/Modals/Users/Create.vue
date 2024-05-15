@@ -25,7 +25,7 @@
                                 <TextInput id="lastname" v-model="form.lastname" type="text" class="form-control" autofocus placeholder="Please enter lastname" autocomplete="lastname" required :class="{ 'is-invalid': form.errors.lastname }" @input="handleInput('lastname')" :light="true"/>
                                 <InputError :message="form.errors.lastname" />
                             </BCol>
-                            <BCol lg="12"><hr class="text-muted mt-n1 mb-n4"/></BCol>
+                            <!-- <BCol lg="12"><hr class="text-muted mt-n1 mb-n4"/></BCol> -->
                             <BCol lg="4" class="mt-1">
                                 <InputLabel for="email" value="Email" />
                                 <TextInput id="email" v-model="form.email" type="email" class="form-control" autofocus placeholder="Please enter email" autocomplete="email" required :class="{ 'is-invalid': form.errors.email }" @input="handleInput('email')" :light="true"/>
@@ -42,20 +42,20 @@
                                 <TextInput id="mobile" v-model="form.mobile" type="text" class="form-control" autofocus placeholder="Please enter mobile" autocomplete="mobile" required :class="{ 'is-invalid': form.errors.mobile }" @input="handleInput('mobile')" :light="true"/>
                                 <InputError :message="form.errors.mobile" />
                             </BCol>
-                            <BCol lg="12"><hr class="text-muted mt-n1 mb-n4"/></BCol>
+                            <BCol lg="12"><hr class="text-muted mt-n1 mb-2"/></BCol>
                             <BCol lg="12" class="mt-0">
                                 <InputLabel for="username" value="Laboratory" />
-                                <Multiselect :options="dropdowns.laboratories" v-model="form.laboratory_id" :message="form.errors.group" placeholder="Select Group"/>
+                                <Multiselect :options="dropdowns.laboratories" v-model="form.laboratory_id" :message="form.errors.laboratory_id" placeholder="Select Laboratory" ref="multiselect1"/>
                             </BCol>
-                            <BCol lg="6" class="mt-1">
-                                <InputLabel for="laboratory_type" value="Laboratory type" />
-                                <Multiselect :options="dropdowns.types" v-model="form.laboratory_type" :message="form.errors.group" placeholder="Select Group"/>
-                            </BCol>
-                            <BCol lg="6" class="mt-1">
+                            <BCol :lg="(has_lab) ? 6 : 12" class="mt-1">
                                 <InputLabel for="role" value="Role" />
-                                <Multiselect :options="dropdowns.roles" v-model="form.role_id" :message="form.errors.group" placeholder="Select Group"/>
+                                <Multiselect :options="dropdowns.roles" v-model="form.role" object :message="form.errors.role_id" placeholder="Select Role" ref="multiselect2"/>
                             </BCol>
-                            <BCol lg="12"><hr class="text-muted mt-n1 mb-n3"/></BCol>
+                            <BCol lg="6" v-if="has_lab" class="mt-1">
+                                <InputLabel for="laboratory_type" value="Laboratory type" />
+                                <Multiselect :options="dropdowns.types" v-model="form.laboratory_type" :message="form.errors.laboratory_type" placeholder="Select Laboratory type" ref="multiselect3"/>
+                            </BCol>
+                            <BCol lg="12"><hr class="text-muted mt-0 mb-1"/></BCol>
                             <BCol lg="6"  style="margin-top: 13px; margin-bottom: -12px;">
                                <div class="row">
                                     <div class="col-md-4">
@@ -108,10 +108,27 @@ export default {
                 profile_id: null,
                 laboratory_id: null,
                 laboratory_type: null,
-                role_id: null
+                role_id: null,
+                role: null
             }),
+            has_lab: false,
             showModal: false,
             editable: false
+        }
+    },
+    watch: {
+        "form.role"(newVal){
+            if(newVal){
+                if(newVal.has_lab){
+                    this.has_lab = 1
+                }else{
+                    this.has_lab = 0
+                }
+                this.form.role_id = newVal.value;
+            }else{
+                this.has_lab = 0;
+                this.form.role_id = null;
+            }
         }
     },
     methods: { 
@@ -155,6 +172,9 @@ export default {
         hide(){
             this.form.reset();
             this.form.clearErrors();
+            this.$refs.multiselect1.clear();
+            this.$refs.multiselect2.clear();
+            (this.has_lab) ? this.$refs.multiselect3.clear() : '';
             this.editable = false;
             this.showModal = false;
         }

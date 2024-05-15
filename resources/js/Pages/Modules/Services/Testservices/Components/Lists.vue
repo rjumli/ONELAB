@@ -41,7 +41,7 @@
                     </td>
                     <td class="text-center fs-12">{{list.sampletype.name}}</td>
                     <td class="text-center fs-12">{{list.testname.name}}</td>
-                    <td class="text-center fs-12">{{list.method.method.name}}</td>
+                    <td class="text-center fs-12">{{ (list.method.method.short) ? list.method.method.short: list.method.method.name}}</td>
                     <td class="text-center fs-12">{{list.method.fee}}</td>
                     <td class="text-center">
                         <span v-if="list.is_active" class="badge bg-success">Active</span>

@@ -15,7 +15,7 @@ class ListRolesTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_roles')->truncate();
+        \DB::table('list_roles')->delete();
         
         \DB::table('list_roles')->insert(array (
             0 => 
@@ -63,6 +63,14 @@ class ListRolesTableSeeder extends Seeder
                 'id' => 6,
                 'name' => 'Cashier',
                 'description' => 'This user role is assigned for users to facilitate the collection and processing of payments and deposits and is only allowed to access the cashier module.',
+                'has_lab' => 0,
+                'is_active' => 1,
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'name' => 'Releasing Officer',
+                'description' => 'This user role is assigned for releasing of the tsr results.',
                 'has_lab' => 0,
                 'is_active' => 1,
             ),

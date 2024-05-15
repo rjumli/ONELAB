@@ -10,7 +10,7 @@ class ListName extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','type_id','laboratory_type','is_active'
+        'name','short','type_id','laboratory_type','is_active'
     ];
 
     public function type()

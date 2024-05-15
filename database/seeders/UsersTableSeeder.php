@@ -1,0 +1,280 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Auto generated seeder file.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        
+
+        \DB::table('users')->delete();
+        
+        \DB::table('users')->insert(array (
+            0 => 
+            array (
+                'id' => 1,
+                'username' => 'administrator',
+                'email' => 'kradjumli@gmail.com',
+                'password' => '$2y$12$bW7ncINTUcdUr4ZOrN21Vu4izXsjEuV4Eo6kc0KHbuVDTfOrfw6by',
+                'role' => 'Administrator',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-05-15 08:46:33',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 08:46:10',
+                'updated_at' => '2024-05-15 08:46:10',
+            ),
+            1 => 
+            array (
+                'id' => 4,
+                'username' => 'rss',
+                'email' => 'rosemarie.salazar@ro9.dost.gov.ph',
+                'password' => '$2y$12$tfZEs76ROCPMF5yqzLb.g.D69ttgWKgB31UWeFAlgHiswMVvux5cS',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:20:30',
+                'updated_at' => '2024-05-15 09:20:30',
+            ),
+            2 => 
+            array (
+                'id' => 5,
+                'username' => 'jtf',
+                'email' => 'schezzojuly@gmail.com',
+                'password' => '$2y$12$syDvz449v8M/me0rgjx7RuEv7G/FgJjFVMoSUZkgpCWwmHYP13F1.',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:23:23',
+                'updated_at' => '2024-05-15 09:23:23',
+            ),
+            3 => 
+            array (
+                'id' => 6,
+                'username' => 'jpf',
+                'email' => 'joefryfernando@gmail.com',
+                'password' => '$2y$12$lzSqj9S1yj7.5krvCac68ucElA9BP3SknqKz5jyzsHQ/t9ypr65dq',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:25:38',
+                'updated_at' => '2024-05-15 09:25:38',
+            ),
+            4 => 
+            array (
+                'id' => 7,
+                'username' => 'slb',
+                'email' => 'sonora.bunag@ro9.dost.gov.ph',
+                'password' => '$2y$12$XQBdMoTV/C8Knl3jf.crzeXaWhA49EL/GH2XvVZlZddTEfb7jW5Ka',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:27:16',
+                'updated_at' => '2024-05-15 09:27:16',
+            ),
+            5 => 
+            array (
+                'id' => 8,
+                'username' => 'jot',
+                'email' => 'janice.ong1214@gmail.com',
+                'password' => '$2y$12$iEmDkUWNU3yGg9f9Io2LCeL7I0/3YwvfSUFWXEIWQ.vFAktE4mZHW',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:28:39',
+                'updated_at' => '2024-05-15 09:28:39',
+            ),
+            6 => 
+            array (
+                'id' => 9,
+                'username' => 'eap',
+                'email' => 'emapendergat95@gmail.com',
+                'password' => '$2y$12$R1oGKVSHWB1zWp165MNjg./evMxCpq0NmHGazi4Ff5SnG8bA0xwlK',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:29:51',
+                'updated_at' => '2024-05-15 09:29:51',
+            ),
+            7 => 
+            array (
+                'id' => 10,
+                'username' => 'ses',
+                'email' => 'suganobshadam@gmail.com',
+                'password' => '$2y$12$8paD7EeYryQ50VECeclmduiDDlJVRfJb2fpubPNPrycpHnUPal8rG',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:35:43',
+                'updated_at' => '2024-05-15 09:35:43',
+            ),
+            8 => 
+            array (
+                'id' => 11,
+                'username' => 'rml',
+                'email' => 'rubenjr1005@gmail.com',
+                'password' => '$2y$12$gaiQVCr.pb5lkuDH/Tkev.TACSfpJQeM5pi/NWgm2BBac6D3LmlCe',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:37:01',
+                'updated_at' => '2024-05-15 09:37:01',
+            ),
+            9 => 
+            array (
+                'id' => 12,
+                'username' => 'nta',
+                'email' => 'protein63nt@gmail.com',
+                'password' => '$2y$12$w.nbMi8rHG0lcZAvI2nvbOZq35TVYSl0L9fEyI5W4Q/i..Hy4UFj6',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:37:46',
+                'updated_at' => '2024-05-15 09:37:46',
+            ),
+            10 => 
+            array (
+                'id' => 13,
+                'username' => 'krr',
+                'email' => 'kevinkarlramosramiso@gmail.com',
+                'password' => '$2y$12$UrkzODw6bt6rRCXWFK1lD.qJoczIteE9yR9VxuH0s0zSabmXD65gy',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:40:51',
+                'updated_at' => '2024-05-15 09:40:51',
+            ),
+            11 => 
+            array (
+                'id' => 14,
+                'username' => 'mac',
+                'email' => 'miggyatilano@gmail.com',
+                'password' => '$2y$12$DiaxITaTwFPQ73PpfTqPQOhCbnXdkjeebYOnkNs6Q1/y/C8fTiDQm',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:41:48',
+                'updated_at' => '2024-05-15 09:41:48',
+            ),
+            12 => 
+            array (
+                'id' => 15,
+                'username' => 'ash',
+                'email' => 'arleneherbieto@gmail.com',
+                'password' => '$2y$12$C3sQwX5K2l1zBzEWBnN4u.ej4vS/VQ8HUA5jnrfMQzpSQ.31r2DUm',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:43:24',
+                'updated_at' => '2024-05-15 09:43:24',
+            ),
+            13 => 
+            array (
+                'id' => 16,
+                'username' => 'gca',
+                'email' => 'giancarloacejas@gmail.com',
+                'password' => '$2y$12$aGCyNv299xyCsGmLd9uYXOISIZ/A8Uc6xnPgvZSbuxQnz2TVXwF9.',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:44:02',
+                'updated_at' => '2024-05-15 09:44:02',
+            ),
+            14 => 
+            array (
+                'id' => 17,
+                'username' => 'als',
+                'email' => 'analynsajiin.dost9@gmail.com',
+                'password' => '$2y$12$UdDUp1DvYASqUIQeRPEyl.Zu3JS83eiQmEaT8bSoHqLJr/IgMyyOK',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-15 09:46:54',
+                'updated_at' => '2024-05-15 09:46:54',
+            ),
+        ));
+
+        
+    }
+}

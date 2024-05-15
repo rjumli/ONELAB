@@ -23,6 +23,7 @@ class ViewService
             ->where('laboratory_id',$this->laboratory)
             ->with('sampletype','testname','laboratory.member','laboratory.address.region','type')
             ->with('method.method','method.reference')
+            ->orderBy('created_at','DESC')
             ->paginate($request->count)
         );
         return $data;
@@ -49,10 +50,9 @@ class ViewService
         $data = DefaultResource::collection(
             ListMethod::query()
             ->withWhereHas('method', function ($query) use ($keyword){
-                $query->select('id','name');
-               
+                $query->select('id','name','short');
                 $query->when($keyword, function ($query, $keyword) {
-                    $query->where('name', 'LIKE', "%{$keyword}%");
+                    $query->where('name', 'LIKE', "%{$keyword}%")->orWhere('short', 'LIKE', "%{$keyword}%");
                 });
             })
             ->withWhereHas('reference', function ($query) use ($keyword){

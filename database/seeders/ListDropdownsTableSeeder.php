@@ -15,7 +15,7 @@ class ListDropdownsTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_dropdowns')->truncate();
+        \DB::table('list_dropdowns')->delete();
         
         \DB::table('list_dropdowns')->insert(array (
             0 => 

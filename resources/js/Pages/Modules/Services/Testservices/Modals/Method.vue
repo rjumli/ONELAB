@@ -12,7 +12,8 @@
                             placeholder="Select Method" ref="multiselectM"/>
                         </div>
                         <div class="flex-shrink-0">
-                            <b-button @click="openAdd(94,'Method')" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1" :disabled="(methods.length === 0) ? false : true"><i class="ri-add-circle-fill"></i></b-button>
+                            <b-button @click="openAdd(94,'Method')" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
+                            <!-- :disabled="(methods.length === 0) ? false : true" -->
                         </div>
                     </div>
                 </BCol>
@@ -153,6 +154,9 @@ export default {
             }
         },
         hide(){
+            this.$refs.multiselectM.clear();
+            this.$refs.multiselectR.clear();
+            this.form.fee = null;
             this.showModal = false;
         }
     }

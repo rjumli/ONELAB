@@ -2,15 +2,15 @@
 
 namespace App\Imports;
 
+use Maatwebsite\Excel\Row;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Row;
-use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class QualifierImport implements WithCalculatedFormulas, WithValidation, WithStartRow, ToCollection
+class TestserviceImport implements WithCalculatedFormulas, WithValidation, WithStartRow, ToCollection
 {
     public function collection(Collection $collection)
     {
@@ -19,7 +19,7 @@ class QualifierImport implements WithCalculatedFormulas, WithValidation, WithSta
 
     public function startRow(): int
     {
-        return 4;
+        return 2;
     }
 
     public function rules(): array

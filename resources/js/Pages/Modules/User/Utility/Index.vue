@@ -38,11 +38,11 @@
                                 <i class="ri-history-line align-middle me-2"></i>Activity Logs
                             </BListGroupItem>
                         </Link>
-                        <Link :href="'/utilities/configurations'">
+                        <!-- <Link :href="'/utilities/configurations'">
                             <BListGroupItem :class="{ 'active': $page.url === '/utilities/configurations' }" href="#" class="list-group-item-action">
                                 <i class="ri-settings-5-fill align-middle me-2"></i>System Configuration
                             </BListGroupItem>
-                        </Link>
+                        </Link> -->
                         <Link :href="'/utilities/backup'">
                             <BListGroupItem :class="{ 'active': $page.url === '/utilities/backup' }" href="#" class="list-group-item-action">
                                 <i class="ri-server-line align-middle me-2"></i>Backup and Restore

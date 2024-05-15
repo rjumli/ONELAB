@@ -23,9 +23,17 @@ class NameRequest extends FormRequest
     {
         if($this->option == 'add'){
             return [
-                'name' => 'sometimes|required|string|unique:list_names,name,NULL,'.$this->id.',laboratory_type,'.$this->laboratory_type,
+                'name' => 'sometimes|required|string|unique:list_names,name,NULL,'.$this->id.',laboratory_type,'.$this->laboratory_type.',short,'.$this->short,
             ];
+        }else if($this->option == 'create'){
+            return [
+                'laboratory_type' => 'sometimes|required|unique:list_testservices,laboratory_type,NULL,'.$this->id.',sampletype_id,'.$this->sampletype_id.',testname_id,'.$this->testname_id.',method_id,'.$this->method_id,
+                'sampletype_id' => 'sometimes|required',
+                'testname_id' => 'sometimes|required',
+                'method_id' => 'sometimes|required'
+            ];
+        }else{
+            return [];
         }
-        return [];
     }
 }

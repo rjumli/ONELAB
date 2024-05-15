@@ -7,6 +7,11 @@
                     <TextInput id="name" v-model="form.name" type="text" class="form-control" autofocus placeholder="Please enter name" autocomplete="name" required :class="{ 'is-invalid': errors.name }" :light="true"/>
                     <!-- <InputError :message="form.errors.name" /> -->
                 </BCol>   
+                <BCol lg="12" v-if="type == 'Method'">
+                    <InputLabel for="short" value="Short (Optional)" :message="errors.short"/>
+                    <TextInput id="short" v-model="form.short" type="text" class="form-control" autofocus placeholder="Please enter short" autocomplete="name" required :class="{ 'is-invalid': errors.short}" :light="true"/>
+                    <!-- <InputError :message="form.errors.name" /> -->
+                </BCol> 
             </BRow>     
         </form>       
         <template v-slot:footer>
@@ -26,6 +31,7 @@ export default {
             currentUrl: window.location.origin,
             form:{
                 name: null,
+                short: null,
                 type_id: null,
                 laboratory_type: null,
                 option: 'add'
@@ -56,6 +62,8 @@ export default {
             });
         },
         hide(){
+            this.form.name = null;
+            this.form.short = null;
             this.showModal = false;
         }
     }

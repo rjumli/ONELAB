@@ -25,7 +25,6 @@ return new class extends Migration
             $table->integer('laboratory_id')->unsigned()->index();
             $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
             $table->boolean('is_active')->default(1);
-            $table->boolean('is_synced')->default(0);
             $table->timestamps();
         });
     }
