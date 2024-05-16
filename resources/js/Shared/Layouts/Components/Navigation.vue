@@ -573,8 +573,8 @@ export default {
             <Link class="dropdown-item" href="/profile"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span class="align-middle"> Profile</span>
             </Link>
-            <div class="dropdown-divider"></div>
-            <Link class="dropdown-item" href="/utilities/overview">
+            <div class="dropdown-divider" v-if="$page.props.user.data.role === 'Administrator'"></div>
+            <Link v-if="$page.props.user.data.role === 'Administrator'" class="dropdown-item" href="/utilities/overview">
             <i class="ri-settings-4-fill text-muted fs-16 align-middle me-1"></i>
             <span class="align-middle"> Utility</span>
             </Link>

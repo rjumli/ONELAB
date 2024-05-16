@@ -28,6 +28,11 @@
                                 <i class="ri-list-check align-middle me-2"></i>Menu Management
                             </BListGroupItem>
                         </Link>
+                         <Link :href="'/utilities/access'">
+                            <BListGroupItem :class="{ 'active': $page.url === '/utilities/access' }" href="#" class="list-group-item-action">
+                                <i class="ri-list-check align-middle me-2"></i>Access Management
+                            </BListGroupItem>
+                        </Link>
                         <Link :href="'/utilities/authentications'">
                             <BListGroupItem :class="{ 'active': $page.url === '/utilities/authentications' }" href="#" class="list-group-item-action">
                                 <i class="ri-time-fill align-middle me-2"></i>Authentication Logs

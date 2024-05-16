@@ -142,7 +142,7 @@ export default {
                     keyword: this.filter.keyword,
                     laboratory: this.filter.laboratory,
                     type: this.filter.type,
-                    count: ((window.innerHeight-400)/58),
+                    count: ((window.innerHeight-410)/58),
                     option: 'lists'
                 }
             })

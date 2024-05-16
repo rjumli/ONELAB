@@ -37,24 +37,38 @@
                                 </div>
 
                                 <div class="p-2 mt-4">
-                                    <div class="text-muted text-center mb-4 mx-lg-3">
-                                        <!-- <h4 class="fs-15">Two Factor Authentication</h4> -->
-                                        <div class="text-sm fs-12 text-muted">
-                                            <template v-if="! recovery">
-                                                Please confirm access to your account by entering the authentication code provided by your authenticator application.
-                                            </template>
-                                
-                                            <template v-else>
-                                                Please confirm access to your account by entering one of your emergency recovery codes.
-                                            </template>
+                                    <!-- <div class="text-muted text-center mb-4">
+                                        <div class="text-sm fs-12 text-muted mb-3">
+                                            Set your new password with 1 number and 1 special character.
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <form class="customform" @submit.prevent="submit">
+                                        <div class="row g-3">
+                                            <div class="col-md-12 mt-n1">
+                                                <div class="form-floating mb-n3">
+                                                    <TextInput id="password" v-model="form.password" :type="togglePassword ? 'text' : 'password'"  class="form-control" autofocus placeholder="Please enter password" autocomplete="password" required :class="{ 'is-invalid': form.errors.password }" />
+                                                    <InputLabel for="password" value="New Password"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-n4">
+                                                <div class="form-floating">
+                                                    <TextInput id="password_confirmation" v-model="form.password_confirmation" :type="togglePassword ? 'text' : 'password'" class="form-control" autofocus placeholder="Please enter password_confirmation" autocomplete="password_confirmation" required :class="{ 'is-invalid': form.errors.password }" />
+                                                    <InputLabel for="password_confirmation" value="Re-type new Password"/>
+                                                    <InputError :message="form.errors.password"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-0 mt-4">
+                                                <div class="form-check form-switch float-end">
+                                                    <input class="form-check-input" @click="togglePassword = !togglePassword" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="showPassword">
+                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Show Password</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         
                                         <div class="mt-4">
-                                            <BButton v-if="uploaded" variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Activate</BButton>
-                                            <BButton v-else variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="true">Activate</BButton>
+                                            <BButton v-if="uploaded" @click="create()"  variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Submit</BButton>
+                                            <BButton v-else variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="true">Submit</BButton>
                                         </div>
 
                                          <div class="mt-4 text-center">
@@ -74,15 +88,26 @@
     </div>
 </template>
 <script>
-import { useForm } from "@inertiajs/vue3"
+import { useForm } from '@inertiajs/vue3'
+import InputError from '@/Shared/Components/Forms/InputError.vue';
+import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
+import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
     layout: null,
+    components : { InputError, InputLabel, TextInput },
     data(){
         return {
             form: useForm({
+                password: '',
+                password_confirmation: '',
+                is_active: 1,
+                option: 'activation'
+            }),
+            form2: useForm({
                 image: null,
             }),
-            uploaded: false
+            uploaded: false,
+            togglePassword: false
         }
     },
     methods: {
@@ -90,12 +115,12 @@ export default {
             var fileInput = document.querySelector(".profile-img-file-input");
             var preview = document.querySelector(".user-profile-image");
             var file = fileInput.files[0];
-            this.form.image = file;
+            this.form2.image = file;
             var reader = new FileReader();
 
             reader.addEventListener("load", () => { 
                 preview.src = reader.result;
-                this.form.post('/profile', {
+                this.form2.post('/profile', {
                     errorBag: 'updateProfileInformation',
                     preserveScroll: true,
                     onSuccess: () => {
@@ -108,14 +133,28 @@ export default {
                 reader.readAsDataURL(file); 
             }
         },
+        create(){
+            this.form.put('/password',{
+                errorBag: 'updatePassword',
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.hide();
+                },
+                onError: () => {
+                    if (this.form.errors.password) {
+                        this.form.reset('password', 'password_confirmation');
+                    }
+                    if (this.form.errors.current_password) {
+                        this.form.reset('current_password');
+                    }
+                },
+            });
+        },
     }
 }
 </script>
 <script setup>
 import { router } from '@inertiajs/vue3';
-    const submit = () => {
-        router.post('/activate');
-    };
     const logout = () => {
         router.post('/logout');
     };

@@ -7,7 +7,7 @@
                 <li class="menu-title">
                     <span data-key="t-menu"> Menu </span>
                 </li>
-                <li class="nav-item" v-for="(menu,index) in menus.menus" v-bind:key="index">
+                <li class="nav-item" v-for="(menu,index) in $page.props.menus.menus" v-bind:key="index">
                     <Link v-if="!menu.main.has_child" class="nav-link menu-link" :href="menu.main.route" :class="{'active': $page.component.startsWith(menu.main.path) }">
                         <i :class="menu.main.icon"></i>
                         <span data-key="krad-dashboards">{{menu.main.name}}</span>
@@ -24,11 +24,12 @@
                         </ul>
                     </div>
                 </li>
+                <template v-if="$page.props.user.data.role === 'Administrator'">
                 <li class="menu-title">
                     <i class="ri-more-fill"></i>
                     <span data-key="krad-lists"> Directory </span>
                 </li>
-               <li class="nav-item" v-for="(menu,index) in menus.lists" v-bind:key="index">
+                <li class="nav-item" v-for="(menu,index) in $page.props.menus.lists" v-bind:key="index">
                     <Link v-if="!menu.main.has_child" class="nav-link menu-link" :href="menu.main.route" :class="{'active': $page.component.startsWith(menu.main.path) }">
                         <i :class="menu.main.icon"></i>
                         <span data-key="krad-dashboards">{{menu.main.name}}</span>
@@ -45,6 +46,7 @@
                         </ul>
                     </div>
                 </li>
+                </template>
             </ul>
         </template>
     </BContainer>
@@ -77,7 +79,7 @@ export default {
   mounted() {
     this.initActiveMenu();
     this.onRoutechange();
-    this.fetch();
+    // this.fetch();
     if (document.querySelectorAll(".navbar-nav .collapse")) {
       let collapses = document.querySelectorAll(".navbar-nav .collapse");
 

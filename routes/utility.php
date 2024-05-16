@@ -14,6 +14,7 @@ Route::middleware(['2fa','auth'])->group(function () {
                 Route::get('/','index');
                 Route::get('/lists','lists');
                 Route::post('/','store');
+                Route::put('/','update');
             });
         });
 

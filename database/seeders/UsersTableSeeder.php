@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     {
         
 
-        \DB::table('users')->delete();
+        \DB::table('users')->truncate();
         
         \DB::table('users')->insert(array (
             0 => 
@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'kradjumli@gmail.com',
                 'password' => '$2y$12$bW7ncINTUcdUr4ZOrN21Vu4izXsjEuV4Eo6kc0KHbuVDTfOrfw6by',
                 'role' => 'Administrator',
-                'is_active' => 0,
+                'is_active' => 1,
                 'two_factor_secret' => NULL,
                 'two_factor_recovery_codes' => NULL,
                 'remember_token' => NULL,
@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
             ),
             1 => 
             array (
-                'id' => 4,
+                'id' => 2,
                 'username' => 'rss',
                 'email' => 'rosemarie.salazar@ro9.dost.gov.ph',
                 'password' => '$2y$12$tfZEs76ROCPMF5yqzLb.g.D69ttgWKgB31UWeFAlgHiswMVvux5cS',
@@ -54,7 +54,7 @@ class UsersTableSeeder extends Seeder
             ),
             2 => 
             array (
-                'id' => 5,
+                'id' => 3,
                 'username' => 'jtf',
                 'email' => 'schezzojuly@gmail.com',
                 'password' => '$2y$12$syDvz449v8M/me0rgjx7RuEv7G/FgJjFVMoSUZkgpCWwmHYP13F1.',
@@ -71,7 +71,7 @@ class UsersTableSeeder extends Seeder
             ),
             3 => 
             array (
-                'id' => 6,
+                'id' => 4,
                 'username' => 'jpf',
                 'email' => 'joefryfernando@gmail.com',
                 'password' => '$2y$12$lzSqj9S1yj7.5krvCac68ucElA9BP3SknqKz5jyzsHQ/t9ypr65dq',
@@ -88,7 +88,7 @@ class UsersTableSeeder extends Seeder
             ),
             4 => 
             array (
-                'id' => 7,
+                'id' => 5,
                 'username' => 'slb',
                 'email' => 'sonora.bunag@ro9.dost.gov.ph',
                 'password' => '$2y$12$XQBdMoTV/C8Knl3jf.crzeXaWhA49EL/GH2XvVZlZddTEfb7jW5Ka',
@@ -105,7 +105,7 @@ class UsersTableSeeder extends Seeder
             ),
             5 => 
             array (
-                'id' => 8,
+                'id' => 6,
                 'username' => 'jot',
                 'email' => 'janice.ong1214@gmail.com',
                 'password' => '$2y$12$iEmDkUWNU3yGg9f9Io2LCeL7I0/3YwvfSUFWXEIWQ.vFAktE4mZHW',
@@ -122,7 +122,7 @@ class UsersTableSeeder extends Seeder
             ),
             6 => 
             array (
-                'id' => 9,
+                'id' => 7,
                 'username' => 'eap',
                 'email' => 'emapendergat95@gmail.com',
                 'password' => '$2y$12$R1oGKVSHWB1zWp165MNjg./evMxCpq0NmHGazi4Ff5SnG8bA0xwlK',
@@ -139,7 +139,7 @@ class UsersTableSeeder extends Seeder
             ),
             7 => 
             array (
-                'id' => 10,
+                'id' => 8,
                 'username' => 'ses',
                 'email' => 'suganobshadam@gmail.com',
                 'password' => '$2y$12$8paD7EeYryQ50VECeclmduiDDlJVRfJb2fpubPNPrycpHnUPal8rG',
@@ -156,7 +156,7 @@ class UsersTableSeeder extends Seeder
             ),
             8 => 
             array (
-                'id' => 11,
+                'id' => 9,
                 'username' => 'rml',
                 'email' => 'rubenjr1005@gmail.com',
                 'password' => '$2y$12$gaiQVCr.pb5lkuDH/Tkev.TACSfpJQeM5pi/NWgm2BBac6D3LmlCe',
@@ -173,7 +173,7 @@ class UsersTableSeeder extends Seeder
             ),
             9 => 
             array (
-                'id' => 12,
+                'id' => 10,
                 'username' => 'nta',
                 'email' => 'protein63nt@gmail.com',
                 'password' => '$2y$12$w.nbMi8rHG0lcZAvI2nvbOZq35TVYSl0L9fEyI5W4Q/i..Hy4UFj6',
@@ -190,7 +190,7 @@ class UsersTableSeeder extends Seeder
             ),
             10 => 
             array (
-                'id' => 13,
+                'id' => 11,
                 'username' => 'krr',
                 'email' => 'kevinkarlramosramiso@gmail.com',
                 'password' => '$2y$12$UrkzODw6bt6rRCXWFK1lD.qJoczIteE9yR9VxuH0s0zSabmXD65gy',
@@ -207,7 +207,7 @@ class UsersTableSeeder extends Seeder
             ),
             11 => 
             array (
-                'id' => 14,
+                'id' => 12,
                 'username' => 'mac',
                 'email' => 'miggyatilano@gmail.com',
                 'password' => '$2y$12$DiaxITaTwFPQ73PpfTqPQOhCbnXdkjeebYOnkNs6Q1/y/C8fTiDQm',
@@ -224,7 +224,7 @@ class UsersTableSeeder extends Seeder
             ),
             12 => 
             array (
-                'id' => 15,
+                'id' => 13,
                 'username' => 'ash',
                 'email' => 'arleneherbieto@gmail.com',
                 'password' => '$2y$12$C3sQwX5K2l1zBzEWBnN4u.ej4vS/VQ8HUA5jnrfMQzpSQ.31r2DUm',
@@ -241,7 +241,7 @@ class UsersTableSeeder extends Seeder
             ),
             13 => 
             array (
-                'id' => 16,
+                'id' => 14,
                 'username' => 'gca',
                 'email' => 'giancarloacejas@gmail.com',
                 'password' => '$2y$12$aGCyNv299xyCsGmLd9uYXOISIZ/A8Uc6xnPgvZSbuxQnz2TVXwF9.',
@@ -258,7 +258,7 @@ class UsersTableSeeder extends Seeder
             ),
             14 => 
             array (
-                'id' => 17,
+                'id' => 15,
                 'username' => 'als',
                 'email' => 'analynsajiin.dost9@gmail.com',
                 'password' => '$2y$12$UdDUp1DvYASqUIQeRPEyl.Zu3JS83eiQmEaT8bSoHqLJr/IgMyyOK',
@@ -272,6 +272,40 @@ class UsersTableSeeder extends Seeder
                 'two_factor_confirmed_at' => NULL,
                 'created_at' => '2024-05-15 09:46:54',
                 'updated_at' => '2024-05-15 09:46:54',
+            ),
+            15 => 
+            array (
+                'id' => 16,
+                'username' => 'jjb',
+                'email' => 'jali_badiola2005@yahoo.com',
+                'password' => '$2y$12$..1qIN70U03FpLOmEMJTmeGiFfEnvp/q4WLcCbuntwIrUnjoLvHNC',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-16 09:14:00',
+                'updated_at' => '2024-05-16 09:14:00',
+            ),
+            16 => 
+            array (
+                'id' => 17,
+                'username' => 'ita',
+                'email' => 'ita@gmail.com',
+                'password' => '$2y$12$jT6tEIVrN3UxlW3bwVwdruxjEWiE3Tu48I4IUc5DNqrpN2c/lifB.',
+                'role' => 'Staff',
+                'is_active' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => NULL,
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-05-16 09:45:50',
+                'updated_at' => '2024-05-16 09:45:50',
             ),
         ));
 

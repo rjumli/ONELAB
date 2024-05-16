@@ -18,7 +18,7 @@ class UserService
                     $query->where(\DB::raw('concat(firstname," ",lastname)'), 'LIKE', "%{$keyword}%")
                     ->orWhere(\DB::raw('concat(lastname," ",firstname)'), 'LIKE', "%{$keyword}%");
                 })->orWhere(function ($query) use ($keyword) {
-                    $query->where('username', 'LIKE', "%{$keyword}%")->whereNotIn('role',['Scholar','Administrator']);
+                    $query->where('username', 'LIKE', "%{$keyword}%");
                 });
             })
             // ->where('role','Staff')

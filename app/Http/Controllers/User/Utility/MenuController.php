@@ -115,4 +115,24 @@ class MenuController extends Controller
             'status' => $result['status'],
         ]);
     }
+
+    public function update(Request $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            $menu = ListMenu::findOrFail($request->id);
+            $menu->update($request->all());
+            $menu = ListMenu::findOrFail($request->id);
+            return [
+                'data' => $menu,
+                'message' => 'Menu update was successful!', 
+                'info' => "You've successfully updated the selected menu."
+            ];
+        });
+
+        return back()->with([
+            'data' => $result['data'],
+            'message' => $result['message'],
+            'info' => $result['info'],
+            'status' => $result['status'],
+        ]);
+    }
 }

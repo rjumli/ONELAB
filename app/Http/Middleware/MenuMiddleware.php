@@ -11,9 +11,9 @@ class MenuMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     { 
-        $route = $request->route()->uri;
-        if(!$route == '/'){
-            $route = '/'.$request->route()->uri;
+        $currentUrl = $_SERVER['REQUEST_URI'];
+        $route = parse_url($currentUrl, PHP_URL_PATH);
+        if($route != '/'){
             $isActive = ListMenu::where('route', $route)->value('is_active');
             if (!$isActive) {
                 abort(403, 'Try something new?');

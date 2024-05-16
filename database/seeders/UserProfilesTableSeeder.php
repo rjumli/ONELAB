@@ -15,7 +15,7 @@ class UserProfilesTableSeeder extends Seeder
     {
         
 
-        \DB::table('user_profiles')->delete();
+        \DB::table('user_profiles')->truncate();
         
         \DB::table('user_profiles')->insert(array (
             0 => 
@@ -34,7 +34,7 @@ class UserProfilesTableSeeder extends Seeder
             ),
             1 => 
             array (
-                'id' => 4,
+                'id' => 2,
                 'firstname' => 'Rosemarie',
                 'lastname' => 'Salazar',
                 'middlename' => 'Sinsuan',
@@ -42,13 +42,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09177224118',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 4,
+                'user_id' => 2,
                 'created_at' => '2024-05-15 09:20:30',
                 'updated_at' => '2024-05-15 09:20:30',
             ),
             2 => 
             array (
-                'id' => 5,
+                'id' => 3,
                 'firstname' => 'Julius',
                 'lastname' => 'Fojas',
                 'middlename' => 'Taghap',
@@ -56,13 +56,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09668152170',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 5,
+                'user_id' => 3,
                 'created_at' => '2024-05-15 09:23:23',
                 'updated_at' => '2024-05-15 09:23:23',
             ),
             3 => 
             array (
-                'id' => 6,
+                'id' => 4,
                 'firstname' => 'Joefry',
                 'lastname' => 'Fernando',
                 'middlename' => 'Pon',
@@ -70,13 +70,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09153907133',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 6,
+                'user_id' => 4,
                 'created_at' => '2024-05-15 09:25:38',
                 'updated_at' => '2024-05-15 09:25:38',
             ),
             4 => 
             array (
-                'id' => 7,
+                'id' => 5,
                 'firstname' => 'Sonora',
                 'lastname' => 'Buñag',
                 'middlename' => 'Leonora',
@@ -84,13 +84,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09178494346',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 7,
+                'user_id' => 5,
                 'created_at' => '2024-05-15 09:27:16',
                 'updated_at' => '2024-05-15 09:27:16',
             ),
             5 => 
             array (
-                'id' => 8,
+                'id' => 6,
                 'firstname' => 'Janice',
                 'lastname' => 'Tangcalagan',
                 'middlename' => 'Ong',
@@ -98,13 +98,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09954332769',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 8,
+                'user_id' => 6,
                 'created_at' => '2024-05-15 09:28:39',
                 'updated_at' => '2024-05-15 09:28:39',
             ),
             6 => 
             array (
-                'id' => 9,
+                'id' => 7,
                 'firstname' => 'Ellyssa Mae',
                 'lastname' => 'Pendergat',
                 'middlename' => 'Agan',
@@ -112,13 +112,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09552730938',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 9,
+                'user_id' => 7,
                 'created_at' => '2024-05-15 09:29:51',
                 'updated_at' => '2024-05-15 09:29:51',
             ),
             7 => 
             array (
-                'id' => 10,
+                'id' => 8,
                 'firstname' => 'Shadam',
                 'lastname' => 'Suganob',
                 'middlename' => 'Eroy',
@@ -126,13 +126,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09954502887',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 10,
+                'user_id' => 8,
                 'created_at' => '2024-05-15 09:35:43',
                 'updated_at' => '2024-05-15 09:35:43',
             ),
             8 => 
             array (
-                'id' => 11,
+                'id' => 9,
                 'firstname' => 'Ruben Jr.',
                 'lastname' => 'Lim',
                 'middlename' => 'Matchon',
@@ -140,13 +140,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09176385319',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 11,
+                'user_id' => 9,
                 'created_at' => '2024-05-15 09:37:01',
                 'updated_at' => '2024-05-15 09:37:01',
             ),
             9 => 
             array (
-                'id' => 12,
+                'id' => 10,
                 'firstname' => 'Noel',
                 'lastname' => 'Arquiza',
                 'middlename' => 'Toh',
@@ -154,13 +154,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09262142321',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 12,
+                'user_id' => 10,
                 'created_at' => '2024-05-15 09:37:46',
                 'updated_at' => '2024-05-15 09:37:46',
             ),
             10 => 
             array (
-                'id' => 13,
+                'id' => 11,
                 'firstname' => 'Kevin Karl',
                 'lastname' => 'Ramiso',
                 'middlename' => 'Ramos',
@@ -168,13 +168,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09451422986',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 13,
+                'user_id' => 11,
                 'created_at' => '2024-05-15 09:40:51',
                 'updated_at' => '2024-05-15 09:40:51',
             ),
             11 => 
             array (
-                'id' => 14,
+                'id' => 12,
                 'firstname' => 'Miguel Louis',
                 'lastname' => 'Calunod',
                 'middlename' => 'Atilano',
@@ -182,13 +182,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09774758971',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 14,
+                'user_id' => 12,
                 'created_at' => '2024-05-15 09:41:48',
                 'updated_at' => '2024-05-15 09:41:48',
             ),
             12 => 
             array (
-                'id' => 15,
+                'id' => 13,
                 'firstname' => 'Arlene',
                 'lastname' => 'Herbieto',
                 'middlename' => 'Sabalde',
@@ -196,13 +196,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09052279213',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 15,
+                'user_id' => 13,
                 'created_at' => '2024-05-15 09:43:24',
                 'updated_at' => '2024-05-15 09:43:24',
             ),
             13 => 
             array (
-                'id' => 16,
+                'id' => 14,
                 'firstname' => 'Gian Carlo',
                 'lastname' => 'Acejas',
                 'middlename' => 'Castillo',
@@ -210,13 +210,13 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Male',
                 'mobile' => '09050633300',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 16,
+                'user_id' => 14,
                 'created_at' => '2024-05-15 09:44:02',
                 'updated_at' => '2024-05-15 09:44:02',
             ),
             14 => 
             array (
-                'id' => 17,
+                'id' => 15,
                 'firstname' => 'Analyn',
                 'lastname' => 'Sajiin',
                 'middlename' => 'Lasola',
@@ -224,9 +224,37 @@ class UserProfilesTableSeeder extends Seeder
                 'gender' => 'Female',
                 'mobile' => '09567189629',
                 'avatar' => 'avatar.jpg',
-                'user_id' => 17,
+                'user_id' => 15,
                 'created_at' => '2024-05-15 09:46:54',
                 'updated_at' => '2024-05-15 09:46:54',
+            ),
+            15 => 
+            array (
+                'id' => 16,
+                'firstname' => 'Jali',
+                'lastname' => 'Badiola',
+                'middlename' => 'Jamandre',
+                'suffix' => NULL,
+                'gender' => 'Female',
+                'mobile' => '09177234840',
+                'avatar' => 'avatar.jpg',
+                'user_id' => 16,
+                'created_at' => '2024-05-16 09:14:00',
+                'updated_at' => '2024-05-16 09:14:00',
+            ),
+            16 => 
+            array (
+                'id' => 17,
+                'firstname' => 'Ingrid',
+                'lastname' => 'Abella',
+                'middlename' => 'T',
+                'suffix' => NULL,
+                'gender' => 'Female',
+                'mobile' => '09236536256',
+                'avatar' => 'avatar.jpg',
+                'user_id' => 17,
+                'created_at' => '2024-05-16 09:45:50',
+                'updated_at' => '2024-05-16 09:45:50',
             ),
         ));
 

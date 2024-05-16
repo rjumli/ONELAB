@@ -45,8 +45,8 @@ class ListRolesTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'Analyst',
-                'description' => 'This user role allows analysts to access the eULIMS specifically the Sample Tagging module.',
+                'name' => 'Lab Analyst',
+                'description' => 'This user role allows Lab Analysts to access the eULIMS specifically the Sample Tagging module.',
                 'has_lab' => 1,
                 'is_active' => 1,
             ),

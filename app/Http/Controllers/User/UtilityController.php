@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\ListMenu;
 use App\Models\Configuration;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -40,6 +41,12 @@ class UtilityController extends Controller
                     'configuration' =>  $this->configuration()
                 ]);
             break;
+            case 'access':
+                return inertia('Modules/User/Utility/Pages/Access',[
+                    'configuration' =>  $this->configuration(),
+                    'activemenus' => $this->menus()
+                ]);
+            break;
             case 'authentications':
                 return inertia('Modules/User/Utility/Pages/Authentication',[
                     'statistics' => [],
@@ -66,6 +73,19 @@ class UtilityController extends Controller
 
     public function configuration(){
         $data = Configuration::where('id',1)->first();
+        return $data;
+    }
+
+    public function menus(){
+        $data = ListMenu::where('is_mother',1)->orderBy('order','ASC')->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'is_active' => ($item->is_active) ? true : false,
+                'is_mother' => $item->is_mother,
+                'type' => $item->group
+            ];
+        });
         return $data;
     }
 }
