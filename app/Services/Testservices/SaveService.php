@@ -14,7 +14,7 @@ class SaveService
 
     public function __construct()
     {
-        $this->laboratory = \Auth::user()->userrole->laboratory_id;
+        $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
     }
 
     public function create($request){
