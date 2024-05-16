@@ -33,26 +33,26 @@ class DatabaseSeeder extends Seeder
         //     'updated_at' => now(),
         // ]);
        
-        // $this->call(LocationRegionsTableSeeder::class);
-        // $this->call(LocationProvincesTableSeeder::class);
-        // $this->call(LocationMunicipalitiesTableSeeder::class);
-        // $this->call(LocationBarangaysTableSeeder::class);
+        $this->call(LocationRegionsTableSeeder::class);
+        $this->call(LocationProvincesTableSeeder::class);
+        $this->call(LocationMunicipalitiesTableSeeder::class);
+        $this->call(LocationBarangaysTableSeeder::class);
 
-        // $this->call(ListMenusTableSeeder::class);
-        // $this->call(ListStatusesTableSeeder::class);
-        // $this->call(ListDropdownsTableSeeder::class);
-        // $this->call(ListRolesTableSeeder::class);
-        // $this->call(ListDiscountsTableSeeder::class);
+        $this->call(ListMenusTableSeeder::class);
+        $this->call(ListStatusesTableSeeder::class);
+        $this->call(ListDropdownsTableSeeder::class);
+        $this->call(ListRolesTableSeeder::class);
+        $this->call(ListDiscountsTableSeeder::class);
         
-        // $this->call(MembersTableSeeder::class);
-        // $this->call(LaboratoriesTableSeeder::class);
-        // $this->call(AddressesTableSeeder::class);
-        // $this->call(CsfQuestionsTableSeeder::class);
+        $this->call(MembersTableSeeder::class);
+        $this->call(LaboratoriesTableSeeder::class);
+        $this->call(AddressesTableSeeder::class);
+        $this->call(CsfQuestionsTableSeeder::class);
         
-        // $this->call(UsersTableSeeder::class);
-        // $this->call(UserProfilesTableSeeder::class);
-        // $this->call(UserRolesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $this->call(UserProfilesTableSeeder::class);
+        $this->call(UserRolesTableSeeder::class);
 
-        $this->call(InventorySuppliersTableSeeder::class);
+        // $this->call(InventorySuppliersTableSeeder::class);
     }
 }

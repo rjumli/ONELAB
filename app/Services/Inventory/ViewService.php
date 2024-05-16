@@ -14,7 +14,8 @@ class ViewService
     public $laboratory;
 
     public function __construct()
-    {
+    {   
+        $this->role = (\Auth::check()) ? \Auth::user()->role : null;
         $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
         $this->type = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_type : null;
     }
@@ -25,8 +26,11 @@ class ViewService
             ->with('user.profile')
             ->with('municipality.province.region','municipality:code,name,province_code','barangay:code,name')
             // ->where('laboratory_id',$this->laboratory)
-            ->when($this->laboratory, function ($query, $laboratory) {
-                $query->where('laboratory_id', $laboratory);
+            // ->when($this->laboratory, function ($query, $laboratory) {
+            //     $query->where('laboratory_id', $laboratory);
+            // })
+            ->when($this->role != 'Administrator', function ($query) {
+                $query->where('laboratory_id',$this->laboratory);
             })
             ->where('is_active',$request->is_active)
             ->get()
@@ -39,6 +43,9 @@ class ViewService
             InventoryItem::query()
             ->with('laboratory_type','laboratory','category','unittype')
             // ->where('laboratory_id',$this->laboratory)
+            ->when($this->role != 'Administrator', function ($query) {
+                $query->where('laboratory_id',$this->laboratory);
+            })
             ->when($this->laboratory, function ($query, $laboratory) {
                 $query->where('laboratory_id', $laboratory);
             })

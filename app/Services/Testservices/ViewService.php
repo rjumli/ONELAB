@@ -20,7 +20,9 @@ class ViewService
     public function lists($request){
         $data = DefaultResource::collection(
             ListTestservice::query()
-            ->where('laboratory_id',$this->laboratory)
+            ->when($this->laboratory, function ($query, $laboratory) {
+                $query->where('laboratory_id', $laboratory);
+            })
             ->with('sampletype','testname','laboratory.member','laboratory.address.region','type')
             ->with('method.method','method.reference')
             ->orderBy('created_at','DESC')
