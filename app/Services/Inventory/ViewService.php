@@ -24,7 +24,10 @@ class ViewService
             InventorySupplier::query()
             ->with('user.profile')
             ->with('municipality.province.region','municipality:code,name,province_code','barangay:code,name')
-            ->where('laboratory_id',$this->laboratory)
+            // ->where('laboratory_id',$this->laboratory)
+            ->when($this->laboratory, function ($query, $laboratory) {
+                $query->where('laboratory_id', $laboratory);
+            })
             ->where('is_active',$request->is_active)
             ->get()
         );
@@ -35,7 +38,10 @@ class ViewService
         $data = ItemResource::collection(
             InventoryItem::query()
             ->with('laboratory_type','laboratory','category','unittype')
-            ->where('laboratory_id',$this->laboratory)
+            // ->where('laboratory_id',$this->laboratory)
+            ->when($this->laboratory, function ($query, $laboratory) {
+                $query->where('laboratory_id', $laboratory);
+            })
             ->where('laboratory_type',$this->type)
             ->when($request->keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', "%{$keyword}%");
