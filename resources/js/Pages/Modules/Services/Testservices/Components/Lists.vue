@@ -3,10 +3,11 @@
         <b-col lg>
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                <input type="text" v-model="filter.keyword" placeholder="Search Test Service" class="form-control" style="width: 35%;">
-                <span @click="openSync" class="input-group-text"  v-b-tooltip.hover title="Sync Customer" style="cursor: pointer;"> 
-                    <i class="ri-upload-cloud-line"></i>
-                </span>
+                <input type="text" v-model="filter.keyword" placeholder="Search Test Service" class="form-control" style="width: 65%;">
+                <select v-model="filter.laboratory" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
+                    <option :value="null" selected>Select Laboratory</option>
+                    <option :value="list.value" v-for="list in dropdowns.types" v-bind:key="list.id">{{list.name}}</option>
+                </select>
                 <span @click="refresh" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
@@ -81,7 +82,8 @@ export default {
             links: {},
             index: null,
             filter: {
-                keyword: null
+                keyword: null,
+                laboratory: null
             }
         }
     },
@@ -102,6 +104,7 @@ export default {
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
+                    laboratory: this.filter.laboratory,
                     count: ((window.innerHeight-350)/58),
                     option: 'lists'
                 }

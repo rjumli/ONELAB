@@ -8,7 +8,7 @@
                     <option :value="null" selected>Select Status</option>
                     <option :value="list.value" v-for="list in dropdowns.statuses" v-bind:key="list.id">{{list.name}}</option>
                 </select>
-                 <select v-model="filter.laboratory" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 140px;">
+                <select v-model="filter.laboratory" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 140px;">
                     <option :value="null" selected>Select Laboratory</option>
                     <option :value="list.value" v-for="list in dropdowns.laboratories" v-bind:key="list.id">{{list.name}}</option>
                 </select>

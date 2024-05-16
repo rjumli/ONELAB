@@ -24,6 +24,9 @@ class ViewService
             ->when($this->role != 'Administrator', function ($query) {
                 $query->where('laboratory_id',$this->laboratory);
             })
+            ->when($request->laboratory, function ($query, $laboratory) {
+                $query->where('laboratory_type',$laboratory);
+            })
             ->with('sampletype','testname','laboratory.member','laboratory.address.region','type')
             ->with('method.method','method.reference')
             ->orderBy('created_at','DESC')
