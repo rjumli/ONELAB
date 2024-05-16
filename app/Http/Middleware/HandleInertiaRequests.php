@@ -20,9 +20,12 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
-
+        $currentRole = \Auth::user()->role;
         $overall = []; $menus = []; $listahan = [];
-        $lists = ListMenu::where('is_active',1)->where('is_mother',1)->where('group','Menu')->orderBy('order','ASC')->get();
+        $lists = ListMenu::when($currentRole !== 'Administator', function ($query) {
+            $query->where('is_active',1);
+        })
+        ->where('is_mother',1)->where('group','Menu')->orderBy('order','ASC')->get();
         foreach($lists as $list){
             
             $submenus = [];
@@ -38,7 +41,10 @@ class HandleInertiaRequests extends Middleware
             ];
         }
 
-        $lists = ListMenu::where('is_active',1)->where('is_mother',1)->where('group','Lists')->get();
+        $lists = ListMenu::when($currentRole !== 'Administator', function ($query) {
+            $query->where('is_active',1);
+        })
+        ->where('is_mother',1)->where('group','Lists')->get();
         foreach($lists as $list){
             
             $submenus = [];
