@@ -29,12 +29,6 @@ Route::middleware(['2fa','auth','verified','is_active','menu'])->group(function 
         Route::resource('/packages', App\Http\Controllers\Services\PackageController::class);
         Route::resource('/import', App\Http\Controllers\Services\ImportController::class);
     }); 
-    
-    Route::prefix('lists')->group(function(){
-        Route::resource('/laboratories', App\Http\Controllers\Lists\LaboratoryController::class);
-        Route::resource('/locations', App\Http\Controllers\Lists\LocationController::class);
-        Route::resource('/dropdowns', App\Http\Controllers\Lists\DropdownController::class);
-    }); 
 });
 
 require __DIR__.'/auth.php';

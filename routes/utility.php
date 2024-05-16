@@ -33,4 +33,10 @@ Route::middleware(['2fa','auth'])->group(function () {
             });
         });
     });
+
+    Route::prefix('lists')->group(function(){
+        Route::resource('/laboratories', App\Http\Controllers\Lists\LaboratoryController::class);
+        Route::resource('/locations', App\Http\Controllers\Lists\LocationController::class);
+        Route::resource('/dropdowns', App\Http\Controllers\Lists\DropdownController::class);
+    }); 
 });
