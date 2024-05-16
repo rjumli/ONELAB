@@ -22,7 +22,7 @@ class HandleInertiaRequests extends Middleware
     {
         $currentRole = \Auth::user()->role;
         $overall = []; $menus = []; $listahan = [];
-        $lists = ListMenu::when($currentRole !== 'Administator', function ($query) {
+        $lists = ListMenu::when($currentRole != 'Administrator', function ($query) {
             $query->where('is_active',1);
         })
         ->where('is_mother',1)->where('group','Menu')->orderBy('order','ASC')->get();
@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             ];
         }
 
-        $lists = ListMenu::when($currentRole !== 'Administator', function ($query) {
+        $lists = ListMenu::when($currentRole !== 'Administrator', function ($query) {
             $query->where('is_active',1);
         })
         ->where('is_mother',1)->where('group','Lists')->get();
