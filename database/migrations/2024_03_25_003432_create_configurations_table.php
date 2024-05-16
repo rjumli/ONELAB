@@ -16,11 +16,7 @@ return new class extends Migration
             $table->string('acronym',20)->default('DOST-IX');
             $table->string('name',100)->default('Department of Science and Technology - IX');
             $table->string('subname',100)->default('DOST Management System');
-            $table->longText('description');
-            $table->string('logo')->nullable();  
-            $table->string('logo_light')->nullable();    
-            $table->string('logo_dark')->nullable();  
-            $table->string('icon')->nullable();  
+            $table->json('laboratories');
             $table->string('version');    
             $table->integer('laboratory_id')->unsigned()->index();
             $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
