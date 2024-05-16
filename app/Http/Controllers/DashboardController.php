@@ -14,7 +14,8 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        switch(\Auth::user()->userrole->role->name){
+        $role = (\Auth::user()->userrole) ? \Auth::user()->userrole->role->name : null;
+        switch($role){
             case 'Customer Relation Officer':
                 return inertia('Modules/Dashboard/CRO/Index');
             break;
