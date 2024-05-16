@@ -14,14 +14,15 @@ class ViewService
 
     public function __construct()
     {
+        $this->role = (\Auth::check()) ? \Auth::user()->role : null;
         $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
     }
 
     public function lists($request){
         $data = DefaultResource::collection(
             ListTestservice::query()
-            ->when($this->laboratory, function ($query, $laboratory) {
-                $query->where('laboratory_id', $laboratory);
+            ->when($this->role != 'Administrator', function ($query) {
+                $query->where('laboratory_id',$this->laboratory);
             })
             ->with('sampletype','testname','laboratory.member','laboratory.address.region','type')
             ->with('method.method','method.reference')
