@@ -20,7 +20,7 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
-        $currentRole = \Auth::user()->role;
+        $currentRole = (\Auth::check()) ? \Auth::user()->role : null;
         $overall = []; $menus = []; $listahan = [];
         $lists = ListMenu::when($currentRole != 'Administrator', function ($query) {
             $query->where('is_active',1);
