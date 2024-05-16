@@ -15,7 +15,7 @@ class UserRolesTableSeeder extends Seeder
     {
         
 
-        \DB::table('user_roles')->truncate();
+        \DB::table('user_roles')->delete();
         
         \DB::table('user_roles')->insert(array (
             0 => 
