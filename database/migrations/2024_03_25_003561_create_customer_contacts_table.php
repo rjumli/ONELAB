@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_conformes', function (Blueprint $table) {
+        Schema::create('customer_contacts', function (Blueprint $table) {
             $table->engine = 'InnoDB'; 
             $table->bigIncrements('id');
-            $table->longText('name');
+            $table->longText('email');
             $table->longText('contact_no');
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_conformes');
+        Schema::dropIfExists('customer_contacts');
     }
 };

@@ -11,11 +11,11 @@ class Quotation extends Model
 
     protected $fillable = [
         'code',
-        'terms',
         'mode',
         'total',
         'subtotal',
         'discount',
+        'due_at',
         'laboratory_id',
         'laboratory_type',
         'status_id',

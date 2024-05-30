@@ -14,8 +14,6 @@ class Customer extends Model
         'code',
         'name',
         'name_id',
-        'email',
-        'contact_no',
         'bussiness_id',
         'industry_id',
         'classification_id',
@@ -45,6 +43,11 @@ class Customer extends Model
     public function conformes()
     {
         return $this->hasMany('App\Models\CustomerConforme', 'customer_id');
+    }
+
+    public function contact()
+    {
+        return $this->hasOne('App\Models\CustomerContact', 'customer_id');
     }
 
     public function type()

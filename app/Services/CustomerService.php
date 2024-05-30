@@ -60,6 +60,7 @@ class CustomerService
         $code = $this->generateCode();
         $customer = Customer::create(array_merge($request->all(),['code' => $code,'laboratory_id' => $this->laboratory]));
         $customer->address()->create($request->except(['name','is_main','email','bussiness_id','industry_id','classification_id','contact_no','name_id','customer','has_branches','type']));
+        $customer->contact()->create($request->all());
 
         return [
             'data' => $customer,

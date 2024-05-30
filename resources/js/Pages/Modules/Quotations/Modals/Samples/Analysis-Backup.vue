@@ -1,7 +1,8 @@
 <template>
-    <b-modal v-model="showModal" style="--vz-modal-width: 850px;" header-class="p-3 bg-light" title="Add Analysis" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" style="--vz-modal-width: 1100px;" header-class="p-3 bg-light" title="Add Analysis" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+            
         <form class="customform">
-            <BRow class="g-3">
+            <BRow>
                 <BCol lg="6" class="mt-1">
                     <InputLabel for="sampletype" value="Sample type"/>
                     <Multiselect @search-change="checkSearchSample" 
@@ -61,8 +62,7 @@
         </BRow>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button v-if="!has_many" @click="submit('ok')" variant="primary" block>Submit</b-button>
-            <b-button v-else @click="submitMany('ok')" variant="primary" block>Submit</b-button>
+            <b-button @click="submit('ok')" variant="primary" :disabled="form.processing" block>Submit</b-button>
         </template>
     </b-modal>
 </template>
@@ -71,19 +71,19 @@ import _ from 'lodash';
 import { useForm } from '@inertiajs/vue3';
 import simplebar from 'simplebar-vue';
 import Amount from '@/Shared/Components/Forms/Amount.vue';
-import Multiselect from "@vueform/multiselect";
+import Multiselect from '@/Shared/Components/Forms/Multiselect.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
+import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
-    components: { InputLabel, Multiselect, simplebar, Amount },
+    components: { simplebar, InputLabel, TextInput, Multiselect, Amount },
     data(){
         return {
             currentUrl: window.location.origin,
-            selected: {},
             form: useForm({
                 fee: null,
                 lists: [],
                 samples: [],
-                option: 'save'
+                option: 'saveAnalyses'
             }),
             filter: {
                 keyword: null,
@@ -96,18 +96,19 @@ export default {
             testservices: [],
             selected: {},
             type: null,
-            showModal: false
+            showModal: false,
+            editable: false,
         }
     },
     watch: {
         sampletype(){
-            this.testservices = [];
             this.fetchTest();
         },
         totalFee(newTotalFee) {
             this.form.fee = newTotalFee;
             this.$refs.testing.emitValue(this.form.fee);
         }
+        
     },
     computed: {
         totalFee() {
@@ -125,18 +126,14 @@ export default {
     },
     methods: { 
         show(data,laboratory,option){
-            this.testservices = [];
-            (option === 'many') ? this.form.samples = data : this.form.samples.push(data.id);
+            (option === 'many') ? this.form.samples = data : this.form.samples.push(data);
             this.selected = data;
             this.form.laboratory_type = laboratory;
             this.showModal = true;
         }, 
-        checkSearchSample: _.debounce(function(string) {
-            (string) ? this.fetchSample(string) : '';
-        }, 300),
         submit(){
             this.form.lists = this.checkedItems;
-            this.form.post('/analyses',{
+            this.form.post('/quotations',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.$emit('update',true);

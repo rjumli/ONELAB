@@ -3,7 +3,7 @@
         <form class="customform">
             <BRow class="g-3">
                 <BCol lg="12 mt-2">
-                    <InputLabel for="customer" value="Customer" :message="form.errors.customer"/>
+                    <InputLabel for="customer" value="Customer" :message="form.errors.customer_id"/>
                     <Multiselect 
                     :options="customers" 
                     @search-change="fetchCustomer" 

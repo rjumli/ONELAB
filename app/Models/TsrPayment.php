@@ -13,6 +13,7 @@ class TsrPayment extends Model
     protected $fillable = [
         'discount_id',
         'total',
+        'subtotal',
         'discount',
         'or_number',
         'payment_id',
@@ -58,9 +59,19 @@ class TsrPayment extends Model
         return '₱'.number_format($value,2,'.',',');
     }
 
+    public function setTotalAttribute($value)
+    {
+        $this->attributes['total'] = trim(str_replace(',','',$value),'₱');
+    }
+
     public function getDiscountAttribute($value)
     {
         return '₱'.$value;
+    }
+
+    public function setDiscountAttribute($value)
+    {
+        $this->attributes['discount'] = trim(str_replace(',','',$value),'₱');
     }
 
     public function getTotalAttribute($value)

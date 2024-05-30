@@ -45,7 +45,7 @@
                         <h5 v-else class="fs-13 mb-0 text-muted">Not yet available</h5>
                         <p class="fs-12 text-muted mb-0">{{list.customer.name}}</p>
                     </td>
-                    <td class="text-center">{{list.laboratory.name}}</td>
+                    <td class="text-center">{{list.type.name}}</td>
                     <td class="text-center">{{list.received}}</td>
                     <td class="text-center">{{list.created_at}}</td>
                      <td class="text-center">
@@ -92,14 +92,6 @@ export default {
     watch: {
         "filter.keyword"(newVal){
             this.checkSearchStr(newVal)
-        },
-        '$page.props.flash' : {
-            deep: true,
-            handler(val = null) {
-                if(val.status){
-                    this.lists[this.index] = val.data.data;
-                }
-            }
         }
     },
     created(){

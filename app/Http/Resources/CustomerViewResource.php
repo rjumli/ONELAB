@@ -16,8 +16,8 @@ class CustomerViewResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $code,
-            'email' => $this->email,
-            'contact_no' => $this->contact_no,
+            'email' => $this->contact->email,
+            'contact_no' => $this->contact->contact_no,
             'name' => ($this->customer_name->has_branches) ? ($this->is_main) ? $this->customer_name->name :  $this->customer_name->name.' - '.$this->name : $this->customer_name->name,
             'address' => new AddressResource($this->address),
         ];

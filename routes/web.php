@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/', function () {return inertia('Auth/Login'); });
 Route::get('/verification/{code}', [App\Http\Controllers\WelcomeController::class, 'verification']);
 Route::get('/csf/survey', [App\Http\Controllers\CsfController::class, 'show']);
 
@@ -11,7 +11,6 @@ Route::middleware(['2fa','auth','verified'])->group(function () {
 });
 
 Route::middleware(['2fa','auth','verified','is_active','menu'])->group(function () {
-    Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index']);
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/insights', [App\Http\Controllers\InsightController::class, 'index']);
 

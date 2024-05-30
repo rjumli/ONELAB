@@ -11,13 +11,16 @@ class TestserviceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'is_checked' => false,
             'value' => $this->id,
-            'code' => $this->code,
+            'name' => $this->testname->name.' - '.$this->method->method->name.' ('.$this->method->reference->name.')',
             'sampletype' => $this->sampletype->name,
             'testname' => $this->testname->name,
             'method' => $this->method->method->name,
+            'method_short' => $this->method->method->short,
             'reference' => $this->method->reference->name,
             'fee' => $this->method->fee,
+            'fee_num' => trim(str_replace(',','',$this->method->fee),'₱'),
         ];
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    test
+    welcum
 </template>
 <script>
 export default {

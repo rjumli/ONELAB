@@ -25,6 +25,9 @@ class QuotationController extends Controller
             case 'samples':
                 return $this->quot->samples($request);
             break;
+            case 'analyses':
+                return $this->quot->analyses($request->id);
+            break;
             case 'print':
                 return $this->quot->print($request);
             break;
@@ -50,11 +53,11 @@ class QuotationController extends Controller
                 case 'sample':
                     return $this->quot->saveSample($request);
                 break;
-                case 'one':
-                    return $this->quot->saveOne($request);
+                case 'saveAnalyses':
+                    return $this->quot->saveAnalyses($request);
                 break;
-                case 'many':
-                    return $this->quot->saveMany($request);
+                case 'tsr':
+                    return $this->quot->tsr($request);
                 break;
             }
         });

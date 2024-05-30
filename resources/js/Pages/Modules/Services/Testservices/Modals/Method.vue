@@ -8,7 +8,7 @@
                             <InputLabel for="method" value="Method" :message="errors.method_id"/>
                             <Multiselect @search-change="searchMethod" 
                             :options="methods" label="name" :searchable="true" 
-                            v-model="form.method_id" :message="errors.method_id" 
+                            v-model="form.method_id"
                             placeholder="Select Method" ref="multiselectM"/>
                         </div>
                         <div class="flex-shrink-0">
@@ -20,10 +20,10 @@
                 <BCol lg="12" class="mt-1">
                     <div class="d-flex">
                         <div style="width: 100%;">
-                            <InputLabel for="reference" value="Reference"/>
+                            <InputLabel for="reference" value="Reference" :message="errors.reference_id"/>
                             <Multiselect @search-change="searchReference" 
                             :options="references" label="name" :searchable="true" 
-                            v-model="form.reference_id" :message="errors.reference_id" 
+                            v-model="form.reference_id"
                             placeholder="Select Reference" ref="multiselectR"/>
                         </div>
                         <div class="flex-shrink-0">
@@ -32,7 +32,7 @@
                     </div>
                 </BCol>
                 <BCol lg="12" class="mt-1">
-                    <InputLabel for="fee" value="Fee" />
+                    <InputLabel for="fee" value="Fee" :message="errors.fee"/>
                     <!-- <div class="input-group mb-3">
                         <span class="input-group-text" style="height: 38px;">₱</span>
                         <TextInput id="fee" v-model="form.fee" type="text" class="form-control" autofocus placeholder="Please enter fee" autocomplete="fee" required :class="{ 'is-invalid': form.errors.fee }" :light="true"/>

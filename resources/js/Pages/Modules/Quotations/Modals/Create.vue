@@ -145,8 +145,8 @@ export default {
             this.$refs.conforme.show(this.form.customer);
         },
         set(data){
-            this.form.customer.conformes = data;
-            this.form.conforme_id = data;
+            this.form.customer.conformes.push(data);
+            this.form.conforme_id = data.value;
         },
         handleInput(field) {
             this.form.errors[field] = false;

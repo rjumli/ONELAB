@@ -15,9 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB'; 
             $table->bigIncrements('id');
             $table->string('code')->unique();
-            $table->longText('email');
             $table->string('name');
-            $table->longText('contact_no');
             $table->boolean('is_main')->default(1);
             $table->boolean('is_active')->default(1);
             $table->boolean('is_synced')->default(0);

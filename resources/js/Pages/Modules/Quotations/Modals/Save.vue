@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" hide-footer hide-header title="Cancel Request" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" hide-footer hide-header class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <div class="modal-body text-center">
             <div class="mt-2">
                 <h4 class="mb-4">Confirm Quotation</h4>
@@ -24,7 +24,7 @@ export default {
             currentUrl: window.location.origin,
             form: useForm({
                id: null,
-               status_id: 14,
+               status_id: 15,
                option: 'Confirm'
             }),
             showModal: false

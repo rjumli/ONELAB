@@ -17,6 +17,8 @@
     },
     "dependencies": {
         "@chenfengyuan/vue-barcode": "^2.0.2",
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-vue3": "^0.6.0",
         "@vue-leaflet/vue-leaflet": "^0.10.1",
         "@vueform/multiselect": "^2.6.6",
         "@vueform/slider": "^2.1.10",

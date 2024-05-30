@@ -116,7 +116,7 @@ class ImportController extends Controller
                 }
 
                 if($long){
-                    $q_method = ListName::where('name',$long)->where('type_id',94)->where('laboratory_type',$laboratory_type)->first();
+                    $q_method = ListName::where('name',$long)->where('short',$short)->where('type_id',94)->where('laboratory_type',$laboratory_type)->first();
                     if($q_method){
                         $method_id = $q_method->id;
                     }else{

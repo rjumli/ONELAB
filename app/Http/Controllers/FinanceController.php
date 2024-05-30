@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Traits\HandlesTransaction;
 use App\Services\FinanceService;
+use App\Http\Requests\FinanceRequest;
 
 class FinanceController extends Controller
 {
@@ -25,7 +26,7 @@ class FinanceController extends Controller
         }
     }
 
-    public function store(Request $request){
+    public function store(FinanceRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
             if($request->option == 'op'){
                 return $this->finance->store_op($request);

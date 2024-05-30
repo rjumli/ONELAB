@@ -45,7 +45,6 @@ export default {
             this.form.post('/customers',{
                 preserveScroll: true,
                 onSuccess: (response) => {
-                    console.log(response.props.flash.data);
                     this.$emit('selected',response.props.flash.data);
                     this.hide();
                 },

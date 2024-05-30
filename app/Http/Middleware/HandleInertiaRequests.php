@@ -44,6 +44,25 @@ class HandleInertiaRequests extends Middleware
         $lists = ListMenu::when($currentRole !== 'Administrator', function ($query) {
             $query->where('is_active',1);
         })
+        ->where('is_mother',1)->where('group','Service')->get();
+        foreach($lists as $list){
+            
+            $submenus = [];
+            if($list['has_child']){
+                $subs = ListMenu::where('is_active',1)->where('group',$list['name'])->get();
+                foreach($subs as $menu){
+                    $submenus[] = $menu;
+                }
+            }
+            $services[] = [
+                'main' => $list,
+                'submenus' => $submenus
+            ];
+        }
+
+        $lists = ListMenu::when($currentRole !== 'Administrator', function ($query) {
+            $query->where('is_active',1);
+        })
         ->where('is_mother',1)->where('group','Lists')->get();
         foreach($lists as $list){
             
@@ -73,6 +92,7 @@ class HandleInertiaRequests extends Middleware
             'configuration' => Configuration::where('id',1)->first(),
             'menus' => [
                 'menus' => $menus,
+                'services' => $services,
                 'lists' => $listahan
             ]
         ];

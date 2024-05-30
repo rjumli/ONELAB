@@ -15,23 +15,26 @@ use App\Http\Resources\Finance\OpResource;
 class FinanceService
 {
     public function store_op($request){
+        $payment_id = $request->payment_id;
+        $collection_id = $request->collection_id;
         $data = FinanceOp::create(array_merge($request->all(), [
             'code' => $this->generateCode(), 
             'created_by' => \Auth::user()->id, 
             'status_id' => 6,
             'laboratory_id' => \Auth::user()->userrole->laboratory_id
         ]));
+        $id = $data->id;
         if($data){
             $items = $request->selected;
             foreach($items as $item){
                 $opitem = new FinanceOpItem;
                 $opitem->amount = $item['payment']['total'];
                 $opitem->tsr_id = $item['id'];
-                $opitem->op_id = $data->id;
+                $opitem->op_id = $id;
                 if($opitem->save()){
                     $payment = TsrPayment::findOrFail($item['id']);
-                    $payment->collection_id = $request->collection_id;
-                    $payment->payment_id = $request->payment_id;
+                    $payment->collection_id = $collection_id;
+                    $payment->payment_id = $payment_id;
                     $payment->save();
                 }
             }
@@ -104,7 +107,8 @@ class FinanceService
             ->with('items.tsr','or')
             ->with('createdby:id','createdby.profile:id,firstname,lastname,user_id')
             ->with('collection:id,name','payment:id,name','status:id,name,color,others')
-            ->with('customer:id,name_id,email,name,contact_no,is_main','customer.customer_name:id,name,has_branches','customer.address:address,addressable_id,region_code,province_code,municipality_code,barangay_code','customer.address.region:code,name,region','customer.address.province:code,name','customer.address.municipality:code,name','customer.address.barangay:code,name')
+            ->with('customer:id,name_id,name,is_main','customer.customer_name:id,name,has_branches','customer.address:address,addressable_id,region_code,province_code,municipality_code,barangay_code','customer.address.region:code,name,region','customer.address.province:code,name','customer.address.municipality:code,name','customer.address.barangay:code,name')
+            ->with('customer.contact:id,email,contact_no,customer_id')
             ->when($request->keyword, function ($query, $keyword) {
                 $query->where('code', 'LIKE', "%{$keyword}%")
                 ->orWhereHas('customer',function ($query) use ($keyword) {

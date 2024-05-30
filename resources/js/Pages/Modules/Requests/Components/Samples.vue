@@ -64,9 +64,6 @@
         </b-col>
     </b-row>
     <hr class="text-muted mt-3"/>
-        <!-- <b-button v-if="selected.length > 0" variant="light" size="sm" class="w-lg waves-effect waves-light me-1">Add Analysis</b-button>
-        <span v-if="selected.length > 0" class="float-end">{{(selected.length === samples.length) ? 'All' : selected.length}} samples are selected.</span>
-    <hr v-if="selected.length > 0" class="text-muted"/> -->
     <div class="table-responsive">
         <table class="table table-nowrap align-middle mb-0">
             <thead class="table-light">
@@ -118,7 +115,7 @@
     </div>
     <QR ref="qr"/>
     <View ref="view"/>
-    <Analysis @new="updateAnalysis" @update="fetch(id)" ref="analysis"/>
+    <Analysis @total="total" @update="fetch(this.id)" ref="analysis"/>
     <Create @new="updateSamples" ref="sample"/>
 </template>
 <script>
@@ -151,13 +148,13 @@ export default {
         },
         openAnalysis(data,index){
             this.index = index;
-            this.$refs.analysis.show(data,this.laboratory);
+            this.$refs.analysis.show(data,this.laboratory,'one');
         },
         openView(data){
             this.$refs.view.show(data);
         },
         openAddMany(){
-            this.$refs.analysis.many(this.selected,this.laboratory);
+            this.$refs.analysis.show(this.selected,this.laboratory,'many');
         },
         fetch(id){
             axios.get(this.currentUrl+'/samples',{
@@ -174,9 +171,9 @@ export default {
         updateSamples(data){
             this.samples.push(data);
         },
-        updateAnalysis(data){
-            this.samples[this.index].analyses.push(data);
-            this.$emit('sum',data.fee);
+        total(data){
+            this.mark = false;
+            this.$emit('total',data);
         }
     },
     watch: {

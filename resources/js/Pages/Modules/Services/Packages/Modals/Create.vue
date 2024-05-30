@@ -4,27 +4,24 @@
         <form class="customform">
             <BRow>
                 <BCol lg="12" class="mt-2">
-                    <InputLabel for="name" value="Package name" />
-                    <TextInput id="name" v-model="form.name" type="text" class="form-control" autofocus placeholder="Please enter package name" autocomplete="name" required :class="{ 'is-invalid': form.errors.name }" :light="true"/>
-                    <InputError :message="form.errors.name" />
+                    <InputLabel for="name" value="Package name" :message="form.errors.name" />
+                    <TextInput id="name" v-model="form.name" type="text" class="form-control" placeholder="Please enter package name" :light="true"/>
                 </BCol>  
                 <BCol lg="4" class="mt-1">
-                    <InputLabel for="classification_id" value="Laboratory Type" />
-                    <Multiselect :options="dropdowns.types" :searchable="true" v-model="form.laboratory_type" :message="form.errors.laboratory_type" placeholder="Select Laboratory type"/>
-                    <InputError :message="form.errors.laboratory_type" />
+                    <InputLabel for="classification_id" value="Laboratory Type" :message="form.errors.laboratory_type"/>
+                    <Multiselect :options="dropdowns.types" :searchable="true" v-model="form.laboratory_type" ref="multiselectL" placeholder="Select Laboratory type"/>
                 </BCol>
                 <BCol lg="4" class="mt-1">
-                    <InputLabel for="sampletype" value="Sample type" />
+                    <InputLabel for="sampletype" value="Sample type" :message="form.errors.sampletype_id"/>
                     <Multiselect @search-change="checkSearchSample" 
-                    :options="sampletypes" label="name" :searchable="true" :clearOnSearch="true"
-                    v-model="form.sampletype_id" :message="form.errors.sampletype_id" 
+                    :options="sampletypes" label="name" :searchable="true" 
+                    :clearOnSearch="true" v-model="form.sampletype_id"
                     placeholder="Select Sample type" ref="multiselectS"/>
                 </BCol>
                 
                 <BCol lg="4" class="mt-1">
-                    <InputLabel for="name" value="Fee" />
-                    <Amount @amount="amount" ref="testing" :readonly="false"/>
-                    <InputError :message="form.errors.name" />
+                    <InputLabel for="name" value="Fee" :message="form.errors.fee"/>
+                    <Amount @amount="amount" ref="testing" :readonly="true"/>
                 </BCol>
             </BRow>
         </form>
@@ -33,39 +30,40 @@
                 <hr class="text-muted"/>
             </BCol>
             <BCol lg="12" class="mt-0" v-if="form.sampletype_id">
-                    <b-col lg>
+                <b-col lg>
                     <div class="input-group mb-1">
                         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                         <input type="text" v-model="searchTerm" @input="search" placeholder="Search Test Service" class="form-control" style="width: 35%;">
+                        <b-button type="button" variant="primary">
+                            {{countTestServices}} testservices selected
+                        </b-button>
                     </div>
                 </b-col>
                 <div class="table-responsive mt-2">
                     <table class="table table-nowrap align-middle mb-0">
                         <thead class="table-light">
                             <tr class="fs-11">
-                                <th></th>
-                                <th style="width: 30%;" class="text-center">Sampletype</th>
-                                <th style="width: 30%;" class="text-center">Testname</th>
-                                <th style="width: 25%;" class="text-center">Method</th>
-                                <th style="width: 10%;" class="text-center">Fee</th>
+                                <th style="width: 7%;"></th>
+                                <th style="width: 25%;" class="text-center">Testname</th>
+                                <th style="width: 53%;" class="text-center">Method</th>
+                                <th style="width: 15%;" class="text-center">Fee</th>
                             </tr>
                         </thead>
                     </table>
-                    <simplebar data-simplebar style="max-height: 150px">
+                    <simplebar data-simplebar style="max-height: 200px">
                         <div>
-                    <table class="table table-centered table-bordered table-nowrap mb-0">
-                        <tbody>
-                            <tr v-for="(list,index) in testservices" v-bind:key="index" :class="(index == matchedRowIndex) ? 'table-warning' : ''" :id="'row-' + index">
-                                <td class="text-center"> 
-                                   <input class="form-check-input me-1" type="checkbox" v-model="form.lists" :value="list.id">
-                                </td>
-                                <td class="text-center fs-11">{{list.sampletype.name}}</td>
-                                <td class="text-center fs-11">{{list.testname.name}}</td>
-                                <td class="text-center fs-11">{{list.method.method.name}}</td>
-                                <td class="text-center fs-11">{{list.method.fee}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <table class="table table-centered table-bordered table-nowrap mb-0">
+                                <tbody>
+                                    <tr v-for="(list,index) in testservices" v-bind:key="index" :class="(list.is_checked) ? 'table-success' : (index == matchedRowIndex) ? 'table-warning' : ''" :id="'row-' + index">
+                                        <td style="width: 7%;" class="text-center"> 
+                                            <input class="form-check-input me-1" type="checkbox" v-model="list.is_checked">
+                                        </td>
+                                        <td style="width: 25%;" class="text-center fs-11">{{list.testname}}</td>
+                                        <td style="width: 53%;" class="text-center fs-11">{{list.method}} <span v-if="list.method_short" class="text-muted">({{list.method_short}})</span></td>
+                                        <td style="width: 15%;" class="text-center fs-11">{{list.fee}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </simplebar>
                </div>
@@ -83,11 +81,10 @@ import { useForm } from '@inertiajs/vue3';
 import simplebar from 'simplebar-vue';
 import Amount from '@/Shared/Components/Forms/Amount.vue';
 import Multiselect from '@/Shared/Components/Forms/Multiselect.vue';
-import InputError from '@/Shared/Components/Forms/InputError.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
-    components: { simplebar, InputError, InputLabel, TextInput, Multiselect, Amount },
+    components: { simplebar, InputLabel, TextInput, Multiselect, Amount },
     props: ['dropdowns'],
     data(){
         return {
@@ -122,28 +119,40 @@ export default {
         },
         'form.sampletype_id'(){
             this.fetchTest();
+        },
+        totalFee(newTotalFee) {
+            this.form.fee = newTotalFee;
+            this.$refs.testing.emitValue(this.form.fee);
         }
+        
+    },
+    computed: {
+        totalFee() {
+            const total = this.testservices.reduce((acc, item) => {
+                return item.is_checked ? acc + parseFloat(item.fee_num) : acc;
+            }, 0);
+            return total.toFixed(2);
+        },
+        countTestServices() {
+            return this.testservices.filter(item => item.is_checked).length;
+        },
+        checkedItems() {
+            const test = this.testservices.filter(item => item.is_checked);
+            return test.map(item => item.value);
+        },
     },
     methods: { 
         show(){
             this.showModal = true;
         }, 
         submit(){
-            if(this.editable){
-                this.form.put('/services/packages/update',{
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        this.hide();
-                    }
-                });
-            }else{
-                this.form.post('/services/packages',{
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        this.hide();
-                    },
-                });
-            }
+            this.form.lists = this.checkedItems;
+            this.form.post('/services/packages',{
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.hide();
+                },
+            });
         },
         amount(val){
             this.form.fee = val;
@@ -184,8 +193,8 @@ export default {
         search() {
             const searchTerm = this.searchTerm.toLowerCase();
             const matchedIndex = this.testservices.findIndex(
-                (l) => l.sampletype.name.toLowerCase().includes(searchTerm) || 
-                l.testname.name.toLowerCase().includes(searchTerm)
+                (l) => l.testname.toLowerCase().includes(searchTerm) || 
+                l.method.toLowerCase().includes(searchTerm) || l.method_short.toLowerCase().includes(searchTerm)
             );
             if (matchedIndex !== -1 && searchTerm !== '') {
                 this.matchedRowIndex = matchedIndex;
@@ -204,8 +213,9 @@ export default {
             this.form.errors[field] = false;
         },
         hide(){
-            // this.form.reset();
-            // this.form.clearErrors();
+            this.$refs.multiselectL.clear();
+            this.form.reset();
+            this.form.clearErrors();
             this.editable = false;
             this.showModal = false;
         }

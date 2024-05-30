@@ -23,34 +23,20 @@ class AnalysisService
     }
 
     public function save($request){
-        $data = TsrAnalysis::create(array_merge($request->all(),[
-            'status_id' => 9,
-        ]));
-        $data = TsrAnalysis::with('sample','testservice.method.method','status','analyst')->where('id',$data->id)->first();
-        $this->updateTotal($data->sample->tsr_id,$request->fee);
-
-        return [
-            'data' => new AnalysisResource($data),
-            'message' => 'Analysis added was successful!', 
-            'info' => "You've successfully created the new analysis."
-        ];
-    }
-
-    public function saveMany($request){
-        $samples = $request->samples;
-        foreach($samples as $sample){
-            $data = TsrAnalysis::create(array_merge($request->all(),[
-                'status_id' => 9,
-                'sample_id' => $sample
-            ]));
-            if($data){
-                $data = TsrAnalysis::with('sample','testservice.method.method','status','analyst')->where('id',$data->id)->first();
-                $this->updateTotal($data->sample->tsr_id,$request->fee);
+        foreach($request->samples as $sample){
+            foreach($request->lists as $list){
+                $data = TsrAnalysis::create(array_merge($request->all(),[
+                    'status_id' => 10,
+                    'testservice_id' => $list['id'],
+                    'fee' => $list['fee_num'],
+                    'sample_id' => $sample
+                ]));
+                $data = TsrAnalysis::with('sample','testservice.method.method')->where('id',$data->id)->first();
+                $total =  $this->updateTotal($data->sample->tsr_id,$list['fee']);
             }
         }
-
         return [
-            'data' => 'Completed',
+            'data' => $total,
             'message' => 'Analysis added was successful!', 
             'info' => "You've successfully created the new analysis."
         ];
@@ -69,11 +55,11 @@ class AnalysisService
             $discount = (float) (($data->discounted->value/100) * $subtotal);
             $total =  ((float) $subtotal - (float) $discount);
         }
-        // dd($subtotal,$discount,$total);
         $data->subtotal = $subtotal;
         $data->discount = $discount;
         $data->total = $total;
         $data->save();
+        return $data->total;
     }
 
     public function start($request){
@@ -83,7 +69,7 @@ class AnalysisService
         $data->start_at = $request->start_at;
         
         if($data->save()){
-            if(TsrAnalysis::where('sample_id',$data->sample_id)->where('status_id',9)->count() === 0){
+            if(TsrAnalysis::where('sample_id',$data->sample_id)->where('status_id',10)->count() === 0){
                 $tsr = Tsr::where('id',$request->tsr_id)->update(['status_id' => 4]);
             }else{
                 $tsr = Tsr::where('id',$request->tsr_id)->update(['status_id' => 3]);

@@ -44,6 +44,7 @@
                 :due="selected.due_at" 
                 :status="selected.status"
                 :code="selected.code"
+                @total="updateTotal"
                 ref="samples"/>
             </div>
             <div class="col-md-3">
@@ -223,6 +224,9 @@ export default {
         },
         openPrint(id){
             window.open(this.currentUrl + '/requests?option=print&id='+id);
+        },
+        updateTotal(data){
+            this.selected.payment.total = data;
         },
         hide(){
             this.showModal = false;

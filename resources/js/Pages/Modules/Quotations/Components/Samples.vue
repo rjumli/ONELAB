@@ -91,7 +91,7 @@
                         <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
                         <p class="fs-12 text-muted mb-0">{{list.analyses.length}} for analyzation</p>
                     </td>
-                    <td width="50%" class="text-center"><i>{{list.customer_description}}</i>, {{list.description.substring(0, 20) + "..."}}</td>
+                    <td width="50%" class="text-center fs-12">{{list.customer_description}}</td>
                     <td width="15%" class="text-end">
                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                             <i class="ri-eye-fill align-bottom"></i>
@@ -112,7 +112,7 @@
         </simplebar>
     </div>
     <View ref="view"/>
-    <Analysis @new="updateAnalysis" @update="fetch(id)" ref="analysis"/>
+    <Analysis @total="total" @update="fetch(this.id)" ref="analysis"/>
     <Create @new="updateSamples" ref="sample"/>
 </template>
 <script>
@@ -144,13 +144,13 @@ export default {
         },
         openAnalysis(data,index){
             this.index = index;
-            this.$refs.analysis.show(data,this.laboratory);
+            this.$refs.analysis.show(data,this.laboratory,'one');
         },
         openView(data){
             this.$refs.view.show(data);
         },
         openAddMany(){
-            this.$refs.analysis.many(this.selected,this.laboratory);
+            this.$refs.analysis.show(this.selected,this.laboratory,'many');
         },
         fetch(id){
             axios.get(this.currentUrl+'/quotations',{
@@ -167,9 +167,8 @@ export default {
         updateSamples(data){
             this.samples.push(data);
         },
-        updateAnalysis(data){
-            this.samples[this.index].analyses.push(data);
-            this.$emit('sum',data.fee);
+        total(data){
+            this.$emit('total',data);
         }
     },
      watch: {

@@ -33,6 +33,9 @@ class TestserviceController extends Controller
             case 'fetch':
                 return $this->dropdown->samples($request);
             break;
+            case 'testservices':
+                return $this->view->testservices($request);
+            break;
             case 'search':
                 return $this->view->search($request);
             break;

@@ -15,12 +15,10 @@ return new class extends Migration
             $table->tinyIncrements('id');
             $table->string('acronym',20)->default('DOST-IX');
             $table->string('name',100)->default('Department of Science and Technology - IX');
-            $table->string('subname',100)->default('DOST Management System');
             $table->json('laboratories');
-            $table->string('version');    
             $table->integer('laboratory_id')->unsigned()->index();
             $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
         });
     }
 

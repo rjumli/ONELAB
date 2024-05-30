@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Hashids\Hashids;
 use App\Models\Tsr;
 use App\Models\User;
+use App\Models\Configuration;
+use App\Models\ListDropdown;
+use App\Models\Laboratory;
 use App\Models\TsrSample;
 use App\Models\TsrAnalysis;
 use Illuminate\Http\Request;
@@ -26,6 +29,25 @@ class WelcomeController extends Controller
             ]);
         }else{
             return inertia('Auth/Login');
+        }
+    }
+
+    public function installation(){
+        $laboratory_id = \Auth::user()->userrole->laboratory_id;
+        $member = Laboratory::with('member')->where('id',$laboratory_id)->first();
+        $laboratories = ListDropdown::where('classification','Laboratory')->get();
+        if(\Auth::user()->is_active){
+            return inertia('Auth/Installation',[
+                'member' => $member,
+                'laboratories'=> $this->dropdown->laboratory_types(),
+            ]);
+        }
+    }
+
+    public function install(Request $request){
+        $data = Configuration::create(array_merge($request->all(),['laboratories' => json_encode($request->laboratories)]));
+        if($data){
+            return redirect()->intended(route('dashboard', absolute: false));
         }
     }
 

@@ -26,6 +26,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('installation', [WelcomeController::class, 'installation'])->name('installation');
+    Route::post('install', [WelcomeController::class, 'install']);
     Route::get('activation', [WelcomeController::class, 'activation'])->name('activation');
     Route::post('activate', [WelcomeController::class, 'activate']);
     Route::get('two-factor-challenge', [TwoFactorAuthenticationController::class, 'index'])->name('twofactor');

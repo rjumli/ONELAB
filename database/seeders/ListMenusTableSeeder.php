@@ -15,7 +15,7 @@ class ListMenusTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_menus')->truncate();
+        \DB::table('list_menus')->delete();
         
         \DB::table('list_menus')->insert(array (
             0 => 
@@ -23,7 +23,7 @@ class ListMenusTableSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Dashboard',
                 'icon' => 'ri-apps-line',
-                'route' => '/',
+                'route' => '/dashboard',
                 'path' => 'Modules/Dashboard',
                 'group' => 'Menu',
                 'order' => 1,
@@ -138,45 +138,32 @@ class ListMenusTableSeeder extends Seeder
             9 => 
             array (
                 'id' => 10,
-                'name' => 'Services',
+                'name' => 'Testservices',
                 'icon' => 'bx bxs-flask',
-                'route' => NULL,
-                'path' => 'Modules/Services',
-                'group' => 'Menu',
-                'order' => 3,
-                'has_child' => 1,
+                'route' => '/services/testservices',
+                'path' => 'Modules/Services/Testservices',
+                'group' => 'Service',
+                'order' => 1,
+                'has_child' => 0,
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
             10 => 
             array (
                 'id' => 11,
-                'name' => 'Testservices',
-                'icon' => '',
-                'route' => '/services/testservices',
-                'path' => '/services/testservices',
-                'group' => 'Services',
-                'order' => 1,
-                'has_child' => 1,
-                'is_mother' => 0,
+                'name' => 'Packages',
+                'icon' => 'bx bx-package',
+                'route' => '/services/packages',
+                'path' => 'Modules/Services/Packages',
+                'group' => 'Service',
+                'order' => 2,
+                'has_child' => 0,
+                'is_mother' => 1,
                 'is_active' => 1,
             ),
             11 => 
             array (
                 'id' => 12,
-                'name' => 'Packages',
-                'icon' => '',
-                'route' => '/services/packages',
-                'path' => '/services/packages',
-                'group' => 'Services',
-                'order' => 2,
-                'has_child' => 1,
-                'is_mother' => 0,
-                'is_active' => 1,
-            ),
-            12 => 
-            array (
-                'id' => 13,
                 'name' => 'TS Requests',
                 'icon' => 'ri-hand-coin-fill',
                 'route' => '/requests',
@@ -187,9 +174,9 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
-            13 => 
+            12 => 
             array (
-                'id' => 14,
+                'id' => 13,
                 'name' => 'Quotation',
                 'icon' => 'ri-price-tag-3-fill',
                 'route' => '/quotations',
@@ -200,9 +187,9 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
-            14 => 
+            13 => 
             array (
-                'id' => 15,
+                'id' => 14,
                 'name' => 'Inventory',
                 'icon' => 'ri-store-3-fill',
                 'route' => NULL,
@@ -213,9 +200,9 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
-            15 => 
+            14 => 
             array (
-                'id' => 16,
+                'id' => 15,
                 'name' => 'Dashboard',
                 'icon' => NULL,
                 'route' => '/inventory',
@@ -226,9 +213,9 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 0,
                 'is_active' => 1,
             ),
-            16 => 
+            15 => 
             array (
-                'id' => 17,
+                'id' => 16,
                 'name' => 'Items',
                 'icon' => NULL,
                 'route' => '/inventory/items',
@@ -239,9 +226,9 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 0,
                 'is_active' => 1,
             ),
-            17 => 
+            16 => 
             array (
-                'id' => 18,
+                'id' => 17,
                 'name' => 'Suppliers',
                 'icon' => NULL,
                 'route' => '/inventory/suppliers',

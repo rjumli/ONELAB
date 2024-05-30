@@ -175,6 +175,17 @@ class ListStatusesTableSeeder extends Seeder
             14 => 
             array (
                 'id' => 15,
+                'name' => 'Ongoing',
+                'type' => 'Quotation',
+                'color' => 'bg-info',
+                'others' => 'text-info',
+                'is_active' => 1,
+                'created_at' => '2024-03-28 02:33:01',
+                'updated_at' => '2024-03-28 02:33:01',
+            ),
+            15 => 
+            array (
+                'id' => 16,
                 'name' => 'Completed',
                 'type' => 'Quotation',
                 'color' => 'bg-success',
@@ -183,9 +194,9 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
-            15 => 
+            16 => 
             array (
-                'id' => 16,
+                'id' => 17,
                 'name' => 'Cancelled',
                 'type' => 'Quotation',
                 'color' => 'bg-danger',

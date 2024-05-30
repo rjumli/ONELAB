@@ -18,12 +18,19 @@ use App\Models\{
     ListTestservice,
     ListRole,
     InventorySupplier,
-    FinanceOrseries
+    FinanceOrseries,
+    Configuration
 };
 use App\Http\Resources\TestserviceResource;
 
 class DropdownService
 {
+    public function __construct()
+    {
+        $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
+        $this->ids = json_decode(Configuration::where('laboratory_id',$this->laboratory)->value('laboratories'));
+    }
+
     public function regions(){
         $data = LocationRegion::all()->map(function ($item) {
             return [
@@ -95,7 +102,7 @@ class DropdownService
     }
 
     public function laboratory_types(){
-        $data = ListDropdown::where('classification','Laboratory')->where('is_active',1)->get()->map(function ($item) {
+        $data = ListDropdown::where('classification','Laboratory')->whereIn('id',$this->ids)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
                 'name' => $item->name,

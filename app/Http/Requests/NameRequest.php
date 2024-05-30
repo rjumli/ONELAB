@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NotZeroPeso;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NameRequest extends FormRequest
@@ -35,7 +36,8 @@ class NameRequest extends FormRequest
         }else if($this->option == 'method'){
             return [
                 'method_id' => 'sometimes|required|unique:list_methods,method_id,NULL,'.$this->id.',reference_id,'.$this->reference_id,
-                'reference_id' => 'sometimes|required'
+                'reference_id' => 'sometimes|required',
+                'fee' => ['required', new NotZeroPeso],
             ];
         }else{
             return [];

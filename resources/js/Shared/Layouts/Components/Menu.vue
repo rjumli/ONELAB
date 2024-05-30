@@ -24,6 +24,27 @@
                         </ul>
                     </div>
                 </li>
+                <li class="menu-title">
+                    <i class="ri-more-fill"></i>
+                    <span data-key="krad-lists"> Service </span>
+                </li>
+                <li class="nav-item" v-for="(menu,index) in $page.props.menus.services" v-bind:key="index">
+                    <Link v-if="!menu.main.has_child" class="nav-link menu-link" :href="menu.main.route" :class="{'active': $page.component.startsWith(menu.main.path) }">
+                        <i :class="menu.main.icon"></i>
+                        <span data-key="krad-dashboards">{{menu.main.name}}</span>
+                    </Link>
+                    <Link v-else class="nav-link menu-link" :href="'#'+menu.main.name" :class="{'active': $page.component.startsWith(menu.main.path) }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                        <i :class="menu.main.icon"></i>
+                        <span data-key="krad-scholars">{{menu.main.name}}</span>
+                    </Link>
+                    <div v-if="menu.main.has_child" class="collapse menu-dropdown" :id="menu.main.name">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item" v-for="(sub,index) in menu.submenus" v-bind:key="index">
+                                <Link class="nav-link" :class="{'active': $page.url === sub.path }" :href="sub.route">{{sub.name}}</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <template v-if="$page.props.user.data.role === 'Administrator'">
                 <li class="menu-title">
                     <i class="ri-more-fill"></i>
@@ -150,13 +171,6 @@ export default {
   },
 
   methods: {
-    fetch(){
-        axios.get(this.currentUrl+'/utility/menus')
-        .then(response => {
-            this.menus = response.data;
-        })
-        .catch(err => console.log(err));
-    },
     onRoutechange() {
       // this.initActiveMenu();
       setTimeout(() => {

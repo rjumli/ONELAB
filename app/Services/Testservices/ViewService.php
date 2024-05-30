@@ -7,6 +7,7 @@ use App\Models\Laboratory;
 use App\Models\ListMethod;
 use App\Models\ListTestservice;
 use App\Http\Resources\DefaultResource;
+use App\Http\Resources\TestserviceResource;
 
 class ViewService
 {
@@ -72,6 +73,29 @@ class ViewService
         );
         return $data;
     }
+
+    public function testservices($request){
+        $data = TestserviceResource::collection(
+            ListTestservice::query()
+            ->when($this->role != 'Administrator', function ($query) {
+                $query->where('laboratory_id',$this->laboratory);
+            })
+            ->when($request->laboratory_type, function ($query, $laboratory) {
+                $query->where('laboratory_type',$laboratory);
+            })
+            ->when($request->sampletype_id, function ($query, $sampletype) {
+                $query->where('sampletype_id',$sampletype);
+            })
+            ->with('sampletype','laboratory.member','laboratory.address.region','type')
+            ->with('method.method','method.reference')
+            ->with(['testname' => function ($query) {
+                $query->orderBy('name', 'asc');
+            }])
+            ->get()
+        );
+        return $data;
+    }
+
 
     public function syncable(){
         $data = ListTestservice::where('is_synced',0)->count();

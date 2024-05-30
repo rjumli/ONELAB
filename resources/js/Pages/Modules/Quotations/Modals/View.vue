@@ -26,8 +26,6 @@
                                         <div class="text-muted">Contact : 
                                             <span class="text-body fw-medium">{{selected.conforme_no}}</span>
                                         </div>
-                                       
-                                        
                                     </div>
                                 </div>
                             </b-col>
@@ -45,6 +43,7 @@
                 :due="selected.due_at" 
                 :status="selected.status"
                 :code="selected.code"
+                @total="updateTotal"
                 ref="samples"/>
             </div>
             <div class="col-md-3">
@@ -134,6 +133,7 @@
                                     <div class="d-grid gap-2">
                                         <b-button v-if="selected.status.name !== 'Pending'" @click="openPrint(selected.id)" class="mt-3" variant="light"><i class="ri-printer-fill"></i> Print Quotation</b-button>
                                         <b-button v-if="selected.status.name === 'Pending'" @click="openSave(selected.id)" class="mt-3" variant="primary">Save Quotation</b-button>
+                                        <b-button v-if="selected.status.name === 'Ongoing'" @click="openSubmit(selected)" class="mt-0" variant="primary">Submit Quotation</b-button>
                                     </div>
                                 </div>
                             </td>
@@ -145,12 +145,14 @@
         </div>
     </b-modal>
     <Save @selected="updateSelected" ref="save"/>
+    <Submit :samples="samples" ref="submit"/>
 </template>
 <script>
 import Save from './Save.vue';
+import Submit from './Submit.vue';
 import Samples from '../Components/Samples.vue';
 export default {
-    components: { Samples, Save },
+    components: { Samples, Submit, Save },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -168,7 +170,6 @@ export default {
                 status: {},
                 purpose: {},
             },
-            samples: []
         }
     },
     methods: {
@@ -183,10 +184,16 @@ export default {
         openPrint(id){
             window.open(this.currentUrl + '/quotations?option=print&id='+id);
         },
+        openSubmit(data){
+            this.$refs.submit.show(data);
+        },
         updateSelected(data){
             this.selected = data;
             this.$refs.samples.fetch(this.selected.id);
             this.$emit('updateMain',data);
+        },
+        updateTotal(data){
+            this.selected.total = data;
         },
         hide(){
             this.showModal = false;

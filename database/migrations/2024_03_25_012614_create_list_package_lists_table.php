@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreign('package_id')->references('id')->on('list_packages')->onDelete('cascade');
             $table->integer('testservice_id')->unsigned()->index();
             $table->foreign('testservice_id')->references('id')->on('list_testservices')->onDelete('cascade');
-            $table->boolean('is_synced')->default(0);
             $table->timestamps();
         });
     }
