@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Dashboard\AnalystService;
+use App\Services\Dashboard\FinanceService;
 use App\Services\DropdownService;
 
 class DashboardController extends Controller
 {
-    public function __construct(AnalystService $analyst, DropdownService $dropdown){
+    public function __construct(FinanceService $finance, AnalystService $analyst, DropdownService $dropdown){
         $this->analyst = $analyst;
         $this->dropdown = $dropdown;
+        $this->finance = $finance;
     }
 
-    public function index(){
+    public function index(Request $request){
         $role = (\Auth::user()->userrole) ? \Auth::user()->userrole->role->name : null;
         switch($role){
             case 'Customer Relation Officer':
                 return inertia('Modules/Dashboard/CRO/Index');
             break;
-            case 'Analyst':
+            case 'Lab Analyst':
                 return inertia('Modules/Dashboard/Analyst/Index',[
                     'samples' => $this->analyst->samples()
                 ]);
@@ -31,6 +33,7 @@ class DashboardController extends Controller
                         'collections' => $this->dropdown->collections(),
                         'payments' => $this->dropdown->payments(),
                         'statuses' => $this->dropdown->statuses('Payment'),
+                        'counts' => $this->finance->counts($request)
                     ]
                 ]);
             break;
@@ -41,8 +44,9 @@ class DashboardController extends Controller
                         'collections' => $this->dropdown->collections(),
                         'payments' => $this->dropdown->payments(),
                         'deposits' => $this->dropdown->deposits(),
-                        'orseries' => $this->dropdown->orseries(),
                         'statuses' => $this->dropdown->statuses('Payment'),
+                        'orseries' => $this->finance->orseries(),
+                        'counts' => $this->finance->counts($request)
                     ]
                 ]);
             break;

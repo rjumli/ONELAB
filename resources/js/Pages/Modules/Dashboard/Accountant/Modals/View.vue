@@ -69,7 +69,7 @@
             <b-button v-if="$page.props.user.data.assigned_role == 'Cashier' && selected.status.name == 'Pending'" @click="openOr" variant="primary" :disabled="form.processing" block>Create Receipt</b-button>
         </template>
     </b-modal>
-    <Or :deposits="deposits" :orseries="orseries" ref="or"/>
+    <Or :deposits="deposits" @update="update" :orseries="orseries" ref="or"/>
 </template>
 <script>
 import Or from './Or.vue';
@@ -110,6 +110,10 @@ export default {
         },
         openOr(){
             this.$refs.or.show(this.selected.customer.customer_name.name+' - '+this.selected.customer.name,this.selected);
+        },
+        update(){
+            this.$emit('update',true);
+            this.showModal = false;
         }
     }
 }

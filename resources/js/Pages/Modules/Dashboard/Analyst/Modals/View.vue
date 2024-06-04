@@ -10,7 +10,7 @@
                         </div>
                         <div class="flex-grow-1">
                             <p class="text-muted fs-11 mb-0">Ref Code :</p>
-                            <h5 class="fs-13 mb-0">{{selected.sample.tsr.code}}</h5>
+                            <h5 class="fs-12 mb-0">{{selected.sample.tsr.code}}</h5>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="flex-grow-1">
                             <p class="text-muted fs-11 mb-0">Due At:</p>
-                            <h5 class="fs-13 mb-0">{{selected.sample.tsr.due_at}}</h5>
+                            <h5 class="fs-12 mb-0">{{selected.sample.tsr.due_at}}</h5>
                         </div>
                     </div>
                 </div>
@@ -71,8 +71,8 @@
         </form>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button v-if="selected.status.name === 'Pending'" @click="save(10,'start')" variant="primary" :disabled="form.processing" block>Start Analysis</b-button>
-            <b-button v-if="selected.status.name === 'Ongoing'" @click="save(11,'end')" variant="primary" :disabled="form.processing" block>End Analysis</b-button>
+            <b-button v-if="selected.status.name === 'Pending'" @click="save(11,'start')" variant="primary" :disabled="form.processing" block>Start Analysis</b-button>
+            <b-button v-if="selected.status.name === 'Ongoing'" @click="save(12,'end')" variant="primary" :disabled="form.processing" block>End Analysis</b-button>
         </template>
     </b-modal>
     <Save @hide="hide" ref="save"/>

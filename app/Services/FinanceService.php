@@ -83,11 +83,13 @@ class FinanceService
                     }
 
                     $or = FinanceOrseries::where('id',$request->orseries['value'])->first();
-                    $next = $or->next+1;
-                    $or->next = $next;
-                    if($next == $or->end){
+                    if($or->next == $or->end){
                         $or->is_active = 0;
+                    }else{
+                        $next = $or->next+1;
+                        $or->next = $next;
                     }
+
                     if($or->save()){
                         if($request->cheque['type'] === 'Cheque'){
                             $cheque = new FinanceCheque;
@@ -115,6 +117,7 @@ class FinanceService
                                             $transaction->save();
                                             \DB::commit();  
                                         }else{
+                                            $data = 'error';
                                             \DB::rollback();
                                         }
                                     }else{
@@ -131,16 +134,21 @@ class FinanceService
                                             $transaction->save();
                                             \DB::commit();  
                                         }else{
+                                            $data = 'error';
                                             \DB::rollback();
                                         }
                                     }
                                 }
                             }else{
+                                $data = 'error';
                                 \DB::rollback();
                             }
+                        }else{
+                            \DB::commit();  
                         }
                     }
                 }else{
+                    $data = 'error';
                     \DB::rollback();
                 }
             }
@@ -176,6 +184,9 @@ class FinanceService
                     $query->whereHas('customer_name',function ($query) use ($keyword) {
                         $query->where('name', 'LIKE', "%{$keyword}%");
                     });
+                })
+                ->orWhereHas('or',function ($query) use ($keyword) {
+                    $query->where('number', 'LIKE', "%{$keyword}%");
                 });
             })
             ->when($request->status, function ($query, $status) {

@@ -59,8 +59,8 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <Create :collections="collections" :payments="payments" ref="create"/>
-    <View :deposits="deposits" :orseries="orseries" ref="view"/>
+    <Create :collections="collections" :payments="payments" @update="fetch()" ref="create"/>
+    <View :deposits="deposits" :orseries="orseries" @update="fetch()" ref="view"/>
 </template>
 <script>
 import _ from 'lodash';
@@ -79,7 +79,7 @@ export default {
             index: null,
             filter: {
                 keyword: null,
-                status: 6
+                status: null
             }
         }
     },
@@ -101,7 +101,7 @@ export default {
                 params : {
                     keyword: this.filter.keyword,
                     status: this.filter.status,
-                    count: ((window.innerHeight-350)/58),
+                    count: ((window.innerHeight-550)/58),
                     option: 'lists'
                 }
             })

@@ -100,6 +100,7 @@ export default {
             this.form.post('/finance',{
                 preserveScroll: true,
                 onSuccess: (response) => {
+                    this.$emit('update',true);
                     this.hide();
                 },
             });

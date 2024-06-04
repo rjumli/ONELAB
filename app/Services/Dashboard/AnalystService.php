@@ -17,10 +17,12 @@ class AnalystService
 
     private function pending($laboratory){
         $data = TsrAnalysis::with('status','sample.tsr','testservice.testname','testservice.method.reference','testservice.method.method')
-        ->where('status_id',9)
+        ->where('status_id',10)
         ->whereHas('sample',function ($query) use ($laboratory) {
             $query->whereHas('tsr',function ($query) use ($laboratory) {
-                $query->where('laboratory_id',$laboratory);
+                $query->where('laboratory_id',$laboratory)->whereHas('payment',function ($query){
+                    $query->whereIn('status_id',[7,8]);
+                });
             });
         })
         ->get();
@@ -29,7 +31,8 @@ class AnalystService
 
     private function ongoing($laboratory){
         $data = TsrAnalysis::with('status','sample.tsr','testservice.testname','testservice.method.reference','testservice.method.method')
-        ->where('status_id',10)
+        ->where('status_id',11)
+        ->where('analyst_id',\Auth::user()->id)
         ->whereHas('sample',function ($query) use ($laboratory) {
             $query->whereHas('tsr',function ($query) use ($laboratory) {
                 $query->where('laboratory_id',$laboratory);
@@ -41,7 +44,7 @@ class AnalystService
 
     private function completed($laboratory){
         $data = TsrAnalysis::with('status','sample.tsr','testservice.testname','testservice.method.reference','testservice.method.method')
-        ->where('status_id',11)
+        ->where('status_id',12)
         ->whereHas('sample',function ($query) use ($laboratory) {
             $query->whereHas('tsr',function ($query) use ($laboratory) {
                 $query->where('laboratory_id',$laboratory);

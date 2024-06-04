@@ -205,6 +205,17 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
             ),
+            17 => 
+            array (
+                'id' => 18,
+                'name' => 'Contract',
+                'type' => 'Payment',
+                'color' => 'bg-danger-subtle',
+                'others' => 'text-danger',
+                'is_active' => 1,
+                'created_at' => '2024-03-28 02:33:01',
+                'updated_at' => '2024-03-28 02:33:01',
+            ),
         ));
 
         

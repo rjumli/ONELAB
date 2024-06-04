@@ -18,7 +18,6 @@ use App\Models\{
     ListTestservice,
     ListRole,
     InventorySupplier,
-    FinanceOrseries,
     Configuration
 };
 use App\Http\Resources\TestserviceResource;
@@ -260,19 +259,6 @@ class DropdownService
             return [
                 'value' => $item->id,
                 'name' => $item->name
-            ];
-        });
-        return $data;
-    }
-
-    public function orseries(){
-        $data = FinanceOrseries::where('user_id',\Auth::user()->id)->get()->map(function ($item) {
-            return [
-                'value' => $item->id,
-                'name' => $item->name,
-                'start' => $item->start,
-                'next' => $item->next,
-                'end' => $item->end
             ];
         });
         return $data;

@@ -17,4 +17,9 @@ class FinanceReceipt extends Model
         'created_by',
         'laboratory_id'
     ];
+
+    public function op()
+    {
+        return $this->belongsTo('App\Models\FinanceOp', 'op_id', 'id');
+    }
 }

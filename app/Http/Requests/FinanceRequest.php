@@ -23,7 +23,9 @@ class FinanceRequest extends FormRequest
             ];
         }else if($this->option == 'receipt'){
             return [
-                'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
+                'deposit_id' => 'required|integer',
+                'orseries' => 'required'
+                // 'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
             ];
         }
     }
