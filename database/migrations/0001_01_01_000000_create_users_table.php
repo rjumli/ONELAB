@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('role',50);
             $table->boolean('is_active')->default(0);
+            $table->boolean('is_new')->default(0);
             $table->text('two_factor_secret') ->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
             $table->rememberToken();
