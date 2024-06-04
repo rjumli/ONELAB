@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {return inertia('Auth/Login'); });
+Route::get('/', [App\Http\Controllers\WelcomeController::class, 'landing']);
 Route::get('/verification/{code}', [App\Http\Controllers\WelcomeController::class, 'verification']);
 Route::get('/csf/survey', [App\Http\Controllers\CsfController::class, 'show']);
+Route::post('register', [App\Http\Controllers\WelcomeController::class, 'register']);
+Route::get('new', [App\Http\Controllers\WelcomeController::class, 'new'])->name('new');
 
 Route::middleware(['2fa','auth','verified'])->group(function () {
     Route::resource('/profile', App\Http\Controllers\User\ProfileController::class);

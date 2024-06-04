@@ -50,6 +50,11 @@ class Customer extends Model
         return $this->hasOne('App\Models\CustomerContact', 'customer_id');
     }
 
+    public function wallet()
+    {
+        return $this->hasOne('App\Models\Wallet', 'customer_id');
+    }
+
     public function type()
     {
         return $this->belongsTo('App\Models\ListDropdown', 'type_id', 'id');

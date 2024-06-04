@@ -26,7 +26,7 @@ class UtilityController extends Controller
                     'configuration' =>  $this->configuration(),
                     'dropdowns' => [
                         'laboratories' => $this->dropdown->laboratories(),
-                        'types' => $this->dropdown->laboratory_types(),
+                        'types' => $this->dropdown->laboratory_all(),
                         'roles' => $this->dropdown->roles(),
                     ]
                 ]);

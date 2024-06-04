@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wallet_deductions', function (Blueprint $table) {
+        Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->engine = 'InnoDB'; 
             $table->bigIncrements('id');
             $table->decimal('amount',12,2);
-            $table->bigInteger('tsr_id')->unsigned()->index();
-            $table->foreign('tsr_id')->references('id')->on('tsrs')->onDelete('cascade');
+            $table->boolean('is_credit');
+            $table->bigInteger('receipt_id')->unsigned()->index();
+            $table->foreign('receipt_id')->references('id')->on('finance_receipts')->onDelete('cascade');
             $table->bigInteger('wallet_id')->unsigned()->nullable();
             $table->foreign('wallet_id')->references('id')->on('wallets')->onDelete('cascade');
             $table->timestamps();
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wallet_deductions');
+        Schema::dropIfExists('wallet_transactions');
     }
 };

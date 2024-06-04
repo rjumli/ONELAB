@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use App\Models\Tsr;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Models\UserRole;
 use App\Models\FinanceOp;
 use App\Models\TsrPayment;
 use App\Models\FinanceReceipt;
 use App\Models\FinanceOpItem;
 use App\Models\FinanceOrseries;
+use App\Models\FinanceCheque;
 use App\Models\Configuration;
 use App\Http\Resources\Finance\OpResource;
 
@@ -49,46 +52,104 @@ class FinanceService
     }
 
     public function store_receipt($request){
-        $data = FinanceReceipt::create(array_merge($request->all(), [
-            'number' => $request->orseries['next'],
-            'orseries_id' => $request->orseries['value'],  
-            'op_id' => $request->selected['id'],
-            'payor_id' => $request->selected['customer']['id'],
-            'created_by' => \Auth::user()->id,
-            'laboratory_id' => \Auth::user()->userrole->laboratory_id
-        ]));
+        $result = \DB::transaction(function () use ($request){
+            \DB::beginTransaction();
+            $data = FinanceReceipt::create(array_merge($request->all(), [
+                'number' => $request->orseries['next'],
+                'orseries_id' => $request->orseries['value'],  
+                'op_id' => $request->selected['id'],
+                'payor_id' => $request->selected['customer']['id'],
+                'created_by' => \Auth::user()->id,
+                'laboratory_id' => \Auth::user()->userrole->laboratory_id
+            ]));
 
-        if($data){
-            $items = $request->selected['items'];
-            $op = FinanceOp::where('id',$request->selected['id'])->first();
-            $op->status_id = 7;
-            if($op->save()){
-                foreach($items as $item){
-                    $id = $item['tsr_id'];
-                    $payment = TsrPayment::where('tsr_id',$id)->first();
-                    $payment->or_number = $request->orseries['next'];
-                    $payment->is_paid = 1;
-                    $payment->paid_at = now();
-                    $payment->status_id = 7;
-                    if($payment->save()){
-                        $tsr = Tsr::where('id',$id)->first();
-                        $tsr->status_id = 3;
-                        $tsr->save();
+            if($data){
+                $items = $request->selected['items'];
+                $op = FinanceOp::where('id',$request->selected['id'])->first();
+                $op->status_id = 7;
+                if($op->save()){
+                    foreach($items as $item){
+                        $id = $item['tsr_id'];
+                        $payment = TsrPayment::where('tsr_id',$id)->first();
+                        $payment->or_number = $request->orseries['next'];
+                        $payment->is_paid = 1;
+                        $payment->paid_at = now();
+                        $payment->status_id = 7;
+                        if($payment->save()){
+                            $tsr = Tsr::where('id',$id)->first();
+                            $tsr->status_id = 3;
+                            $tsr->save();
+                        }
                     }
-                }
 
-                $or = FinanceOrseries::where('id',$request->orseries['value'])->first();
-                $next = $or->next+1;
-                $or->next = $next;
-                if($next == $or->end){
-                    $or->is_active = 0;
+                    $or = FinanceOrseries::where('id',$request->orseries['value'])->first();
+                    $next = $or->next+1;
+                    $or->next = $next;
+                    if($next == $or->end){
+                        $or->is_active = 0;
+                    }
+                    if($or->save()){
+                        if($request->cheque['type'] === 'Cheque'){
+                            $cheque = new FinanceCheque;
+                            $cheque->number = $request->cheque['number'];
+                            $cheque->amount = $request->cheque['amount'];
+                            $cheque->bank = $request->cheque['bank'];
+                            $cheque->cheque_at = $request->cheque['cheque_at'];
+                            $cheque->receipt_id = $data->id;
+                            if($cheque->save()){
+                                $amount = trim(str_replace(',','',$request->cheque['amount']),'₱');
+                                $total = trim(str_replace(',','',$request->total),'₱');
+                                if($amount > $total){
+                                    $total = $amount - $total;
+                                    $customer_id = $request->selected['customer']['id'];
+
+                                    $wallet = Wallet::where('customer_id',$customer_id)->first();
+                                    if($wallet){
+                                        $wallet->total = $wallet->total + $total;
+                                        if($wallet->save()){
+                                            $transaction = new WalletTransaction;
+                                            $transaction->amount = $total;
+                                            $transaction->is_credit = 1;
+                                            $transaction->wallet_id = $wallet->id;
+                                            $transaction->receipt_id = $data->id;
+                                            $transaction->save();
+                                            \DB::commit();  
+                                        }else{
+                                            \DB::rollback();
+                                        }
+                                    }else{
+                                        $wallet = new Wallet;
+                                        $wallet->total = $total;
+                                        $wallet->available = $total;
+                                        $wallet->customer_id = $customer_id;
+                                        if($wallet->save()){
+                                            $transaction = new WalletTransaction;
+                                            $transaction->amount = $total;
+                                            $transaction->is_credit = 1;
+                                            $transaction->wallet_id = $wallet->id;
+                                            $transaction->receipt_id = $data->id;
+                                            $transaction->save();
+                                            \DB::commit();  
+                                        }else{
+                                            \DB::rollback();
+                                        }
+                                    }
+                                }
+                            }else{
+                                \DB::rollback();
+                            }
+                        }
+                    }
+                }else{
+                    \DB::rollback();
                 }
-                $or->save();
             }
-        }
+
+            return ['data' => $data];
+        });
 
         return [
-            'data' => $data,
+            'data' => $result['data'],
             'message' => 'Receipt creation was successful!', 
             'info' => "You've successfully created the new receipt."
         ];

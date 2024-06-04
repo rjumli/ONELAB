@@ -36,7 +36,8 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td>
-                        <h5 class="fs-13 mb-0 text-dark">{{list.code}}</h5>
+                        <h5 class="fs-13 mb-0 text-dark" v-if="list.or">OR# : {{list.or.number}}</h5>
+                        <h5 class="fs-13 mb-0 text-dark" v-else>{{list.code}}</h5>
                         <p class="fs-12 text-muted mb-0">{{list.customer.customer_name.name}} {{list.customer.name}}</p>
                     </td>
                     <td class="text-center fs-12">{{list.collection.name}}</td>
@@ -78,7 +79,7 @@ export default {
             index: null,
             filter: {
                 keyword: null,
-                status: null
+                status: 6
             }
         }
     },

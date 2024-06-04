@@ -30,6 +30,7 @@ class DashboardController extends Controller
                         'laboratories' => $this->dropdown->laboratory_types(),
                         'collections' => $this->dropdown->collections(),
                         'payments' => $this->dropdown->payments(),
+                        'statuses' => $this->dropdown->statuses('Payment'),
                     ]
                 ]);
             break;
@@ -47,7 +48,7 @@ class DashboardController extends Controller
             break;
             default:
                 return inertia('Modules/Dashboard/Index',[
-                    'laboratories' => $this->dropdown->laboratory_types(),
+                    'laboratories' => $this->dropdown->laboratory_all(),
                 ]);
         }   
     }

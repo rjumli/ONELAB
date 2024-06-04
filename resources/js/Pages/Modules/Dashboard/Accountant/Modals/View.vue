@@ -24,11 +24,14 @@
                 </div>
             </div>
         </div>
-        {{ selected.or}}
         <hr class="text-muted"/>
         <div class="card-body text-center">
             <div class="row g-3">
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" v-if="selected.or">
+                    <p class="text-muted mb-2 fs-11 text-uppercase fw-semibold">OR Number</p>
+                    <h5 class="fs-12 mb-0"><span id="invoice-no">{{selected.or.number}}</span></h5>
+                </div>
+                <div class="col-lg-3 col-6" v-else>
                     <p class="text-muted mb-2 fs-11 text-uppercase fw-semibold">Code</p>
                     <h5 class="fs-12 mb-0"><span id="invoice-no">{{selected.code}}</span></h5>
                 </div>

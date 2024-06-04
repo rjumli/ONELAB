@@ -32,7 +32,24 @@
                 <BCol lg="12 mt-1 mb-n3">
                     <hr class="text-muted"/>
                 </BCol>
+                <BCol lg="6 mt-2" v-if="form.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Cheque Number"/>
+                    <TextInput v-model="form.cheque.number" type="text" class="form-control" :light="true"/>
+                </BCol>
+                <BCol lg="6 mt-2" v-if="form.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Cheque Date"/>
+                    <TextInput v-model="form.cheque.cheque_at" type="date" class="form-control" :light="true"/>
+                </BCol>
+                <BCol lg="6 mt-0" v-if="form.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Amount"/>
+                    <Amount @amount="amount" ref="testing" :readonly="false"/>
+                </BCol>
+                <BCol lg="6 mt-0" v-if="form.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Bank Name"/>
+                    <TextInput v-model="form.cheque.bank" type="text" class="form-control" :light="true"/>
+                </BCol>
             </BRow>
+            <!-- {{form.selected}} -->
         </form>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
@@ -45,8 +62,9 @@ import { useForm } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import Multiselect from "@vueform/multiselect";
+import Amount from '@/Shared/Components/Forms/Amount.vue';
 export default {
-    components: { Multiselect, InputLabel, TextInput },
+    components: { Multiselect, InputLabel, TextInput, Amount },
     props: ['deposits','orseries'],
     data(){
         return {
@@ -55,7 +73,15 @@ export default {
                 id: null,
                 deposit_id: null,
                 orseries: null,
-                selected: null,
+                selected: {payment:{}},
+                cheque: {
+                    type: null,
+                    number: null,
+                    bank: null,
+                    cheque_at: null,
+                    amount: null,
+                },
+                total: null,
                 option: 'receipt'
             }),
             customer: null,
@@ -66,6 +92,8 @@ export default {
         show(customer,data){
             this.customer = customer;
             this.form.selected = data;
+            this.form.total =  this.form.selected.total;
+            this.form.cheque.type =  this.form.selected.payment.name;
             this.showModal = true;
         },
         submit(){
@@ -75,6 +103,9 @@ export default {
                     this.hide();
                 },
             });
+        },
+        amount(val){
+            this.form.cheque.amount = val;
         },
         hide(){
             this.showModal = false;

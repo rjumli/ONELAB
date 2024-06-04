@@ -63,12 +63,13 @@
                                 </div>
                             </BCardBody>
                         </BCard>
+                        <div class="mt-4 text-center" style="cursor: pointer;"><p @click="openRegister" class="mb-0">Don't have an account ? <span class="fw-semibold text-primary text-decoration-underline"> Signup </span></p></div>
 
                     </BCol>
                 </BRow>
             </BContainer>
         </div>
-
+        <Register :dropdowns="dropdowns" ref="register"/>
     </div>
 </template>
 <script setup>
@@ -77,9 +78,11 @@ import Checkbox from '@/Shared/Components/Forms/Checkbox.vue';
 import InputError from '@/Shared/Components/Forms/InputError.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
+import Register from './Register.vue';
 defineProps({
     canResetPassword: Boolean,
     status: String,
+    dropdowns: Object
 });
 const form = useForm({
     email: '',
@@ -101,6 +104,11 @@ export default {
     data() {
         return {
             togglePassword: false
+        }
+    },
+    methods: {
+        openRegister(){
+            this.$refs.register.show();
         }
     }
 }

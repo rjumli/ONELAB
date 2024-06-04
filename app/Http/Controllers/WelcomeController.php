@@ -14,12 +14,25 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TsrResource;
 use App\Http\Resources\SampleResource;
 use App\Services\DropdownService;
+use App\Http\Requests\UserRequest;
+use App\Traits\HandlesTransaction;
 
 class WelcomeController extends Controller
 {
+    use HandlesTransaction;
 
     public function __construct(DropdownService $dropdown){
         $this->dropdown = $dropdown;
+    }
+
+    public function landing(){
+        return inertia('Auth/Login',[
+            'dropdowns' => [
+                'laboratories' => $this->dropdown->laboratories(),
+                'types' => $this->dropdown->laboratory_all(),
+                'roles' => $this->dropdown->roles(),
+            ]
+        ]);
     }
 
     public function index(){
@@ -39,7 +52,7 @@ class WelcomeController extends Controller
         if(\Auth::user()->is_active){
             return inertia('Auth/Installation',[
                 'member' => $member,
-                'laboratories'=> $this->dropdown->laboratory_types(),
+                'laboratories'=> $this->dropdown->laboratory_all(),
             ]);
         }
     }
@@ -124,7 +137,19 @@ class WelcomeController extends Controller
         ]);
     }
 
-    public function csf(){
-        
+    public function register(UserRequest $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            $user = User::create(array_merge($request->all(), ['password' => bcrypt('123456789'),'is_new' => 1, 'role' => 'Staff','avatar' =>'avatar.jpg']));
+            $user->profile()->create($request->all());
+            $user->userrole()->create($request->all());
+
+            \Auth::login($user);
+        });
+
+        return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    public function new(){
+        return inertia('Auth/New');
     }
 }

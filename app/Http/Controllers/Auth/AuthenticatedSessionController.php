@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Services\DropdownService;
 
 class AuthenticatedSessionController extends Controller
 {
+    public function __construct(DropdownService $dropdown){
+        $this->dropdown = $dropdown;
+    }
     /**
      * Display the login view.
      */
@@ -24,6 +28,11 @@ class AuthenticatedSessionController extends Controller
             return Inertia::render('Auth/Login', [
                 'canResetPassword' => Route::has('password.request'),
                 'status' => session('status'),
+                'dropdowns' => [
+                    'laboratories' => $this->dropdown->laboratories(),
+                    'types' => $this->dropdown->laboratory_all(),
+                    'roles' => $this->dropdown->roles(),
+                ]
             ]);
         }
     }
