@@ -65,13 +65,15 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="alert alert-danger mt-2 mb-n3" role="alert">Please select an image to submit</div>
                                         
                                         <div class="mt-4">
                                             <BButton v-if="uploaded" @click="create()"  variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Submit</BButton>
                                             <BButton v-else variant="primary" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="true">Submit</BButton>
                                         </div>
-
-                                         <div class="mt-4 text-center">
+                                    
+                                        <div class="mt-4 text-center">
                                             <p class="mb-0"> Aren't ready yet?
                                                 <a style="cursor: pointer;" @click.prevent="logout" class="fw-semibold text-danger">Logout</a>
                                             </p>
