@@ -221,7 +221,7 @@
     "src": "public/images/sidebar/img-4.jpg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-GUr4Ma9F.js",
+    "file": "assets/app-BaT7ZVc1.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -237,7 +237,7 @@
       "node_modules/leaflet/dist/leaflet-src.esm.js"
     ],
     "css": [
-      "assets/app-BPf7uJaq.css"
+      "assets/app-Cg-FmmQv.css"
     ],
     "assets": [
       "assets/logo-sm-BMbbSDmV.png",
