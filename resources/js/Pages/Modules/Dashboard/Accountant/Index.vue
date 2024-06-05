@@ -48,9 +48,6 @@
                                                 </span>
                                             </h4>
                                         </div>
-                                        <div class="flex-shrink-0 align-self-end">
-                                            <apexchart class="apex-charts" height="40" width="100" type="area" dir="ltr" :series="item.series" :options="chartOptions"></apexchart>
-                                        </div>
                                     </div>
                                 </b-card-body>
                             </b-card>
@@ -71,31 +68,41 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body" style="height: calc(100vh - 305px); overflow: auto;">
-                            <button class="btn btn-md btn-light btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i> Monitor Schools</button>
-                            {{dropdowns.orseries.length}}
+                            <div class="d-grid gap-2" v-if="dropdowns.orseries">
+                                <button v-if="dropdowns.orseries.length > 0" class="btn btn-md btn-soft-success btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i>OR Series : {{dropdowns.orseries[0].name}}</button>
+                                <button @click="addSeries" v-else class="btn btn-md btn-soft-danger btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i>No OR Series found.</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </b-row>
+    <Series @update="update" ref="series"/>
 </template>
 <script>
+import Series from './Modals/Series.vue';
 import Lists from './Components/Lists.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
     props: ['dropdowns'],
-    components: { PageHeader, Lists },
+    components: { PageHeader, Lists, Series },
     data(){
         return {
             laboratory: null,
         }
     },
     methods: {
+        addSeries(){
+            this.$refs.series.show();
+        },
         formatMoney(value) {
             let val = (value/1).toFixed(2).replace(',', '.')
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         },
+        update(){
+            
+        }
     }
 }
 </script>

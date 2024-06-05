@@ -32,6 +32,8 @@ class FinanceController extends Controller
                 return $this->finance->store_op($request);
             }else if($request->option == 'receipt'){
                 return $this->finance->store_receipt($request);
+            }else if($request->option == 'series'){
+                return $this->finance->store_series($request);
             }
         });
 

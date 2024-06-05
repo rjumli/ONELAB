@@ -102,14 +102,6 @@ export default {
     watch: {
         "filter.keyword"(newVal){
             this.checkSearchStr(newVal)
-        },
-        '$page.props.flash' : {
-            deep: true,
-            handler(val = null) {
-                if(val.status){
-                    this.lists[this.index] = val.data.data;
-                }
-            }
         }
     },
     created(){

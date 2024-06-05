@@ -163,6 +163,22 @@ class FinanceService
         ];
     }
 
+    public function store_series($request){
+        $data = FinanceOrseries::create(array_merge($request->all(),[
+            'user_id' => \Auth::user()->id,
+            'is_active' => 1,
+            'laboratory_id' => \Auth::user()->userrole->laboratory_id
+        ]));
+        if($data){
+            $series = FinanceOrseries::where('user_id',\Auth::user()->id)->where('id','!=',$data->id)->update(['is_active' => 0]);
+        }
+        return [
+            'data' => $data,
+            'message' => 'OR Series creation was successful!', 
+            'info' => "You've successfully created the new series."
+        ];
+    }
+
     private function generateCode(){
         $year = date('Y'); 
         $c = FinanceOp::whereYear('created_at',$year)->count();

@@ -27,6 +27,13 @@ class FinanceRequest extends FormRequest
                 'orseries' => 'required'
                 // 'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
             ];
+        }else if($this->option == 'series'){
+            return [
+                'name' => 'required|string',
+                'start' => 'required|integer',
+                'next' => 'required|integer',
+                'end' => 'required|integer',
+            ];
         }
     }
 }

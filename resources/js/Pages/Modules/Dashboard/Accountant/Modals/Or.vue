@@ -93,6 +93,7 @@ export default {
             this.customer = customer;
             this.form.selected = data;
             this.form.total =  this.form.selected.total;
+            this.form.series = this.orseries;
             this.form.cheque.type =  this.form.selected.payment.name;
             this.showModal = true;
         },

@@ -167,7 +167,7 @@ class DropdownService
         $data = Laboratory::with('member')->where('is_active',1)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
-                'name' => $item->member->name,
+                'name' => $item->member->name.' ('.$item->name.')',
                 'short' => $item->name
             ];
         });
