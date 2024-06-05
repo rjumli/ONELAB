@@ -6,6 +6,8 @@ use App\Models\Wallet;
 use App\Models\FinanceOp;
 use App\Models\TsrPayment;
 use App\Models\FinanceOrseries;
+use App\Models\ListStatus;
+use App\Models\ListDropdown;
 
 class FinanceService
 {
@@ -55,5 +57,32 @@ class FinanceService
             'color' => 'danger',
             'total' => Wallet::sum('available')
         ];
+    }
+
+    public function statuses(){
+        $statuses = ListStatus::select('id','name','others','type')->where('type','Payment')->withCount('status')->orderBy('status_count', 'desc')->get();
+        foreach($statuses as $status){
+            $array [] = [
+                'id' => $status['id'],
+                'name' => $status['name'],
+                'count' => $status['status_count'],
+                'others' => $status['others'],
+                'total' => FinanceOp::where('status_id',$status['id'])->sum('total')
+            ];
+        }
+        return $array;
+    }
+
+    public function payments($request){
+        $payments = ListDropdown::select('id','name')->where('classification','Payment Mode')->withCount('ops')->orderBy('ops_count', 'desc')->get();
+        foreach($payments as $payment){
+            $array [] = [
+                'id' => $payment['id'],
+                'name' => $payment['name'],
+                'count' => $payment['ops_count'],
+                'total' => FinanceOp::where('payment_id',$payment['id'])->sum('total')
+            ];
+        }
+        return $array;
     }
 }

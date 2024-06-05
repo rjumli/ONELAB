@@ -9,8 +9,8 @@ class NotZeroPeso implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($value === '₱ 0.00') {
-            $fail("The {$attribute} must not be ₱ 0.00.");
+        if ($value === '₱0.00') {
+            $fail("The {$attribute} must not be ₱0.00.");
         }
     }
 }

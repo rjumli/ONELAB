@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NotZeroPeso;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FinanceRequest extends FormRequest
@@ -24,8 +25,11 @@ class FinanceRequest extends FormRequest
         }else if($this->option == 'receipt'){
             return [
                 'deposit_id' => 'required|integer',
-                'orseries' => 'required'
-                // 'name' => 'sometimes|required|string|unique:inventory_items,name,NULL,'.$this->id.',laboratory_id,'.$this->laboratory_id.',laboratory_type,'.$this->laboratory_type.',unit,'.$this->unit.',unit_id,'.$this->unit_id,
+                'orseries' => 'required',
+                'cheque_number' => 'sometimes|required_if:orseries,!=,null|unique:finance_receipts,number,NULL,'.$this->id.',orseries_id,'.$this->orseries_id,
+                'cheque_cheque_at' => 'sometimes|required',
+                'cheque_bank' => 'sometimes|required',
+                'cheque_amount' => ['sometimes','required', new NotZeroPeso],
             ];
         }else if($this->option == 'series'){
             return [
@@ -35,5 +39,21 @@ class FinanceRequest extends FormRequest
                 'end' => 'required|integer',
             ];
         }
+    }
+
+    public function messages()
+    {
+        if($this->type === 'Cheque'){
+            $message = [
+                'cheque_number.unique' => 'already exist',
+                'cheque_number.required_if' => 'required',
+                'cheque_cheque_at.required' => 'required',
+                'cheque_bank.required' => 'required',
+                'cheque_amount.required' => 'required',
+            ];
+        }else{
+            $message = [];
+        }
+        return $message;
     }
 }

@@ -47,7 +47,9 @@ class DashboardController extends Controller
                         'statuses' => $this->dropdown->statuses('Payment'),
                         'orseries' => $this->finance->orseries(),
                         'counts' => $this->finance->counts($request)
-                    ]
+                    ],
+                    'statuses' => $this->finance->statuses($request),
+                    'payments' => $this->finance->payments($request)
                 ]);
             break;
             default:

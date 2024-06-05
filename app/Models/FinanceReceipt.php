@@ -22,4 +22,19 @@ class FinanceReceipt extends Model
     {
         return $this->belongsTo('App\Models\FinanceOp', 'op_id', 'id');
     }
+
+    public function payor()
+    {
+        return $this->belongsTo('App\Models\Customer', 'payor_id', 'id');
+    }
+
+    public function laboratory()
+    {
+        return $this->belongsTo('App\Models\Laboratory', 'laboratory_id', 'id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y', strtotime($value));
+    }
 }

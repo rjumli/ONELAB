@@ -14,6 +14,8 @@ use App\Models\FinanceOrseries;
 use App\Models\FinanceCheque;
 use App\Models\Configuration;
 use App\Http\Resources\Finance\OpResource;
+use App\Exports\OrExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FinanceService
 {
@@ -91,15 +93,15 @@ class FinanceService
                     }
 
                     if($or->save()){
-                        if($request->cheque['type'] === 'Cheque'){
+                        if($request->type === 'Cheque'){
                             $cheque = new FinanceCheque;
-                            $cheque->number = $request->cheque['number'];
-                            $cheque->amount = $request->cheque['amount'];
-                            $cheque->bank = $request->cheque['bank'];
-                            $cheque->cheque_at = $request->cheque['cheque_at'];
+                            $cheque->number = $request->cheque_number;
+                            $cheque->amount = $request->cheque_amount;
+                            $cheque->bank = $request->cheque_bank;
+                            $cheque->cheque_at = $request->cheque_cheque_at;
                             $cheque->receipt_id = $data->id;
                             if($cheque->save()){
-                                $amount = trim(str_replace(',','',$request->cheque['amount']),'₱');
+                                $amount = trim(str_replace(',','',$request->cheque_amount),'₱');
                                 $total = trim(str_replace(',','',$request->total),'₱');
                                 if($amount > $total){
                                     $total = $amount - $total;
@@ -216,31 +218,6 @@ class FinanceService
 
     public function print($request){
         $id = $request->id;
-        $op = FinanceOp::query()->where('id',$id)
-        ->with('items.tsr.samples.analyses.testservice.testname')
-        ->with('createdby:id','createdby.profile:id,firstname,lastname,user_id')
-        ->with('collection:id,name','payment:id,name','status:id,name,color,others')
-        ->with('customer:id,name_id,email,name,contact_no,is_main','customer.customer_name:id,name,has_branches','customer.address:address,addressable_id,region_code,province_code,municipality_code,barangay_code','customer.address.region:code,name,region','customer.address.province:code,name','customer.address.municipality:code,name','customer.address.barangay:code,name')
-        ->first();
-        
-        $cashier = UserRole::with('user:id','user.profile:id,user_id,firstname,middlename,lastname')
-        ->where('laboratory_id',$op->laboratory_id)->whereHas('role',function ($query){
-            $query->where('name','Cashier');
-        })->first();
-
-        $accountant = UserRole::with('user:id','user.profile:id,user_id,firstname,middlename,lastname')
-        ->where('laboratory_id',$op->laboratory_id)->whereHas('role',function ($query){
-            $query->where('name','Accountant');
-        })->first();
-
-        $array = [
-            'configuration' => Configuration::first(),
-            'op' => new OpResource($op),
-            'cashier' => $cashier->user->profile->firstname.' '.$cashier->user->profile->middlename[0].'. '.$cashier->user->profile->lastname,
-            'accountant' => $accountant->user->profile->firstname.' '.$accountant->user->profile->middlename[0].'. '.$accountant->user->profile->lastname,
-        ];
-
-        $pdf = \PDF::loadView('printings.op',$array)->setPaper('a4', 'portrait');
-        return $pdf->download($op->code.'.pdf');
+        return Excel::download(new OrExport($id), 'or.xlsx');
     }
 }

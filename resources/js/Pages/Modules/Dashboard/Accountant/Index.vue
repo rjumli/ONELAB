@@ -16,9 +16,9 @@
                                         <option :value="null" selected>All Laboratory</option>
                                         <option :value="list" v-for="list in dropdowns.laboratories" v-bind:key="list.id">{{list.name}}</option>
                                     </select>
-                                    <b-button @click="openCreate" type="button" variant="primary">
+                                    <!-- <b-button @click="openCreate" type="button" variant="primary">
                                         Create &nbsp;<i class="ri-add-circle-fill"></i>
-                                    </b-button>
+                                    </b-button> -->
                                 </div>
                             </div>
                         </div>
@@ -72,6 +72,46 @@
                                 <button v-if="dropdowns.orseries.length > 0" class="btn btn-md btn-soft-success btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i>OR Series : {{dropdowns.orseries[0].name}}</button>
                                 <button @click="addSeries" v-else class="btn btn-md btn-soft-danger btn-label waves-effect waves-light" type="button"><i class="bx bxs-webcam label-icon align-middle fs-16 me-2"></i>No OR Series found.</button>
                             </div>
+                            <hr class="text-muted"/>
+                            <!-- <div class="row g-0 text-center mt-2">
+                                <div class="col-sm-6">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span>854</span></h5>
+                                        <p class="text-muted mb-0 fs-12">TSR without Order of Payment</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span>1,278</span></h5>
+                                        <p class="text-muted mb-0 fs-12">Pending Order of Payment</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="text-muted"/> -->
+                            <b-list-group class="list-group-fill-success">
+                                <b-list-group-item class="list-group-item-action" v-for="(list,index) in statuses" v-bind:key="index">
+                                    <i class="ri-record-circle-fill align-middle me-2" :class="list.others"></i>{{list.name}} <span class="text-muted fs-11">({{list.count}})</span> <span class="float-end">{{formatMoney(list.total)}}</span>
+                                </b-list-group-item>
+                            </b-list-group>
+                            <hr class="text-muted"/>
+                            <b-list-group class="list-group-fill-success">
+                                <b-list-group-item class="list-group-item-action" v-for="(list,index) in payments" v-bind:key="index">
+                                    <i class="ri-record-circle-line text-primary align-middle me-2"></i>{{list.name}} <span class="text-muted fs-11">({{list.count}})</span> <span class="float-end">{{formatMoney(list.total)}}</span>
+                                </b-list-group-item>
+                            </b-list-group>
+                            <!-- <div class="mt-2 pt-2">
+                                <div class="d-flex mb-2" v-for="(list,index) in statuses" v-bind:key="index">
+                                    <div class="flex-grow-1">
+                                        <p class="text-truncate text-muted fs-14 mb-0">
+                                            <i class="mdi mdi-circle align-middle me-2" :class="list.others"></i>{{list.name}}
+                                        </p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <p class="mb-0">{{list.status_count}}</p>
+                                    </div>
+                                </div>
+                            </div> -->
+
                         </div>
                     </div>
                 </div>
@@ -85,7 +125,7 @@ import Series from './Modals/Series.vue';
 import Lists from './Components/Lists.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
-    props: ['dropdowns'],
+    props: ['dropdowns','statuses','payments'],
     components: { PageHeader, Lists, Series },
     data(){
         return {

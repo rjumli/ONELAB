@@ -10,46 +10,47 @@
                     <InputLabel for="deposit" value="Deposit Type" :message="form.errors.deposit_id"/>
                     <Multiselect 
                     :options="deposits" 
-                    v-model="form.deposit_id" 
+                    v-model="or.deposit_id" 
                     label="name"
+                    @input="handleInput('deposit_id')"
                     placeholder="Select Deposit type"/>
                 </BCol>
                 <BCol lg="6 mt-1">
                     <InputLabel for="orseries" value="O.R Series" :message="form.errors.orseries"/>
                     <Multiselect 
                     :options="orseries" 
-                    v-model="form.orseries" 
+                    v-model="or.orseries" 
                     object
                     label="name"
+                    @input="handleInput('orseries')"
                     placeholder="Select OR"/>
                 </BCol>
-                <BCol lg="12" v-if="form.orseries">
+                <BCol lg="12" v-if="or.orseries">
                     <hr class="text-muted mt-0"/>
                     <div class="d-grid gap-2" >
-                        <b-button variant="success">O.R # : {{form.orseries.next}}</b-button>
+                        <b-button variant="success">O.R # : {{or.orseries.next}}</b-button>
                     </div>
                 </BCol>
                 <BCol lg="12 mt-1 mb-n3">
                     <hr class="text-muted"/>
                 </BCol>
-                <BCol lg="6 mt-2" v-if="form.selected.payment.name == 'Cheque'">
-                    <InputLabel value="Cheque Number"/>
-                    <TextInput v-model="form.cheque.number" type="text" class="form-control" :light="true"/>
+                <BCol lg="6 mt-2" v-if="or.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Cheque Number" :message="form.errors.cheque_number"/>
+                    <TextInput v-model="cheque.number" type="text" class="form-control" @input="handleInput('cheque_number')" :light="true"/>
                 </BCol>
-                <BCol lg="6 mt-2" v-if="form.selected.payment.name == 'Cheque'">
-                    <InputLabel value="Cheque Date"/>
-                    <TextInput v-model="form.cheque.cheque_at" type="date" class="form-control" :light="true"/>
+                <BCol lg="6 mt-2" v-if="or.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Cheque Date" :message="form.errors.cheque_cheque_at"/>
+                    <TextInput v-model="cheque.cheque_at" type="date" class="form-control" @input="handleInput('cheque_cheque_at')" :light="true"/>
                 </BCol>
-                <BCol lg="6 mt-0" v-if="form.selected.payment.name == 'Cheque'">
-                    <InputLabel value="Amount"/>
-                    <Amount @amount="amount" ref="testing" :readonly="false"/>
+                <BCol lg="6 mt-0" v-if="or.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Amount" :message="form.errors.cheque_amount"/>
+                    <Amount @amount="amount" ref="testing" :readonly="false" @input="handleInput('cheque_amount')"/>
                 </BCol>
-                <BCol lg="6 mt-0" v-if="form.selected.payment.name == 'Cheque'">
-                    <InputLabel value="Bank Name"/>
-                    <TextInput v-model="form.cheque.bank" type="text" class="form-control" :light="true"/>
+                <BCol lg="6 mt-0" v-if="or.selected.payment.name == 'Cheque'">
+                    <InputLabel value="Bank Name" :message="form.errors.cheque_bank"/>
+                    <TextInput v-model="cheque.bank" type="text" class="form-control" @input="handleInput('cheque_bank')" :light="true"/>
                 </BCol>
             </BRow>
-            <!-- {{form.selected}} -->
         </form>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
@@ -58,7 +59,6 @@
     </b-modal>
 </template>
 <script>
-import { useForm } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import Multiselect from "@vueform/multiselect";
@@ -69,21 +69,26 @@ export default {
     data(){
         return {
             currentUrl: window.location.origin,
-            form: useForm({
+            or: {
                 id: null,
                 deposit_id: null,
                 orseries: null,
                 selected: {payment:{}},
-                cheque: {
-                    type: null,
-                    number: null,
-                    bank: null,
-                    cheque_at: null,
-                    amount: null,
-                },
                 total: null,
+                type: null,
                 option: 'receipt'
-            }),
+            },
+            cheque: {
+                type: null,
+                number: null,
+                bank: null,
+                cheque_at: null,
+                amount: null,
+            },
+            form : {
+                errors: []
+            },
+            type: null,
             customer: null,
             showModal: false
         }
@@ -91,13 +96,40 @@ export default {
     methods: { 
         show(customer,data){
             this.customer = customer;
-            this.form.selected = data;
-            this.form.total =  this.form.selected.total;
-            this.form.series = this.orseries;
-            this.form.cheque.type =  this.form.selected.payment.name;
+            this.or.selected = data;
+            this.or.total =  this.or.selected.total;
+            this.or.series = this.orseries;
+            this.type =  this.or.selected.payment.name;
             this.showModal = true;
         },
         submit(){
+
+            if(this.type === 'Cheque'){
+                this.form = this.$inertia.form({
+                    'deposit_id': this.or.deposit_id,
+                    'orseries': this.or.orseries,
+                    'orseries_id': (this.or.orseries) ? this.or.orseries.value : null,
+                    'cheque_number': this.cheque.number,
+                    'cheque_cheque_at': this.cheque.cheque_at,
+                    'cheque_bank': this.cheque.bank,
+                    'cheque_amount': this.cheque.amount,
+                    'selected': this.or.selected,
+                    'total': this.or.total,
+                    'type': this.type,
+                    'option': 'receipt'
+                });
+            }else{
+                this.form = this.$inertia.form({
+                    'deposit_id': this.or.deposit_id,
+                    'orseries_id': (this.or.orseries) ? this.or.orseries.value : null,
+                    'orseries': this.or.orseries,
+                    'type': this.type,
+                    'selected': this.or.selected,
+                    'total': this.or.total,
+                    'option': 'receipt'
+                });
+            }
+
             this.form.post('/finance',{
                 preserveScroll: true,
                 onSuccess: (response) => {
@@ -107,7 +139,10 @@ export default {
             });
         },
         amount(val){
-            this.form.cheque.amount = val;
+            this.cheque.amount = val;
+        },
+        handleInput(field) {
+            this.form.errors[field] = false;
         },
         hide(){
             this.showModal = false;
