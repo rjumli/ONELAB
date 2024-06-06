@@ -29,6 +29,7 @@ class CustomerResource extends JsonResource
             'classification' => $this->classification,
             'industry' => $this->industry,
             'address' => new AddressResource($this->address),
+            'wallet' => new WalletResource($this->wallet)
         ];
     }
 }

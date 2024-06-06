@@ -3,8 +3,12 @@
 namespace App\Services;
 
 use Hashids\Hashids;
+use App\Models\Tsr;
+use App\Models\Wallet;
 use App\Models\Customer;
 use App\Models\Laboratory;
+use App\Models\FinanceOp;
+use App\Models\TsrPayment;
 use App\Models\CustomerName;
 use App\Models\CustomerConforme;
 use App\Http\Resources\CustomerResource;
@@ -39,6 +43,7 @@ class CustomerService
 
         $data = new CustomerResource(
             Customer::query()
+            ->with('wallet.transactions.receipt')
             ->with('customer_name:id,name','bussiness:id,name','classification:id,name','industry:id,name')
             ->with('address.region:code,name,region','address.province:code,name','address.municipality:code,name','address.barangay:code,name')
             ->where('id',$id)->first()
@@ -129,11 +134,18 @@ class CustomerService
         }
     }
 
-    public function counts($id){
+    public function counts($request){
+        $id = $request->id;
+        $wallet = Wallet::where('customer_id',$id)->value('available');
+        $tsrs = Tsr::whereIn('status_id',[2,3,4])->where('customer_id',$request->id)->count();
+        $total = TsrPayment::where('is_paid',1)->where('status_id',7)
+        ->whereHas('tsr',function ($query) use ($id){
+            $query->where('customer_id',$id);
+        })->sum('total');
         $array = [
-            ['counts' => 1000,'name' => 'Wallet', 'icon' => 'ri-wallet-3-fill', 'color' => 'primary'],
-            ['counts' => 5, 'name' => 'Total Request', 'icon' => 'ri-list-check-2', 'color' => 'success'],
-            ['counts' => 20000,'name' => 'Total Spend', 'icon' => 'ri-hand-coin-fill', 'color' => 'info'],
+            ['counts' => $tsrs, 'name' => 'Total Request', 'icon' => 'ri-list-check-2', 'color' => 'success'],
+            ['counts' => '₱'.number_format($total,2,'.',','),'name' => 'Total Spending', 'icon' => 'ri-hand-coin-fill', 'color' => 'info'],
+            ['counts' => '₱'.number_format($wallet,2,'.',','),'name' => 'My Wallet', 'icon' => 'ri-wallet-3-fill', 'color' => 'primary'],
         ];
         return $array;
     }

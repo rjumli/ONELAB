@@ -38,6 +38,8 @@ class FinanceRequest extends FormRequest
                 'next' => 'required|integer',
                 'end' => 'required|integer',
             ];
+        }else{
+            return [];
         }
     }
 

@@ -1288,6 +1288,16 @@ class ListDropdownsTableSeeder extends Seeder
                 'others' => 'n/a',
                 'is_active' => 1,
             ),
+            127 => 
+            array (
+                'id' => 129,
+                'name' => 'Wallet',
+                'classification' => 'Payment Mode',
+                'type' => 'wallet',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
         ));
 
         

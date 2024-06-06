@@ -11,6 +11,6 @@ class ListStatus extends Model
 
     public function status()
     {
-        return $this->hasMany('App\Models\FinanceOp', 'status_id');
+        return $this->hasMany('App\Models\TsrPayment', 'status_id');
     } 
 }

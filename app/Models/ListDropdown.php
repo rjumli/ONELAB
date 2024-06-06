@@ -9,8 +9,8 @@ class ListDropdown extends Model
 {
     use HasFactory;
 
-    public function ops()
+    public function payment()
     {
-        return $this->hasMany('App\Models\FinanceOp', 'payment_id');
+        return $this->hasMany('App\Models\TsrPayment', 'payment_id');
     } 
 }

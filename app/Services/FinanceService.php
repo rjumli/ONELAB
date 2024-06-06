@@ -53,6 +53,53 @@ class FinanceService
         ];
     }
 
+
+    public function store_wallet($request){
+        $id = $request->id;
+        $tsr_id = $request->tsr_id;
+        $wallet_id = $request->wallet_id;
+        $total = trim(str_replace(',','',$request->total),'₱');
+        $wallet = Wallet::where('id',$wallet_id)->first();
+        if($wallet){
+            $wallet->available = $wallet->available - $total;
+            if($wallet->save()){
+                $code = date('Ymdgis');
+                $data = Tsr::where('id',$tsr_id)->first();
+                $data->transaction()->create([
+                    'code' => $code,
+                    'amount' => $total,
+                    'balance' => $wallet->available,
+                    'is_credit' => 0,
+                    'wallet_id' => $wallet->id
+                ]);
+
+                if($data){
+                    $payment = TsrPayment::where('id',$id)->update([
+                        'is_paid' => 1,
+                        'payment_id' => 129,
+                        'status_id' => 7,
+                        'collection_id' => 107,
+                        'or_number' => $code,
+                        'paid_at' => now()
+                    ]);
+
+                    if($payment){
+                        $tsr = Tsr::where('id',$tsr_id)->first();
+                        $tsr->status_id = 3;
+                        $tsr->save();
+                    }
+                }
+            }
+        }
+
+        return [
+            'data' => $data,
+            'message' => 'Wallet transaction was successful!', 
+            'info' => "You've successfully used the wallet."
+        ];
+
+    }
+
     public function store_receipt($request){
         $result = \DB::transaction(function () use ($request){
             \DB::beginTransaction();
@@ -110,13 +157,15 @@ class FinanceService
                                     $wallet = Wallet::where('customer_id',$customer_id)->first();
                                     if($wallet){
                                         $wallet->total = $wallet->total + $total;
+                                        $wallet->available = $wallet->available + $total;
                                         if($wallet->save()){
-                                            $transaction = new WalletTransaction;
-                                            $transaction->amount = $total;
-                                            $transaction->is_credit = 1;
-                                            $transaction->wallet_id = $wallet->id;
-                                            $transaction->receipt_id = $data->id;
-                                            $transaction->save();
+                                            $data->transaction()->create([
+                                                'code' => date('Ymdgia'),
+                                                'amount' => $total,
+                                                'balance' => $wallet->available,
+                                                'is_credit' => 1,
+                                                'wallet_id' => $wallet->id
+                                            ]);
                                             \DB::commit();  
                                         }else{
                                             $data = 'error';
@@ -128,12 +177,13 @@ class FinanceService
                                         $wallet->available = $total;
                                         $wallet->customer_id = $customer_id;
                                         if($wallet->save()){
-                                            $transaction = new WalletTransaction;
-                                            $transaction->amount = $total;
-                                            $transaction->is_credit = 1;
-                                            $transaction->wallet_id = $wallet->id;
-                                            $transaction->receipt_id = $data->id;
-                                            $transaction->save();
+                                            $data->transaction()->create([
+                                                'code' => date('Ymdgis'),
+                                                'amount' => $total,
+                                                'balance' => $total,
+                                                'is_credit' => 1,
+                                                'wallet_id' => $wallet->id
+                                            ]);
                                             \DB::commit();  
                                         }else{
                                             $data = 'error';

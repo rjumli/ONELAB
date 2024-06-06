@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->engine = 'InnoDB'; 
             $table->bigIncrements('id');
+            $table->string('code')->unique();
             $table->decimal('amount',12,2);
+            $table->decimal('balance',12,2);
             $table->boolean('is_credit');
-            $table->bigInteger('receipt_id')->unsigned()->index();
-            $table->foreign('receipt_id')->references('id')->on('finance_receipts')->onDelete('cascade');
+            $table->unsignedInteger('transacable_id');
+            $table->string('transacable_type');
             $table->bigInteger('wallet_id')->unsigned()->nullable();
             $table->foreign('wallet_id')->references('id')->on('wallets')->onDelete('cascade');
             $table->timestamps();

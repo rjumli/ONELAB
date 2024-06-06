@@ -18,11 +18,21 @@ class Wallet extends Model
 
     public function transactions()
     {
-        return $this->hasMany('App\Models\WalletTransaction', 'wallet_id');
+        return $this->hasMany('App\Models\WalletTransaction', 'wallet_id')->orderBy('created_at','DESC');
     }
 
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer', 'customer_id', 'id');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
     }
 }

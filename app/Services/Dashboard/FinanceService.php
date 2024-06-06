@@ -37,7 +37,7 @@ class FinanceService
             'name' => 'Total Collection',
             'icon' => 'ri-hand-coin-fill',
             'color' => 'danger',
-            'total' => FinanceOp::where('status_id', 7)->sum('total')
+            'total' => TsrPayment::where('status_id', 7)->where('is_paid',1)->sum('total')
         ];
     }
 
@@ -67,20 +67,20 @@ class FinanceService
                 'name' => $status['name'],
                 'count' => $status['status_count'],
                 'others' => $status['others'],
-                'total' => FinanceOp::where('status_id',$status['id'])->sum('total')
+                'total' => TsrPayment::where('status_id',$status['id'])->sum('total')
             ];
         }
         return $array;
     }
 
     public function payments($request){
-        $payments = ListDropdown::select('id','name')->where('classification','Payment Mode')->withCount('ops')->orderBy('ops_count', 'desc')->get();
+        $payments = ListDropdown::select('id','name')->where('classification','Payment Mode')->withCount('payment')->orderBy('payment_count', 'desc')->get();
         foreach($payments as $payment){
             $array [] = [
                 'id' => $payment['id'],
                 'name' => $payment['name'],
-                'count' => $payment['ops_count'],
-                'total' => FinanceOp::where('payment_id',$payment['id'])->sum('total')
+                'count' => $payment['payment_count'],
+                'total' => TsrPayment::where('payment_id',$payment['id'])->sum('total')
             ];
         }
         return $array;

@@ -20,6 +20,7 @@ class CustomerViewResource extends JsonResource
             'contact_no' => $this->contact->contact_no,
             'name' => ($this->customer_name->has_branches) ? ($this->is_main) ? $this->customer_name->name :  $this->customer_name->name.' - '.$this->name : $this->customer_name->name,
             'address' => new AddressResource($this->address),
+            'wallet' => $this->wallet
         ];
     }
 }

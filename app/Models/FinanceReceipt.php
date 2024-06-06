@@ -18,6 +18,11 @@ class FinanceReceipt extends Model
         'laboratory_id'
     ];
 
+    public function wallet()
+    {
+        return $this->hasMany('App\Models\WalletTransaction', 'receipt_id');
+    }
+
     public function op()
     {
         return $this->belongsTo('App\Models\FinanceOp', 'op_id', 'id');
@@ -31,6 +36,11 @@ class FinanceReceipt extends Model
     public function laboratory()
     {
         return $this->belongsTo('App\Models\Laboratory', 'laboratory_id', 'id');
+    }
+
+    public function transaction()
+    {
+        return $this->morphOne('App\Models\WalletTransaction', 'transacable');
     }
 
     public function getCreatedAtAttribute($value)

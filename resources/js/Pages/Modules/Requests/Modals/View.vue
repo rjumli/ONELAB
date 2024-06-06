@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <div class="d-flex mt-3">
                                             <div class="flex-shrink-0 avatar-xs align-self-center me-3">
                                                 <div class="avatar-title bg-light rounded-circle fs-16 text-primary"><i class="ri-calendar-fill"></i>
@@ -79,7 +79,7 @@
                                                 <h6 class="text-truncate mb-0 fs-12">{{selected.created_at}}</h6>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-12">
                                         <div class="d-flex mt-3">
                                             <div class="flex-shrink-0 avatar-xs align-self-center me-3">
@@ -167,6 +167,7 @@
                                         </table>
                                     </div>
                                     <div class="d-grid gap-2">
+                                        <b-button v-if="selected.status.name !== 'Pending' && selected.payment.is_paid == 0 && selected.customer.wallet != null" @click="openWallet(selected.id,selected.customer,selected.payment)" class="mt-2 mb-n3" variant="danger">Use Wallet</b-button>
                                         <b-button v-if="selected.status.name !== 'Pending'" @click="openPrint(selected.id)" class="mt-3" variant="light"><i class="ri-printer-fill"></i> Print TSR</b-button>
                                         <b-button v-if="selected.status.name === 'Pending'" @click="openSave(selected.id)" class="mt-3" variant="primary">Save TSR</b-button>
                                     </div>
@@ -180,12 +181,14 @@
         </div>
     </b-modal>
     <Save @selected="updateSelected" ref="save"/>
+    <Wallet @update="update" ref="wallet"/>
 </template>
 <script>
 import Save from './Save.vue';
+import Wallet from './Wallet.vue';
 import Samples from '../Components/Samples.vue';
 export default {
-    components: { Samples, Save },
+    components: { Samples, Save, Wallet },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -224,6 +227,9 @@ export default {
         },
         openPrint(id){
             window.open(this.currentUrl + '/requests?option=print&id='+id);
+        },
+        openWallet(id,customer,payment){
+            this.$refs.wallet.show(id,customer,payment);
         },
         updateTotal(data){
             this.selected.payment.total = data;
