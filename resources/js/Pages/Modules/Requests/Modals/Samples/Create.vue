@@ -72,7 +72,7 @@ export default {
             });
         },
         hide(){
-            // this.form.reset();
+            this.form.reset();
             this.editable = false;
             this.showModal = false;
         }

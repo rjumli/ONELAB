@@ -25,7 +25,7 @@ class CustomerResource extends JsonResource
             'is_active' => $this->is_active,
             'is_synced' => $this->is_synced,
             'customer_name' => $this->customer_name->name,
-            'bussiness' => $this->bussiness,
+            // 'bussiness' => $this->bussiness,
             'classification' => $this->classification,
             'industry' => $this->industry,
             'address' => new AddressResource($this->address),

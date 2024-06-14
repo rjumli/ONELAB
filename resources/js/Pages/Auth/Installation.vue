@@ -23,6 +23,31 @@
                     <TextInput type="text" v-model="form.acronym" class="form-control" :light="true"/>
                 </div>
                 <div class="col-md-12">
+                    <hr class="text-muted mt-2 mb-2"/>
+                </div>
+                <div class="col-md-10">
+                    Would you like to use the current year when generating sample code? <span class="text-muted fs-12">(CHE-2024-00001)</span>
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="customRadio1" class="custom-control-input me-2" :value="true" v-model="form.samplecode_year">
+                                <label class="custom-control-label fw-normal fs-12" for="customRadio1">Yes</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="customRadio2" class="custom-control-input me-2" :value="false" v-model="form.samplecode_year">
+                                <label class="custom-control-label fw-normal fs-12" for="customRadio2">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr class="text-muted mt-n2 mb-n3"/>
+                </div>
+                <div class="col-md-12">
                         <Multiselect label="name"
                         :options="laboratories" 
                         :searchable="true" 
@@ -75,7 +100,8 @@ export default {
                 name: this.member.member.name,
                 acronym: this.member.name,
                 laboratories: [],
-                laboratory_id: this.member.id
+                laboratory_id: this.member.id,
+                samplecode_year: null,
             }),
         }
     },
@@ -102,7 +128,7 @@ export default {
             this.form.post('/install',{
                 preserveScroll: true,
                 onSuccess: (response) => {
-                    this.$inertia.get('/');
+                    this.$inertia.get('/dashboard');
                 },
             });
         },

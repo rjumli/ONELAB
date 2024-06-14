@@ -6,6 +6,7 @@ use App\Models\Tsr;
 use App\Models\CsfEntry;
 use App\Models\CsfRating;
 use App\Models\CsfQuestion;
+use App\Http\Resources\DefaultResource;
 
 class CsfService
 {
@@ -16,8 +17,18 @@ class CsfService
         $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
     }
 
+    public function lists($request){
+        $data = DefaultResource::collection(
+            CsfEntry::query()
+            ->with('tsr','tsr.customer:id,name_id,name,is_main','tsr.customer.customer_name:id,name,has_branches')
+            ->orderBy('created_at','DESC')
+            ->paginate($request->count)
+        );
+        return $data;
+    }
+
     public function tsrs(){
-        $data = Tsr::where('status_id',2)->whereNotIn('id', function($query) {
+        $data = Tsr::where('status_id',4)->whereNotIn('id', function($query) {
             $query->select('tsr_id')->from('csf_entries');
         })->select('id','code')->get()->map(function ($item) {
             return [

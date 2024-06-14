@@ -43,13 +43,13 @@ class ViewService
             InventoryItem::query()
             ->with('laboratory_type','laboratory','category','unittype')
             // ->where('laboratory_id',$this->laboratory)
-            ->when($this->role != 'Administrator', function ($query) {
-                $query->where('laboratory_id',$this->laboratory);
-            })
-            ->when($this->laboratory, function ($query, $laboratory) {
-                $query->where('laboratory_id', $laboratory);
-            })
-            ->where('laboratory_type',$this->type)
+            // ->when($this->role != 'Administrator', function ($query) {
+            //     $query->where('laboratory_id',$this->laboratory);
+            // })
+            // ->when($this->laboratory, function ($query, $laboratory) {
+            //     $query->where('laboratory_id', $laboratory);
+            // })
+            // ->where('laboratory_type',$this->type)
             ->when($request->keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', "%{$keyword}%");
             })
@@ -125,9 +125,9 @@ class ViewService
                     });
                 }
             })
-            ->whereHas('item',function ($query){
-                $query ->where('laboratory_id',$this->laboratory)->where('laboratory_type',$this->type);
-            })
+            // ->whereHas('item',function ($query){
+            //     $query ->where('laboratory_id',$this->laboratory)->where('laboratory_type',$this->type);
+            // })
             ->paginate($request->count)
         );
         return $data;

@@ -74,7 +74,7 @@
     </div>
     <Create :dropdowns="dropdowns" @message="fetch()" ref="create"/>
     <Cancel ref="cancel"/>
-    <View @updateMain="updateMain" ref="view"/>
+    <View :services="dropdowns.services" @updateMain="updateMain" ref="view"/>
 </template>
 <script>
 import _ from 'lodash';

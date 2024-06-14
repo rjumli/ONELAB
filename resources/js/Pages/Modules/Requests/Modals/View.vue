@@ -44,6 +44,7 @@
                 :due="selected.due_at" 
                 :status="selected.status"
                 :code="selected.code"
+                :services="services"
                 @total="updateTotal"
                 ref="samples"/>
             </div>
@@ -188,6 +189,7 @@ import Save from './Save.vue';
 import Wallet from './Wallet.vue';
 import Samples from '../Components/Samples.vue';
 export default {
+    props: ['services'],
     components: { Samples, Save, Wallet },
     data(){
         return {
@@ -232,7 +234,9 @@ export default {
             this.$refs.wallet.show(id,customer,payment);
         },
         updateTotal(data){
-            this.selected.payment.total = data;
+            this.selected.payment.total = data.total;
+            this.selected.payment.subtotal = data.subtotal;
+            this.selected.payment.discount = data.discount;
         },
         hide(){
             this.showModal = false;

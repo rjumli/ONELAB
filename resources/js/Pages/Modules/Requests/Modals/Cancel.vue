@@ -1,11 +1,11 @@
 <template>
     <b-modal v-model="showModal" hide-footer hide-header title="Cancel Request" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
-        <div class="modal-body text-center">
+        <div class="text-center">
             <div class="mt-4">
                 <h4 class="mb-3">Cancel Request</h4>
                 <p class="text-muted mb-0">Are you sure you want to cancel the request?</p>
                 <p class="text-muted mb-4">Cancelling request cannot be undone.</p>
-                <div class="hstack gap-2 justify-content-center">
+                <div class="hstack gap-2 justify-content-center mb-3">
                     <button @click="hide()" class="btn btn-light btn-md" type="button">
                         <div class="btn-content"> Close</div>
                     </button>

@@ -1061,7 +1061,7 @@ class ListDropdownsTableSeeder extends Seeder
             104 => 
             array (
                 'id' => 106,
-                'name' => 'Bank to Bank',
+                'name' => 'Bank Deposit',
                 'classification' => 'Payment Mode',
                 'type' => 'n/a',
                 'color' => 'n/a',
@@ -1294,6 +1294,16 @@ class ListDropdownsTableSeeder extends Seeder
                 'name' => 'Wallet',
                 'classification' => 'Payment Mode',
                 'type' => 'wallet',
+                'color' => 'n/a',
+                'others' => 'n/a',
+                'is_active' => 1,
+            ),
+            128 => 
+            array (
+                'id' => 130,
+                'name' => 'Online Transfer',
+                'classification' => 'Payment Mode',
+                'type' => 'n/a',
                 'color' => 'n/a',
                 'others' => 'n/a',
                 'is_active' => 1,

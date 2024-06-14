@@ -1,6 +1,6 @@
 <template>
-    <Head title="Order of Payment"/>
-    <PageHeader title="Order of Payment" pageTitle="Finance" />
+    <Head title="Dashboard"/>
+    <PageHeader title="Dashboard" pageTitle="Finance" />
     <b-row>
             <div class="col-md-12 mt-0 mb-n2">
                 <div class="card">

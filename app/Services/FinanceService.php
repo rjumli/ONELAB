@@ -9,6 +9,7 @@ use App\Models\UserRole;
 use App\Models\FinanceOp;
 use App\Models\TsrPayment;
 use App\Models\FinanceReceipt;
+use App\Models\FinanceReceiptDetail;
 use App\Models\FinanceOpItem;
 use App\Models\FinanceOrseries;
 use App\Models\FinanceCheque;
@@ -141,11 +142,11 @@ class FinanceService
 
                     if($or->save()){
                         if($request->type === 'Cheque'){
-                            $cheque = new FinanceCheque;
+                            $cheque = new FinanceReceiptDetail;
                             $cheque->number = $request->cheque_number;
                             $cheque->amount = $request->cheque_amount;
                             $cheque->bank = $request->cheque_bank;
-                            $cheque->cheque_at = $request->cheque_cheque_at;
+                            $cheque->date_at = $request->cheque_cheque_at;
                             $cheque->receipt_id = $data->id;
                             if($cheque->save()){
                                 $amount = trim(str_replace(',','',$request->cheque_amount),'₱');

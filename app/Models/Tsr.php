@@ -11,7 +11,6 @@ class Tsr extends Model
 
     protected $fillable = [
         'code',
-        'mode',
         'laboratory_id',
         'laboratory_type',
         'purpose_id',
@@ -19,7 +18,8 @@ class Tsr extends Model
         'customer_id',
         'conforme_id',
         'received_by',
-        'due_at'
+        'due_at',
+        'released_at'
     ];
 
     public function payment()
@@ -30,6 +30,11 @@ class Tsr extends Model
     public function samples()
     {
         return $this->hasMany('App\Models\TsrSample', 'tsr_id');
+    }
+
+    public function service()
+    {
+        return $this->hasOne('App\Models\TsrService', 'tsr_id');
     }
 
     public function laboratory()
@@ -85,5 +90,10 @@ class Tsr extends Model
     public function getDueAtAttribute($value)
     {
         return date('M d, Y', strtotime($value));
+    }
+
+    public function getReleasedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
     }
 }

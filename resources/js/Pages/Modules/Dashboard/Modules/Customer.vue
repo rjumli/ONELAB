@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" style="height: 450px;">
         <div class="card-header align-items-center d-flex">
             <h5 class="card-title mb-0 flex-grow-1">Top Customer</h5>
             <div>

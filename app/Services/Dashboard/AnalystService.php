@@ -2,12 +2,13 @@
 
 namespace App\Services\Dashboard;
 
+use App\Models\Tsr;
 use App\Models\TsrAnalysis;
 
 class AnalystService
 {
     public function samples(){
-        $laboratory = \Auth::user()->userrole->laboratory_id;
+        $laboratory = \Auth::user()->userrole->laboratory_type;
         return [
             'pending' => $this->pending($laboratory),
             'ongoing' => $this->ongoing($laboratory),
@@ -16,16 +17,43 @@ class AnalystService
     }
 
     private function pending($laboratory){
-        $data = TsrAnalysis::with('status','sample.tsr','testservice.testname','testservice.method.reference','testservice.method.method')
-        ->where('status_id',10)
-        ->whereHas('sample',function ($query) use ($laboratory) {
-            $query->whereHas('tsr',function ($query) use ($laboratory) {
-                $query->where('laboratory_id',$laboratory)->whereHas('payment',function ($query){
-                    $query->whereIn('status_id',[7,8]);
-                });
-            });
-        })
-        ->get();
+        // $data = TsrAnalysis::with('status','sample.tsr','testservice.testname','testservice.method.reference','testservice.method.method')
+        // ->where('status_id',10)
+        // ->whereHas('sample',function ($query) use ($laboratory) {
+        //     $query->whereHas('tsr',function ($query) use ($laboratory) {
+        //         $query->where('laboratory_type',$laboratory)->whereHas('payment',function ($query){
+        //             $query->whereIn('status_id',[7,8]);
+        //         });
+        //     });
+        // })
+        // ->get();
+        $data = Tsr::with('samples.analyses')->where('status_id',3)
+        ->withCount('samples')
+        ->with(['samples' => function ($query) {
+            // $query->withCount('analyses');
+            $query->withCount([
+                'analyses as analyses_count',
+                'analyses as completed_analyses_count' => function ($query) {
+                    $query->where('status_id', 11);
+                },
+                'analyses as pending_analyses_count' => function ($query) {
+                    $query->where('status_id', 10);
+                }
+            ]);
+        }])
+        ->get()
+        ->map(function ($tsr) {
+            $tsr->total_analyses_count = $tsr->samples->sum('analyses_count');
+            $tsr->total_completed_analyses_count = $tsr->samples->sum('completed_analyses_count');
+            $tsr->total_pending_analyses_count = $tsr->samples->sum('pending_analyses_count');
+            return [
+                'id' => $tsr->id,
+                'tsr' => $tsr,
+                'samples' => $tsr->samples_count,
+                'analyses' => $tsr->total_analyses_count,
+                'completed' => $tsr->total_completed_analyses_count
+            ];
+        });
         return $data;
     }
 
@@ -35,7 +63,7 @@ class AnalystService
         ->where('analyst_id',\Auth::user()->id)
         ->whereHas('sample',function ($query) use ($laboratory) {
             $query->whereHas('tsr',function ($query) use ($laboratory) {
-                $query->where('laboratory_id',$laboratory);
+                $query->where('laboratory_type',$laboratory);
             });
         })
         ->get();
@@ -47,7 +75,7 @@ class AnalystService
         ->where('status_id',12)
         ->whereHas('sample',function ($query) use ($laboratory) {
             $query->whereHas('tsr',function ($query) use ($laboratory) {
-                $query->where('laboratory_id',$laboratory);
+                $query->where('laboratory_type',$laboratory)->where('released_at',NULL);
             });
         })
         ->get();

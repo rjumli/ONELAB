@@ -129,6 +129,8 @@ export default {
     },
     watch: {
         "form.customer_id"(newVal){
+            this.tsrs = [];
+            this.combinedIds = [];
             this.form.selected = [];
             this.subcustomer_id = null;
             (newVal) ? this.ids.push(newVal) : this.ids = [];

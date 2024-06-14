@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Tsr;
 use App\Models\TsrAnalysis;
 use App\Models\TsrPayment;
+use App\Models\TsrService;
 use App\Http\Resources\TestnameTopResource;
 use App\Http\Resources\AnalysisResource;
 
@@ -42,6 +43,24 @@ class AnalysisService
         ];
     }
 
+    public function service($request){
+        $data = TsrService::create([
+            'tsr_id' => $request->id,
+            'service_id' => $request->service['value'],
+            'fee' => $request->service['fee']
+        ]);
+        $total =  $this->updateTotal($request->id,$request->service['fee']);
+        return [
+            'data' => $total,
+            'message' => 'Service added was successful!', 
+            'info' => "You've successfully added a service."
+        ];
+    }
+
+    public function delete($request){
+
+    }
+
     private function updateTotal($id,$fee){
         $data = TsrPayment::with('discounted')->where('tsr_id',$id)->first();
         $fee = (float) trim(str_replace(',','',$fee),'₱ ');
@@ -59,7 +78,7 @@ class AnalysisService
         $data->discount = $discount;
         $data->total = $total;
         $data->save();
-        return $data->total;
+        return $data;
     }
 
     public function start($request){

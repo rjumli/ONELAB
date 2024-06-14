@@ -18,7 +18,8 @@ use App\Models\{
     ListTestservice,
     ListRole,
     InventorySupplier,
-    Configuration
+    Configuration,
+    ListService
 };
 use App\Http\Resources\TestserviceResource;
 
@@ -259,6 +260,19 @@ class DropdownService
             return [
                 'value' => $item->id,
                 'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function services(){
+        $data = ListService::get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name.' ('.$item->description.')',
+                'name' => $item->name,
+                'description' => $item->description,
+                'fee' => $item->fee
             ];
         });
         return $data;

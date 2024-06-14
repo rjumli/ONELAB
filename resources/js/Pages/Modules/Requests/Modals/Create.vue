@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" style="--vz-modal-width: 800px;" header-class="p-3 bg-light" :title="(!editable) ? 'Create Technical Service' : 'Edit Technical Service'" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" style="--vz-modal-width: 650px;" header-class="p-3 bg-light" :title="(!editable) ? 'Create Technical Service' : 'Edit Technical Service'" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <form class="customform">
             <BRow class="g-3">
                 <BCol lg="12">
@@ -10,16 +10,19 @@
                     v-model="form.customer" 
                     object label="name"
                     :searchable="true" 
+                    @input="handleInput('customer')"
                     placeholder="Select Customer"/>
                 </BCol>
-                <BCol lg="12" class="mt-1" v-if="form.customer">
+                <BCol :lg="(form.conforme) ? 6 : 12" class="mt-1" v-if="form.customer">
                     <div class="d-flex">
                         <div style="width: 100%;">
-                            <InputLabel for="conforme" value="Conforme" :message="form.errors.conforme_id"/>
+                            <InputLabel for="conforme" value="Conforme" :message="form.errors.conforme"/>
                             <Multiselect 
                             :options="form.customer.conformes" 
-                            v-model="form.conforme_id" 
+                            v-model="form.conforme" 
                             label="name"
+                            object
+                            @input="handleInput('conforme')"
                             :searchable="true" 
                             placeholder="Select Conforme"/>
                         </div>
@@ -28,30 +31,28 @@
                         </div>
                     </div>
                 </BCol>
-                <!-- <BCol lg="6" v-if="(form.customer) ? (form.customer.conformes.length == 0) ? true : false : false " class="mt-2">
-                    <InputLabel for="due" value="Conforme Name" :message="form.errors.conforme"/>
-                    <TextInput v-model="form.conforme" type="text" class="form-control" autofocus placeholder="Please enter name" required :class="{ 'is-invalid': form.errors.conforme }" @input="handleInput('conforme')" :light="true"/>
+                <BCol lg="6" v-if="(form.conforme) ? true : false" class="mt-1">
+                    <InputLabel for="due" value="Mobile No" :message="form.errors.conforme"/>
+                    <TextInput v-model="form.conforme.contact_no" type="text" class="form-control" autofocus placeholder="Please enter name" required :class="{ 'is-invalid': form.errors.conforme }" @input="handleInput('conforme')" :light="true"/>
                 </BCol>
-                <BCol lg="6" v-if="(form.customer) ? (form.customer.conformes.length == 0) ? true : false : false " class="mt-2">
-                    <InputLabel for="due" value="Conforme Contact" :message="form.errors.contact"/>
-                    <TextInput v-model="form.contact" type="text" class="form-control" autofocus placeholder="Please enter contact" required :class="{ 'is-invalid': form.errors.contact }" @input="handleInput('contact')" :light="true"/>
-                </BCol> -->
                 <BCol lg="12">
                     <hr class="text-muted mt-0 mb-3"/>
                 </BCol>
-                <BCol lg="6" class="mt-n2">
+                <BCol lg="12" class="mt-n2">
                     <InputLabel for="region" value="Laboratory" :message="form.errors.laboratory_type"/>
                     <Multiselect 
                     :options="dropdowns.laboratories" 
                     v-model="form.laboratory_type"
+                    @input="handleInput('laboratory_type')"
                     :searchable="true" label="name"
                     placeholder="Select Laboratory"/>
                 </BCol>
-                <BCol lg="6" class="mt-n2">
+                <BCol lg="6" class="mt-2">
                     <InputLabel for="region" value="Purpose" :message="form.errors.purpose_id"/>
                     <Multiselect 
                     :options="dropdowns.purposes" 
                     v-model="form.purpose_id" 
+                    @input="handleInput('purpose_id')"
                     :searchable="true" label="name"
                     placeholder="Select Purpose"/>
                 </BCol>
@@ -60,21 +61,9 @@
                     <Multiselect 
                     :options="dropdowns.discounts" 
                     v-model="form.discount_id"
+                    @input="handleInput('discount_id')"
                     :searchable="true" label="name"
                     placeholder="Select Discount"/>
-                </BCol>
-                <BCol lg="6" class="mt-2">
-                    <InputLabel for="due" value="Report Due" :message="form.errors.due_at"/>
-                    <TextInput v-model="form.due_at" type="date" class="form-control" autofocus placeholder="Please enter email" autocomplete="email" required @input="handleInput('due_at')" :light="true"/>
-                </BCol>
-                <BCol lg="12" class="mt-1">
-                    <InputLabel for="region" value="Mode of Release" :message="form.errors.mode"/>
-                    <Multiselect 
-                    mode="tags" label="name"
-                    :options="dropdowns.modes" 
-                    v-model="form.mode"
-                    :searchable="true" 
-                    placeholder="Select Mode of Release"/>
                 </BCol>
             </BRow>
         </form>
@@ -102,12 +91,10 @@ export default {
             form: useForm({
                 id: null,
                 customer: null,
-                conforme_id: null,
+                conforme: null,
                 laboratory_type: null,
                 purpose_id: null,
-                discount_id: null,
-                mode: null,
-                due_at: null
+                discount_id: null
             }),
             customers: [],
             conformes: [],
@@ -145,7 +132,7 @@ export default {
         },
         set(data){
             this.form.customer.conformes.push(data);
-            this.form.conforme_id = data.value;
+            this.form.conforme = data;
         },
         handleInput(field) {
             this.form.errors[field] = false;
@@ -158,21 +145,3 @@ export default {
     }
 }
 </script>
-<style>
-span.multiselect-tag:nth-child(1) {
-  padding: 0px 7px;
-  font-size: 9px;
-}
-span.multiselect-tag:nth-child(2) {
-  padding: 0px 7px;
-  font-size: 9px;
-}
-span.multiselect-tag:nth-child(3) {
-  padding: 0px 7px;
-  font-size: 9px;
-}
-span.multiselect-tag:nth-child(4) {
-  padding: 0px 7px;
-  font-size: 9px;
-}
-</style>

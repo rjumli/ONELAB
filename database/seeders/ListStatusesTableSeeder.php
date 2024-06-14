@@ -15,7 +15,7 @@ class ListStatusesTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_statuses')->delete();
+        \DB::table('list_statuses')->truncate();
         
         \DB::table('list_statuses')->insert(array (
             0 => 
@@ -34,8 +34,8 @@ class ListStatusesTableSeeder extends Seeder
                 'id' => 2,
                 'name' => 'Waiting',
                 'type' => 'Request',
-                'color' => 'bg-info',
-                'others' => 'text-info',
+                'color' => 'bg-dark',
+                'others' => 'text-dark',
                 'is_active' => 1,
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',
@@ -211,7 +211,7 @@ class ListStatusesTableSeeder extends Seeder
                 'name' => 'Contract',
                 'type' => 'Payment',
                 'color' => 'bg-danger-subtle',
-                'others' => 'text-danger',
+                'others' => 'text-info',
                 'is_active' => 1,
                 'created_at' => '2024-03-28 02:33:01',
                 'updated_at' => '2024-03-28 02:33:01',

@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Laboratory;
 use App\Models\FinanceOp;
 use App\Models\TsrPayment;
+use App\Models\Configuration;
 use App\Models\CustomerName;
 use App\Models\CustomerConforme;
 use App\Http\Resources\CustomerResource;
@@ -16,11 +17,12 @@ use App\Http\Resources\CustomerTopResource;
 
 class CustomerService
 {
-    public $laboratory;
+    public $laboratory, $configuration;
 
     public function __construct()
     {
         $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
+        $this->configuration = Configuration::with('laboratory.address')->where('laboratory_id',$this->laboratory)->first();
     }
 
     public function lists($request){
@@ -115,9 +117,10 @@ class CustomerService
                 });
         })
         ->get()->map(function ($item) {
+            $name = ($item->customer_name->has_branches) ? ($item->is_main) ? $item->customer_name->name :  $item->customer_name->name.' - '.$item->name : $item->customer_name->name;
             return [
                 'value' => $item->id,
-                'name' => $item->customer_name->name.' - '.$item->name,
+                'name' => $name,
                 'conformes' => $item->conformes->map(function ($i) {
                     return [
                         'value' => $i->id,
@@ -179,4 +182,7 @@ class CustomerService
         return CustomerTopResource::collection($data);
     }
 
+    public function region(){
+        return $this->configuration->laboratory->address->region_code;
+    }
 }

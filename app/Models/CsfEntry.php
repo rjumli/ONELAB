@@ -12,4 +12,9 @@ class CsfEntry extends Model
     protected $fillable = [
        'tsr_id', 'comment', 'attribute'
     ];
+
+    public function tsr()
+    {
+        return $this->belongsTo('App\Models\Tsr', 'tsr_id', 'id');
+    }
 }

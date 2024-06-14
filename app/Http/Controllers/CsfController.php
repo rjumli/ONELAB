@@ -18,6 +18,9 @@ class CsfController extends Controller
     public function index(Request $request){
         $option = $request->option;
         switch($option){
+            case 'lists':
+                return $this->csf->lists($request);
+            break;
             default: 
                 return inertia('Modules/Csf/Index');
         }

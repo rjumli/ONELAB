@@ -16,6 +16,7 @@ class ListResource extends JsonResource
             'payment' => new PaymentResource($this->payment),
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
+            'due_at' => $this->due_at,
             'selected' => false
         ];
     }

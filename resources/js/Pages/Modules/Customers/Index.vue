@@ -5,7 +5,7 @@
         <!-- <div class="file-manager-sidebar">
         </div> -->
         <div class="file-manager-content w-100 p-4 pb-0" style="height: calc(100vh - 180px); overflow: auto;" ref="box">
-            <Lists :dropdowns="dropdowns"/>
+            <Lists :region="region" :dropdowns="dropdowns"/>
         </div>
     </div>
 </template>
@@ -14,6 +14,6 @@ import Lists from './Components/Lists.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
     components: { PageHeader, Lists },
-    props: ['dropdowns']
+    props: ['dropdowns','region']
 }
 </script>

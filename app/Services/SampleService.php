@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Tsr;
 use App\Models\TsrSample;
+use App\Models\TsrPayment;
 use App\Models\ListDropdown;
 use App\Http\Resources\SampleResource;
 
@@ -32,11 +33,41 @@ class SampleService
         ];
     }
 
+    public function remove($request){
+        $id = $request->id;
+        $tsr_id = $request->tsr_id;
+        $data = TsrSample::find($id);
+        $fee = $data->analyses()->sum('fee');
+        if($data->delete()){
+            $payment = TsrPayment::with('discounted')->where('tsr_id',$tsr_id)->first();
+            $subtotal = (float) trim(str_replace(',','',$payment->subtotal),'₱ ');
+            $total = (float) trim(str_replace(',','',$payment->total),'₱ ');
+            if($payment->discount_id === 1){
+                $discount = 0;
+                $subtotal = $subtotal - $fee;
+                $total = $total - $fee;
+            }else{
+                $subtotal = $subtotal - $fee;
+                $discount = (float) (($payment->discounted->value/100) * $subtotal);
+                $total =  ((float) $total - (float) $discount);
+            }
+            $payment->subtotal = $subtotal;
+            $payment->discount = $discount;
+            $payment->total = $total;
+            $payment->save();
+        }
+        return [
+            'data' => $payment,
+            'message' => 'Sample was removed successful!', 
+            'info' => "You've successfully remove the sample."
+        ];
+    }
+
     private function generateCode($request){
         $laboratory_type = $request->laboratory_id; $year = date('Y');
         $lab_type = ListDropdown::select('others')->where('id',$laboratory_type)->first();
         $c = TsrSample::whereHas('tsr',function ($query) use ($laboratory_type) {
-            $query->where('laboratory_id',$laboratory_type);
+            $query->where('laboratory_id',$laboratory_type)->where('status_id','!=',1);
         })->whereYear('created_at',$year)->count();
         return $lab_type->others.'-'.$year.'-'.str_pad(($c+1), 5, '0', STR_PAD_LEFT); 
     }

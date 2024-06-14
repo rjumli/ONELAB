@@ -16,6 +16,7 @@ use App\Http\Resources\SampleResource;
 use App\Services\DropdownService;
 use App\Http\Requests\UserRequest;
 use App\Traits\HandlesTransaction;
+use App\Http\Requests\InstallRequest;
 
 class WelcomeController extends Controller
 {
@@ -57,7 +58,7 @@ class WelcomeController extends Controller
         }
     }
 
-    public function install(Request $request){
+    public function install(InstallRequest $request){
         $data = Configuration::create(array_merge($request->all(),['laboratories' => json_encode($request->laboratories)]));
         if($data){
             return redirect()->intended(route('dashboard', absolute: false));

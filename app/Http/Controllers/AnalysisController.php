@@ -28,7 +28,16 @@ class AnalysisController extends Controller
 
     public function store(AnalysisRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
-            return $this->analysis->save($request);
+            switch($request->option){
+                case 'service':
+                    return $this->analysis->service($request);
+                break;
+                case 'delete':
+                    return $this->analysis->delete($request);
+                break;
+                default:
+                    return $this->analysis->save($request);
+            }
         });
 
         return back()->with([

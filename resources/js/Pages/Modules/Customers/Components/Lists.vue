@@ -25,8 +25,8 @@
                 <tr class="fs-11">
                     <th></th>
                     <th style="width: 35%;">Name</th>
-                    <th style="width: 14%;" class="text-center">Bussiness</th>
-                    <!-- <th style="width: 14%;" class="text-center">Industry</th> -->
+                    <!-- <th style="width: 14%;" class="text-center">Bussiness</th> -->
+                    <th style="width: 14%;" class="text-center">Industry</th>
                     <!-- <th style="width: 14%;" class="text-center">Classification</th> -->
                     <th style="width: 15%;" class="text-center">Email</th>
                     <th style="width: 15%;" class="text-center">Contact No.</th>
@@ -45,8 +45,8 @@
                         <h5 class="fs-13 mb-0 text-dark">{{list.customer}}</h5>
                         <p class="fs-12 text-muted mb-0">{{list.address.name}}</p>
                     </td>
-                    <td class="text-center fs-12">{{list.bussiness.name}}</td>
-                    <!-- <td class="text-center fs-12">{{list.industry.name}}</td> -->
+                    <!-- <td class="text-center fs-12">{{list.bussiness.name}}</td> -->
+                    <td class="text-center fs-12">{{list.industry.name}}</td>
                     <!-- <td class="text-center fs-12">{{list.classification.name}}</td> -->
                     <td class="text-center fs-12">{{list.email}}</td>
                     <td class="text-center fs-12">{{list.contact_no}}</td>
@@ -69,7 +69,7 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <Create @message="fetch()" :dropdowns="dropdowns" :types="types" ref="create"/>
+    <Create @message="fetch()" :dropdowns="dropdowns" :region="region" ref="create"/>
     <Download @message="fetch()" ref="download"/>
     <Sync @message="fetch()" ref="sync"/>
 </template>
@@ -81,7 +81,7 @@ import Download from '../Modals/Download.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     components: { Pagination, Create, Download, Sync },
-    props: ['dropdowns'],
+    props: ['dropdowns','region'],
     data(){
         return {
             currentUrl: window.location.origin,

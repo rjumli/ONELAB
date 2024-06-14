@@ -15,13 +15,14 @@ class TsrRequest extends FormRequest
     {
         return [
             'customer' => 'sometimes|required',
-            'conforme_id' => 'sometimes|required|integer',
+            'conforme' => 'sometimes|required',
             'laboratory_id' => 'sometimes|required|integer',
+            'laboratory_type' => 'sometimes|required',
             'purpose_id' => 'sometimes|required|integer',
             'discount_id' => 'sometimes|required|integer',
             'due_at' => 'sometimes|required',
-            'mode' => 'required|array|min:1',
-            'mode.*' => 'required|integer|distinct|min:1'
+            // 'mode' => 'required|array|min:1',
+            // 'mode.*' => 'required|integer|distinct|min:1'
         ];
     }
 }

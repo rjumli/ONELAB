@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\Dashboard\AnalystService;
 use App\Services\Dashboard\FinanceService;
+use App\Services\Dashboard\ReleasingService;
 use App\Services\DropdownService;
 
 class DashboardController extends Controller
 {
-    public function __construct(FinanceService $finance, AnalystService $analyst, DropdownService $dropdown){
+    public function __construct(FinanceService $finance, AnalystService $analyst, DropdownService $dropdown, ReleasingService $releasing){
         $this->analyst = $analyst;
         $this->dropdown = $dropdown;
         $this->finance = $finance;
+        $this->releasing = $releasing;
     }
 
     public function index(Request $request){
@@ -50,6 +52,11 @@ class DashboardController extends Controller
                     ],
                     'statuses' => $this->finance->statuses($request),
                     'payments' => $this->finance->payments($request)
+                ]);
+            break;
+            case 'Releasing Officer':
+                return inertia('Modules/Dashboard/Releasing/Index',[
+                    'lists' => $this->releasing->lists()
                 ]);
             break;
             default:

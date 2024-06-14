@@ -48,71 +48,52 @@
                             </BCol>
                             <BCol lg="7">
                                 <BRow class="g-3">
-                                    <BCol lg="6" v-if="form.has_branches" class="mt-1 mb-n1">
-                                        <InputLabel for="name" value="Branch" />
-                                        <TextInput id="name" v-model="form.name" type="text" class="form-control" autofocus placeholder="Please enter name" autocomplete="name" required :class="{ 'is-invalid': form.errors.name }" @input="handleInput('name')" :light="true"/>
-                                        <InputError :message="form.errors.name" />
+                                    <BCol lg="12" v-if="form.has_branches" class="mt-1 mb-n1">
+                                        <InputLabel for="name" value="Branch" :message="form.errors.name"/>
+                                        <TextInput id="name" v-model="form.name" type="text" class="form-control" placeholder="Please enter name" @input="handleInput('name')" :light="true"/>
                                     </BCol>
                                     <BCol lg="6" class="mt-1 mb-n1">
-                                        <InputLabel for="email" value="Email" />
-                                        <TextInput id="email" v-model="form.email" type="email" class="form-control" autofocus placeholder="Please enter email" autocomplete="email" required :class="{ 'is-invalid': form.errors.email }" @input="handleInput('email')" :light="true"/>
-                                        <InputError :message="form.errors.email" />
+                                        <InputLabel for="email" value="Email" :message="form.errors.email"/>
+                                        <TextInput id="email" v-model="form.email" type="email" class="form-control" placeholder="Please enter email" @input="handleInput('email')" :light="true"/>
                                     </BCol>
                                     <BCol lg="6" class="mt-1 mb-n1">
-                                        <InputLabel for="contact_no" value="Contact" />
-                                        <TextInput id="contact_no" v-model="form.contact_no" type="text" class="form-control" autofocus placeholder="Please enter contact" autocomplete="contact_no" required :class="{ 'is-invalid': form.errors.contact_no }" @input="handleInput('contact_no')" :light="true"/>
-                                        <InputError :message="form.errors.contact_no" />
+                                        <InputLabel for="contact_no" value="Contact" :message="form.errors.contact_no"/>
+                                        <TextInput id="contact_no" v-model="form.contact_no" type="text" class="form-control" placeholder="Please enter contact" @input="handleInput('contact_no')" :light="true"/>
                                     </BCol>
-                                    <BCol :lg="(form.has_branches) ? 6 : 12" class="mt-1 mb-1">
+                                    <!-- <BCol :lg="(form.has_branches) ? 6 : 12" class="mt-1 mb-1">
                                         <InputLabel for="industry_id" value="Industry Type" />
                                         <Multiselect :options="dropdowns.industries" :searchable="true" v-model="form.industry_id" :message="form.errors.industry_id" placeholder="Select Industry"/>
                                         <InputError :message="form.errors.industry_id" />
-                                    </BCol>
+                                    </BCol> -->
                                     <BCol lg="6" class="mt-1 mb-1">
-                                        <InputLabel for="bussiness_id" value="Bussiness Nature" />
-                                        <Multiselect :options="dropdowns.bussinesses" :searchable="true" v-model="form.bussiness_id" :message="form.errors.bussiness_id" placeholder="Select Bussiness Nature"/>
-                                        <InputError :message="form.errors.bussiness_id" />
+                                        <InputLabel for="bussiness_id" value="Industry Type" :message="form.errors.industry_id"/>
+                                        <Multiselect :options="dropdowns.bussinesses" :searchable="true" v-model="form.industry_id" placeholder="Select Bussiness Nature" @input="handleInput('industry_id')" />
                                     </BCol>
                                      <BCol lg="6" class="mt-1 mb-1">
-                                        <InputLabel for="classification_id" value="Classification" />
-                                        <Multiselect :options="dropdowns.classes" :searchable="true" v-model="form.classification_id" :message="form.errors.classification_id" placeholder="Select Classification"/>
-                                        <InputError :message="form.errors.classification_id" />
+                                        <InputLabel for="classification_id" value="Classification" :message="form.errors.classification_id"/>
+                                        <Multiselect :options="dropdowns.classes" :searchable="true" v-model="form.classification_id" placeholder="Select Classification" @input="handleInput('classification_id')"/>
                                     </BCol>
                                     <BCol lg="12"><hr class="text-muted mt-1 mb-2"/></BCol>
                                     <BCol lg="6" class="mt-1">
-                                        <InputLabel for="region" value="Region" />
-                                        <Multiselect :options="dropdowns.regions" v-model="form.region_code" :message="form.errors.region_code" placeholder="Select Region"/>
-                                        <InputError :message="form.errors.region_code" />
+                                        <InputLabel for="region" value="Region" :message="form.errors.region_code"/>
+                                        <Multiselect :options="dropdowns.regions" v-model="form.region_code" :message="form.errors.region_code" placeholder="Select Region" @input="handleInput('region_code')"/>
                                     </BCol>
                                     <BCol lg="6" class="mt-1">
-                                        <InputLabel for="province" value="Province" />
-                                        <Multiselect :options="provinces" :searchable="true" v-model="form.province_code" :message="form.errors.province_code" placeholder="Select Province"/>
-                                        <InputError :message="form.errors.province_code" />
+                                        <InputLabel for="province" value="Province" :message="form.errors.province_code"/>
+                                        <Multiselect :options="provinces" :searchable="true" v-model="form.province_code" placeholder="Select Province" @input="handleInput('province_code')"/>
                                     </BCol>
                                     <BCol lg="6" class="mt-1">
-                                        <InputLabel for="municipality" value="Municipality" />
-                                        <Multiselect :options="municipalities" :searchable="true" v-model="form.municipality_code" :message="form.errors.municipality_code" placeholder="Select Municipality"/>
-                                        <InputError :message="form.errors.municipality_code" />
+                                        <InputLabel for="municipality" value="Municipality" :message="form.errors.municipality_code"/>
+                                        <Multiselect :options="municipalities" :searchable="true" v-model="form.municipality_code" placeholder="Select Municipality" @input="handleInput('municipality_code')"/>
                                     </BCol>
                                     <BCol lg="6" class="mt-1">
-                                        <InputLabel for="barangay" value="Barangay" />
-                                        <Multiselect :options="barangays" :searchable="true" v-model="form.barangay_code" :message="form.errors.barangay_code" placeholder="Select Barangay"/>
-                                        <InputError :message="form.errors.barangay_code" />
+                                        <InputLabel for="barangay" value="Barangay" :message="form.errors.barangay_code"/>
+                                        <Multiselect :options="barangays" :searchable="true" v-model="form.barangay_code" placeholder="Select Barangay" @input="handleInput('barangay_code')"/>
                                     </BCol>
                                     <BCol lg="12" class="mt-1">
-                                        <InputLabel for="address" value="Address" />
-                                        <TextInput id="address" v-model="form.address" type="text" class="form-control" autofocus placeholder="Please enter address" autocomplete="address" required :class="{ 'is-invalid': form.errors.address }" @input="handleInput('address')" :light="true"/>
-                                        <InputError :message="form.errors.address" />
+                                        <InputLabel for="address" value="Address" :message="form.errors.address"/>
+                                        <TextInput id="address" v-model="form.address" type="text" class="form-control" placeholder="Please enter address" @input="handleInput('address')" :light="true"/>
                                     </BCol>
-                                    <!-- <BCol lg="12"><hr class="text-muted mt-n1 mb-0"/></BCol> -->
-                                    <!-- <BCol lg="6" class="mt-2">
-                                        <TextInput id="name" v-model="form.latitude" type="text" class="form-control" autofocus placeholder="Please enter name" autocomplete="name" required :class="{ 'is-invalid': form.errors.name }" @input="handleInput('name')" :light="true"/>
-                                        <InputError :message="form.errors.name" />
-                                    </BCol>
-                                    <BCol lg="6" class="mt-2">
-                                        <TextInput id="name" v-model="form.longitude" type="text" class="form-control" autofocus placeholder="Please enter name" autocomplete="name" required :class="{ 'is-invalid': form.errors.name }" @input="handleInput('name')" :light="true"/>
-                                        <InputError :message="form.errors.name" />
-                                    </BCol> -->
                                 </BRow>
                             </BCol>
                             <BCol lg="5">
@@ -140,12 +121,11 @@ import { useForm } from '@inertiajs/vue3';
 import Map from '../Components/Map.vue';
 import Search from '../Components/Search.vue';
 import Multiselect from '@/Shared/Components/Forms/Multiselect.vue';
-import InputError from '@/Shared/Components/Forms/InputError.vue';
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
-    components: { InputError, InputLabel, TextInput, Multiselect, Map, Search },
-    props: ['dropdowns'],
+    components: { InputLabel, TextInput, Multiselect, Map, Search },
+    props: ['dropdowns','region'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -160,7 +140,7 @@ export default {
                 bussiness_id: null,
                 has_branches: null,
                 address: null,
-                region_code: null,
+                region_code: this.region,
                 province_code: null,
                 municipality_code: null,
                 barangay_code: null,
@@ -220,6 +200,7 @@ export default {
         },
         show(){
             this.$refs.map.view();
+            this.fetchProvince(this.region);
             this.showModal = true;
         },
         submit(){

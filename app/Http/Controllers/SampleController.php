@@ -25,7 +25,13 @@ class SampleController extends Controller
 
     public function store(SampleRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
-            return $this->sample->save($request);
+            switch($request->option){
+                case 'remove':
+                    return $this->sample->remove($request);
+                break;
+                default:
+                return $this->sample->save($request);
+            }
         });
 
         return back()->with([

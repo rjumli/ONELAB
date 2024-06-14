@@ -53,9 +53,11 @@
             <div class="input-group mb-1">
                 <span class="input-group-text fw-semibold fs-12"> {{(selected.length === samples.length) ? 'All' : selected.length}} samples are selected. </span>
                 <input type="text"  placeholder="Search Request" class="form-control" style="width: 55%;">
-               
+                <span v-if="laboratory === 11" @click="openService(id)" class="input-group-text" v-b-tooltip.hover title="Add Service" style="cursor: pointer;"> 
+                    <i class="ri-add-circle-fill text-primary search-icon"></i>
+                </span>
                 <span v-if="status.name == 'Pending'" @click="openAddMany()" class="input-group-text" v-b-tooltip.hover title="Add Analysis" style="cursor: pointer;"> 
-                    <i class="ri-flask-fill text-success search-icon"></i>
+                    <i class="ri-flask-fill text-primary search-icon"></i>
                 </span>
                 <b-button v-if="status.name == 'Pending'" @click="openAdd()" type="button" variant="primary">
                     <i class="ri-add-circle-fill align-bottom me-1"></i>Add Sample
@@ -104,8 +106,11 @@
                         <b-button v-if="status.name == 'Pending'" @click="openAnalysis(list,index)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Add Analysis" size="sm">
                             <i class="ri-flask-fill align-bottom"></i>
                         </b-button>
-                        <b-button v-if="status.name == 'Pending'" @click="openCopy(list)" variant="soft-danger" v-b-tooltip.hover title="Copy" size="sm">
+                        <b-button v-if="status.name == 'Pending'" @click="openCopy(list)" variant="soft-danger" class="me-1" v-b-tooltip.hover title="Copy" size="sm">
                             <i class="ri-file-copy-2-line align-bottom"></i>
+                        </b-button>
+                        <b-button v-if="status.name == 'Pending'" @click="openDelete(list,index)" variant="soft-danger" v-b-tooltip.hover title="Delete" size="sm">
+                            <i class="ri-delete-bin-fill align-bottom"></i>
                         </b-button>
                     </td>
                 </tr>
@@ -117,16 +122,20 @@
     <View ref="view"/>
     <Analysis @total="total" @update="fetch(this.id)" ref="analysis"/>
     <Create @new="updateSamples" ref="sample"/>
+    <Service @total="total" :services="services" ref="service"/>
+    <Delete @total="total" @remove="removeSample" ref="delete"/>
 </template>
 <script>
+import Delete from '../Modals/Samples/Delete.vue';
+import Service from '../Modals/Service.vue';
 import simplebar from "simplebar-vue";
 import QR from '../Modals/Samples/QR.vue';
 import View from '../Modals/Samples/View.vue';
 import Analysis from '../Modals/Samples/Analysis.vue';
 import Create from '../Modals/Samples/Create.vue';
 export default {
-    components: { Create, QR, View, Analysis, simplebar },
-    props: ['id','laboratory','received','due','status','code'],
+    components: { Create, QR, View, Analysis, simplebar, Service, Delete },
+    props: ['id','laboratory','received','due','status','code','services'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -150,11 +159,18 @@ export default {
             this.index = index;
             this.$refs.analysis.show(data,this.laboratory,'one');
         },
+        openService(id){
+            this.$refs.service.show(id);
+        },
         openView(data){
             this.$refs.view.show(data);
         },
         openAddMany(){
             this.$refs.analysis.show(this.selected,this.laboratory,'many');
+        },
+        openDelete(data,index){
+            this.index = index;
+            this.$refs.delete.show(data,this.id);
         },
         fetch(id){
             axios.get(this.currentUrl+'/samples',{
@@ -170,6 +186,10 @@ export default {
         },
         updateSamples(data){
             this.samples.push(data);
+        },
+        removeSample(){
+            this.samples.splice(this.index, 1);
+            this.index = null;
         },
         total(data){
             this.mark = false;

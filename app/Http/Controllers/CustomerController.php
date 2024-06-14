@@ -44,7 +44,8 @@ class CustomerController extends Controller
                     'industries' => $this->dropdown->industry_type(),
                     'classes' => $this->dropdown->classes(),
                     'regions' => $this->dropdown->regions()
-                ]
+                ],
+                'region' => $this->customer->region()
             ]);
         }
     }

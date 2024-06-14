@@ -3,33 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\DropdownService;
-use App\Services\RequestService;
 use App\Traits\HandlesTransaction;
 use App\Http\Requests\TsrRequest;
+use App\Services\DropdownService;
+use App\Services\Requests\SaveService;
+use App\Services\Requests\ViewService;
 
 class RequestController extends Controller
 {
     use HandlesTransaction;
 
-    public function __construct(DropdownService $dropdown, RequestService $req){
+    public function __construct(DropdownService $dropdown, SaveService $save, ViewService $view){
         $this->dropdown = $dropdown;
-        $this->req = $req;
+        $this->save = $save;
+        $this->view = $view;
     }
 
     public function index(Request $request){
         switch($request->option){
             case 'lists':
-                return $this->req->lists($request);
+                return $this->view->lists($request);
             break;
             case 'customer':
-                return $this->req->customer($request);
+                return $this->view->customer($request);
             break;
             case 'print':
-                return $this->req->print($request);
+                return $this->view->print($request);
             break;
             case 'tsrs':
-                return $this->req->tsrs($request);
+                return $this->view->tsrs($request);
             break;
             default :
             return inertia('Modules/Requests/Index',[
@@ -39,6 +41,7 @@ class RequestController extends Controller
                     'modes' => $this->dropdown->modes(),
                     'discounts' => $this->dropdown->discounts(),
                     'statuses' => $this->dropdown->statuses('Request'),
+                    'services' => $this->dropdown->services()
                 ]
             ]);
         }
@@ -46,7 +49,7 @@ class RequestController extends Controller
 
     public function store(TsrRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
-            return $this->req->save($request);
+            return $this->save->tsr($request);
         });
 
         return back()->with([
@@ -61,10 +64,13 @@ class RequestController extends Controller
         $result = $this->handleTransaction(function () use ($request) {
             switch($request->option){
                 case 'Confirm':
-                    return $this->req->confirm($request);
+                    return $this->save->confirm($request);
                 break;
                 case 'Cancel':
-                    return $this->req->cancel($request);
+                    return $this->save->cancel($request);
+                break;
+                case 'release':
+                    return $this->save->release($request);
                 break;
             }
         });
