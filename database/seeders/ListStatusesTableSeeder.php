@@ -15,7 +15,7 @@ class ListStatusesTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_statuses')->truncate();
+        \DB::table('list_statuses')->delete();
         
         \DB::table('list_statuses')->insert(array (
             0 => 

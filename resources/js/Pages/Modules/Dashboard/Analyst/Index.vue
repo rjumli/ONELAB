@@ -54,7 +54,7 @@
                     <simplebar data-simplebar style="height: calc(100vh - 395px);">
                         <BRow>
                             <BCol lg="12" class="project-card mb-n3" v-for="(item, index) of samples.pending" :key="index">
-                                <div class="card" style="cursor: pointer;">
+                                <div class="card" style="cursor: pointer;" @click="openShow(item)">
                                     <div class="card-header">
                                         <h6 class="card-title mb-n1 fs-13 fw-semibold"><span class="text-primary">{{item.tsr.code}}</span></h6>
                                     </div>
@@ -164,7 +164,7 @@
                     </BCard>
                     <div v-else class="alert alert-light mb-0 text-center" role="alert"><span class="fs-12 text-muted">No test available</span></div> -->
                     </simplebar>
-                    {{samples.pending[0]}}
+                    <!-- {{samples.pending[0]}} -->
                 </div>
                 <div class="col-md-4 mt-3">
                     <BCard class="mb-3" no-body>
@@ -237,13 +237,15 @@
         </div>
     </b-row>
     <View ref="view"/>
+    <Show ref="show"/>
 </template>
 <script>
 import simplebar from "simplebar-vue";
 import View from './Modals/View.vue';
+import Show from './Modals/Show.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
-    components: { PageHeader, View, simplebar },
+    components: { PageHeader, View, Show, simplebar },
     props: ['samples'],
     data(){
         return {
@@ -261,6 +263,9 @@ export default {
         openView(data){
             this.$refs.view.show(data);
         },
+        openShow(data){
+            this.$refs.show.show(data);
+        },  
         search() {
             const searchTerm = this.searchTerm.toLowerCase();
             const matchedIndices1 = this.samples.pending.reduce((indices, sample, index) => {

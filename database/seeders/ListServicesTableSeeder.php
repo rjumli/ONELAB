@@ -15,7 +15,7 @@ class ListServicesTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_services')->truncate();
+        \DB::table('list_services')->delete();
         
         \DB::table('list_services')->insert(array (
             0 => 

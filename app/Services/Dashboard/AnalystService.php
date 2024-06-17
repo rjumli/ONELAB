@@ -4,6 +4,7 @@ namespace App\Services\Dashboard;
 
 use App\Models\Tsr;
 use App\Models\TsrAnalysis;
+use App\Http\Resources\AnalysisResource;
 
 class AnalystService
 {
@@ -27,8 +28,8 @@ class AnalystService
         //     });
         // })
         // ->get();
-        $data = Tsr::with('samples.analyses')->where('status_id',3)
-        ->withCount('samples')
+        $data = Tsr::with('status')->where('status_id',3)
+        // ->withCount('samples')
         ->with(['samples' => function ($query) {
             // $query->withCount('analyses');
             $query->withCount([
@@ -46,9 +47,16 @@ class AnalystService
             $tsr->total_analyses_count = $tsr->samples->sum('analyses_count');
             $tsr->total_completed_analyses_count = $tsr->samples->sum('completed_analyses_count');
             $tsr->total_pending_analyses_count = $tsr->samples->sum('pending_analyses_count');
+            $tsr_id = $tsr->id;
             return [
                 'id' => $tsr->id,
                 'tsr' => $tsr,
+                'lists' => AnalysisResource::collection(TsrAnalysis::with('sample','testservice.testname','testservice.method.reference','testservice.method.method')
+                ->whereHas('sample',function ($query) use ($tsr_id) {
+                    $query->whereHas('tsr',function ($query) use ($tsr_id){
+                        $query->where('id',$tsr_id);
+                    });
+                })->get()),
                 'samples' => $tsr->samples_count,
                 'analyses' => $tsr->total_analyses_count,
                 'completed' => $tsr->total_completed_analyses_count

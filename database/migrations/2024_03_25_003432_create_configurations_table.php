@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name',100)->default('Department of Science and Technology - IX');
             $table->json('laboratories');
             $table->boolean('samplecode_year');
-            $table->string('tsr_count');
-            $table->string('sample_count');
+            $table->string('tsr_count')->nullable();
+            $table->string('sample_count')->nullable();
             $table->integer('laboratory_id')->unsigned()->index();
             $table->foreign('laboratory_id')->references('id')->on('laboratories')->onDelete('cascade');
             $table->timestamps();
