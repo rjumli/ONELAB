@@ -29,7 +29,7 @@ class SaveService
             'received_by' => \Auth::user()->id
         ]));
         
-        $payment = (in_array($request->discount_id, [5, 6, 7])) ? ['status_id' => 6,'is_free' => 1] : ['status_id' => 6];
+        $payment = (in_array($request->discount_id, [5, 6, 7])) ? ['status_id' => 8,'is_free' => 1] : ['status_id' => 6];
         $data->payment()->create(array_merge($request->all(),$payment));
 
         return [
@@ -62,17 +62,17 @@ class SaveService
     }
 
     public function confirm($request){
-        $data = Tsr::where('id',$request->id)->first();
-        $data->status_id = $request->status_id;
+        $data = Tsr::with('payment')->where('id',$request->id)->first();
+        $data->status_id = (in_array($data->payment->discount_id, [5, 6, 7])) ? 3 : $request->status_id;
         $data->due_at = $request->due_at;
         $data->code = $this->generateCode($data);
-        $data->save();
-
-        $samples = TsrSample::where('tsr_id',$request->id)->get();
-        foreach($samples as $sample){
-            $s = TsrSample::findOrFail($sample->id);
-            $s->code = $this->generateSampleCode($data);
-            $s->save();
+        if($data->save()){
+            $samples = TsrSample::where('tsr_id',$request->id)->get();
+            foreach($samples as $sample){
+                $s = TsrSample::findOrFail($sample->id);
+                $s->code = $this->generateSampleCode($data);
+                $s->save();
+            }
         }
 
         $final =  Tsr::query()

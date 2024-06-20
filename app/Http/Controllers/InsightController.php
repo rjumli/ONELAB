@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Tsr;
 use App\Models\TsrPayment;
 use App\Models\TsrAnalysis;
 use App\Models\Target;
+use App\Models\FinanceOp;
 use App\Models\Customer;
+use App\Models\ListStatus;
 use Illuminate\Http\Request;
 use App\Http\Resources\DefaultResource;
 use App\Http\Resources\CustomerTopResource;
@@ -113,7 +116,7 @@ class InsightController extends Controller
             'percent' => ($len != 0 && $len != 1) ? round($d/$data[$len-1]['y']*100) : 0,
             'total' => '₱'.number_format(TsrPayment::whereHas('tsr',function ($query){
                 $query->where('status_id',3);
-            })->where('is_paid',1)->sum('total'),2,".",","),
+            })->where('is_paid',1)->sum('total'),2,'.',','),
         ];
     }
 
@@ -140,54 +143,139 @@ class InsightController extends Controller
             'percent' => ($len != 0 && $len != 1) ? round($d/$data[$len-1]['y']*100) : 0,
             'total' => '₱'.number_format(TsrPayment::whereHas('tsr',function ($query){
                 $query->where('status_id',3);
-            })->where('is_paid',0)->sum('total'),2,".",","),
+            })->where('is_paid',0)->sum('total'),2,'.',','),
         ];
     }
 
     public function recap($request){
-        $current_year = $request->year; $years = []; 
-        $laboratory = $request->laboratory;
-
-        $programs = [
-            ['name' => 'Value of Transactions', 'value' => 1],
-            ['name' => 'Not yet Collected', 'value' => 0],
+        $year =  $request->year;
+        $total = [
+            ['name' => 'Value of Transactions', 'value' => FinanceOp::whereYear('created_at',$year)->sum('total')],
+            ['name' => 'Actual Collection Based on Receipt', 'value' => FinanceOp::where('status_id',7)->whereYear('created_at',$year)->sum('total')],
+            ['name' => 'Pending Collection', 'value' => FinanceOp::where('status_id',6)->whereYear('created_at',$year)->sum('total')],
         ];
-        $prog = []; 
-        foreach($programs as $program){
-            $data = []; $year = $current_year - 20;
-            for($year; $year <= $current_year; $year++){
-                $years[] = $year; $p = $program['value'];
-                $data[] = TsrPayment::whereHas('tsr',function ($query) use ($year){
-                    $query->where('status_id',3)->whereYear('created_at',$year);
-                })
-                ->when($request->laboratory, function ($query, $laboratory) {
-                    $query->whereHas('tsr',function ($query) use ($laboratory){
-                        $query->where('laboratory_id', $laboratory);
-                    });
-                })
-                ->where('is_paid',$p)->sum('total');
-            }
-            $arr[] = [
-                'name' => $program['name'],
-                'data' => $data  
+        if($request->type === 'yearly'){
+            $current_year = $request->year; $years = []; 
+            $laboratory = $request->laboratory;
+
+            $programs = [
+                ['name' => 'Value of Transactions', 'value' => ''],
+                ['name' => 'Actual Collection Based on Receipt', 'value' => 7],
+                ['name' => 'Pending Collection', 'value' => 6],
             ];
-            
+            $prog = []; 
+            foreach($programs as $program){
+                $data = []; $year = $current_year - 20;
+                for($year; $year <= $current_year; $year++){
+                    $years[] = $year; $p = $program['value'];
+                    $data[] = FinanceOp::where('status_id',$p)
+                    // ->where('laboratory_id', $laboratory)
+                    ->whereYear('created_at',$year)
+                    ->sum('total');
+                    // $data[] = TsrPayment::whereHas('tsr',function ($query) use ($year){
+                    //     $query->where('status_id',3)->whereYear('created_at',$year);
+                    // })
+                    // ->when($request->laboratory, function ($query, $laboratory) {
+                    //     $query->whereHas('tsr',function ($query) use ($laboratory){
+                    //         $query->where('laboratory_id', $laboratory);
+                    //     });
+                    // })
+                    // ->where('is_paid',$p)->sum('total');
+                }
+                $arr[] = [
+                    'name' => $program['name'],
+                    'data' => $data  
+                ];
+                
+            }
+
+            return $y =[
+                'categories' => $years,
+                'lists' => $arr,
+                'total' => $total
+            ];
+        }else{
+            $months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            $programs = [
+                ['name' => 'Value of Transactions', 'value' => null],
+                ['name' => 'Actual Collection Based on Receipt', 'value' => 7],
+                ['name' => 'Pending Collection', 'value' => 6],
+            ];
+            $prog = []; 
+            foreach($programs as $program){
+                $data = [];
+                for($month = 1; $month <= 12; $month++){
+                    $p = $program['value'];
+                    $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth();
+                    $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth();
+                    $query = FinanceOp::query();
+                    ($p) ? $query->where('status_id',$p) : '';
+                    $sum = $query->whereBetween('created_at',[$startOfMonth,$endOfMonth])
+                    ->sum('total');
+
+                    $data[] = $sum;
+                }
+                $arr[] = [
+                    'name' => $program['name'],
+                    'data' => $data  
+                ];
+                
+            }
+
+            return $y =[
+                'categories' => $months,
+                'lists' => $arr,
+                'total' => $total
+            ];
         }
 
-        return $y =[
-            'categories' => $years,
-            'lists' => $arr
-        ];
+      
     }
 
     public function target($request){
-        $targets =  Target::where('year',$request->year)->where('is_lab',1)->get();
-        foreach($targets as $target){
+        $laboratories = $request->laboratories;
+        foreach($laboratories as $laboratory){
+            $lab = $laboratory['value'];
+            $sum = TsrPayment::whereHas('tsr',function ($query) use ($lab){
+                $query->where('laboratory_type',$lab);
+            })
+            ->whereIn('status_id',[7,8])->sum('subtotal');
 
+            $discount = TsrPayment::whereHas('tsr',function ($query) use ($lab){
+                $query->where('laboratory_type',$lab);
+            })
+            ->whereIn('status_id',[7,8])->sum('discount');
+
+
+
+            $statuses = ListStatus::where('type','Payment')->get();
+            foreach($statuses as $status){
+                $status_id = $status['id'];
+                $breakdown[] = [
+                    'name' => $status['name'],
+                    'total' => TsrPayment::whereHas('tsr',function ($query) use ($lab){
+                        $query->where('laboratory_type',$lab);
+                    })->where('status_id',$status_id)->sum('subtotal')
+                ];
+            }
+            $arr[] = [
+                'name' => $laboratory['name'],
+                'others' => $laboratory['others'],
+                'total' => $sum,
+                'discount' => $discount,
+                'breakdown' => $breakdown
+            ];
         }
-        return [
-            'target' => $targets,
-        ];
+        return $arr;
+        // }
+        // $targets =  Target::where('year',$request->year)->where('is_lab',1)->get();
+        // foreach($targets as $target){
+
+        // }
+        // return [
+        //     'target' => $targets,
+        // ];
     }
 
     public function topcustomers($request){

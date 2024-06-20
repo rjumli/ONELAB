@@ -23,8 +23,8 @@ return new class extends Migration
             $table->foreign('sample_id')->references('id')->on('tsr_samples')->onDelete('cascade');
             $table->integer('analyst_id')->unsigned()->nullable();
             $table->foreign('analyst_id')->references('id')->on('users')->onDelete('cascade');
-            $table->dateTime('start_at')->nullable();
-            $table->dateTime('end_at')->nullable();
+            $table->date('start_at')->nullable();
+            $table->date('end_at')->nullable();
             $table->timestamps();
         });
     }

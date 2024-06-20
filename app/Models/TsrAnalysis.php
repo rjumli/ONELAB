@@ -13,6 +13,11 @@ class TsrAnalysis extends Model
         'status_id','analyst_id','sample_id','testservice_id','fee','start_at','end_at',
     ];
 
+    public function result()
+    {
+        return $this->hasOne('App\Models\TsrAnalysisResult', 'analysis_id');
+    }
+
     public function status()
     {
         return $this->belongsTo('App\Models\ListStatus', 'status_id', 'id');

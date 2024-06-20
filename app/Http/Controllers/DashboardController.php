@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 use App\Services\Dashboard\AnalystService;
 use App\Services\Dashboard\FinanceService;
 use App\Services\Dashboard\ReleasingService;
+use App\Services\Dashboard\MainService;
 use App\Services\DropdownService;
 
 class DashboardController extends Controller
 {
-    public function __construct(FinanceService $finance, AnalystService $analyst, DropdownService $dropdown, ReleasingService $releasing){
+    public function __construct(FinanceService $finance, 
+                                AnalystService $analyst, 
+                                DropdownService $dropdown, 
+                                ReleasingService $releasing, 
+                                MainService $main)
+    {
         $this->analyst = $analyst;
         $this->dropdown = $dropdown;
         $this->finance = $finance;
         $this->releasing = $releasing;
+        $this->main = $main;
     }
 
     public function index(Request $request){
@@ -61,7 +68,7 @@ class DashboardController extends Controller
             break;
             default:
                 return inertia('Modules/Dashboard/Index',[
-                    'laboratories' => $this->dropdown->laboratory_all(),
+                    'laboratories' => $this->dropdown->laboratory_types(),
                 ]);
         }   
     }

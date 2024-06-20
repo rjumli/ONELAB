@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('conforme_id')->references('id')->on('customer_conformes')->onDelete('cascade');
             $table->integer('received_by')->unsigned()->index();
             $table->foreign('received_by')->references('id')->on('users')->onDelete('cascade');
-            $table->datetime('due_at')->nullable();
+            $table->date('due_at')->nullable();
             $table->datetime('released_at')->nullable();
             $table->timestamps();
         });

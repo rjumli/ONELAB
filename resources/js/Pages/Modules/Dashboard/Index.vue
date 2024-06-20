@@ -48,7 +48,7 @@
                     <Recap ref="recap"/>
                 </div>
                 <div class="col-md-4">
-                    <Target :laboratory="null"/>
+                    <Payment :laboratories="laboratories"/>
                 </div>
                 <div class="col-md-4 mt-n2">
                     <Customer :customers="customers" :year="year" :total="total" ref="customer"/>
@@ -64,6 +64,7 @@
     </b-row>
 </template>
 <script>
+import Payment from './Modules/Payment.vue';
 import Releasing from './Modules/Releasing.vue';
 import Referral from './Modules/Referral.vue';
 import Testname from './Modules/Testname.vue';
@@ -73,7 +74,7 @@ import Recap from './Modules/Recap.vue';
 import Target from './Modules/Target.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 export default {
-    components: { PageHeader, Count, Recap, Target, Customer, Testname, Referral, Releasing },
+    components: { PageHeader, Count, Recap, Target, Customer, Testname, Referral, Releasing, Payment },
     props: ['laboratories'],
     data(){
         return {

@@ -82,16 +82,27 @@ class AnalysisService
     }
 
     public function start($request){
-        $data = TsrAnalysis::find($request->id);
-        $data->status_id = $request->status_id;
-        $data->analyst_id = \Auth::user()->id;
-        $data->start_at = $request->start_at;
+        $tsr_id = $request->tsr_id;
+        $data = TsrAnalysis::whereIn('id',$request->id)->update([
+            'status_id' => $request->status_id,
+            'analyst_id' => \Auth::user()->id,
+            'start_at' => $request->start_at
+        ]);
+
+        // $data = TsrAnalysis::find($request->id);
+        // $data->status_id = $request->status_id;
+        // $data->analyst_id = \Auth::user()->id;
+        // $data->start_at = $request->start_at;
         
-        if($data->save()){
-            if(TsrAnalysis::where('sample_id',$data->sample_id)->where('status_id',10)->count() === 0){
-                $tsr = Tsr::where('id',$request->tsr_id)->update(['status_id' => 4]);
+        if($data){
+            if(TsrAnalysis::whereHas('sample',function ($query) use ($tsr_id){
+                $query->whereHas('tsr',function ($query) use ($tsr_id){
+                    $query->where('id',$tsr_id);
+                });
+            })->where('status_id',10)->count() === 0){
+                $tsr = Tsr::where('id',$tsr_id)->update(['status_id' => 4]);
             }else{
-                $tsr = Tsr::where('id',$request->tsr_id)->update(['status_id' => 3]);
+                $tsr = Tsr::where('id',$tsr_id)->update(['status_id' => 3]);
             }
         }
         
@@ -103,10 +114,11 @@ class AnalysisService
     }
 
     public function end($request){
-        $data = TsrAnalysis::find($request->id);
-        $data->status_id = $request->status_id;
-        $data->end_at = $request->end_at;
-        $data->save();
+        $tsr_id = $request->tsr_id;
+        $data = TsrAnalysis::whereIn('id',$request->id)->update([
+            'status_id' => $request->status_id,
+            'end_at' => $request->end_at
+        ]);
         
         return [
             'data' => $data,

@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" :title="selected.tsr.code"  style="--vz-modal-width: 900px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+    <b-modal v-model="showModal" :title="selected.tsr.code"  style="--vz-modal-width: 1000px;" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <div class="row mb-2">
             <div class="col-sm-4">
                 <div class="p-1 border border-dashed rounded">
@@ -43,38 +43,62 @@
                 </div>
             </div>
             <div class="col-sm-12"><hr class="text-muted"/></div>
+            <b-col lg>
+            <div class="input-group mb-2">
+                <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
+                <input type="text" placeholder="Search Request" class="form-control" style="width: 45%;">
+                <select v-model="filterCode" class="form-select" id="inputGroupSelect01">
+                    <option :value="null" selected>Select All</option>
+                    <option :value="list" v-for="list in uniqueCodes" v-bind:key="list.id">{{list}}</option>
+                </select>
+                <b-button type="button" variant="primary" @click="openCreate">
+                    <i class="ri-add-circle-fill align-bottom me-1"></i> Create
+                </b-button>
+            </div>
+        </b-col>
             <div class="col-sm-12">
                 <!-- {{ selected.lists }} -->
-                <div v-if="selected.lists" class="table-responsive mt-0 mb-4">
+                
+                <div v-if="selected.lists" class="table-responsive mt-0 mb-0">
                     <table class="table table-nowrap align-middle mb-0">
                         <thead class="table-light">
                             <tr class="fs-11">
                                 <th class="text-center" width="5%">#</th>
-                                <th width="20%">Test Name</th>
-                                <th class="text-center" width="30%">Method Reference</th>
+                                <th width="24%">Test Name</th>
+                                <th class="text-center" width="47%">Method Reference</th>
                                 <th class="text-center" width="12%">Fee</th>
-                                <th class="text-center" width="13%">Status</th>
+                                <th class="text-center" width="12%"></th>
                                 <!-- <th></th> -->
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr v-for="(list,index) in selected.lists.data" v-bind:key="index" class="fs-11">
-                                <td class="text-center"> 
-                                    {{index + 1}}
-                                </td>
-                                <td>{{list.testname}}</td>
-                                <td class="text-center">
-                                    <h5 class="fs-11 mb-0">{{list.method}}</h5>
-                                    <p class="text-muted mb-0">{{list.reference}}</p>
-                                </td>
-                                <td class="text-center">{{list.fee}}</td>
-                                <td class="text-center">
-                                    <span :class="'badge '+list.status.color+' '+list.status.others">{{list.status.name}}</span>
-                                </td>
-                                <!-- <td></td> -->
-                            </tr>
-                        </tbody>
                     </table>
+                    <simplebar data-simplebar style="max-height: calc(100vh - 500px);">
+                        <table class="table table-nowrap align-middle mb-0">
+                            <tbody>
+                                <tr v-for="(list,index) in filteredLists" v-bind:key="index" class="fs-11" :class="(list.selected) ? 'table-info' : ''">
+                                    <td  width="5%" class="text-center fs-14"> 
+                                        <input v-if="list.status.name !== 'Completed'" type="checkbox" v-model="list.selected" class="form-check-input" />
+                                        <i v-else class="text-success ri-checkbox-circle-fill fs-18"></i>
+                                        <!-- <i v-if="list.status.name === 'Ongoing'" class="text-info ri-record-circle-fill fs-18"></i>
+                                        <i v-if="list.status.name === 'Completed'" class="text-success ri-checkbox-circle-fill fs-18"></i> -->
+                                    </td>
+                                    <td  width="24%">
+                                        <h5 class="fs-11 mb-0">{{list.code}} - {{list.sample}}</h5>
+                                        <p class="text-muted mb-0">{{list.testname}}</p>
+                                    </td>
+                                    <td  width="47%" class="text-center">
+                                        <h5 class="fs-11 mb-0">{{list.method}}</h5>
+                                        <p class="text-muted mb-0">{{list.reference}}</p>
+                                    </td>
+                                    <td  width="12%" class="text-center">{{list.fee}}</td>
+                                    <td  width="12%" class="text-center">
+                                        <span :class="'badge '+list.status.color+' '+list.status.others">{{list.status.name}}</span>
+                                    </td>
+                                    <!-- <td></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </simplebar>
                 </div>
                 <!-- <b-accordion class=" nesting-accordion custom-accordionwithicon accordion-border-box" id="accordionnesting">
                     <div class="accordion-item" v-for="(item, index) of selected.tsr.samples" :key="index">
@@ -128,18 +152,19 @@
         </form> -->
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button v-if="selected.tsr.status.name === 'Pending'" @click="save(11,'start')" variant="primary" :disabled="form.processing" block>Start Analysis</b-button>
-            <b-button v-if="selected.tsr.status.name === 'Ongoing'" @click="save(12,'end')" variant="primary" :disabled="form.processing" block>End Analysis</b-button>
+            <b-button v-if="status === 'Pending'" @click="save(11,'start')" variant="primary" :disabled="form.processing" block>Start Analysis</b-button>
+            <b-button v-if="status === 'Ongoing'" @click="save(12,'end')" variant="primary" :disabled="form.processing" block>End Analysis</b-button>
         </template>
     </b-modal>
     <Save @hide="hide" ref="save"/>
 </template>
 <script>
+import simplebar from "simplebar-vue";
 import Save from './Save.vue';
 import Multiselect from "@vueform/multiselect";
 import "@vueform/multiselect/themes/default.css";
 export default {
-    components: { Multiselect, Save },
+    components: { Multiselect, Save, simplebar },
     data(){
         return {
             selected: {
@@ -147,19 +172,47 @@ export default {
                     status:{}
                 },
             },
+            filterCode: null,
+            status: null,
             form: {},
             showModal: false
         }
     },
+    computed: {
+        uniqueCodes() {
+            if(this.selected.lists){
+                const codesSet = new Set(this.selected.lists.data.map(item => item.code));
+                return Array.from(codesSet);
+            }else{
+                return [];
+            }
+        },
+        filteredLists() {
+            if(this.selected.lists){
+                if(this.filterCode) {
+                    return this.selected.lists.data.filter(item => item.code.includes(this.filterCode));
+                }
+                return this.selected.lists.data.filter(item => item.status.name.includes(this.status));
+            }
+        },
+        tests(){
+            if(this.filteredLists){
+                return this.filteredLists.filter(item => item.selected).map(selectedItem => selectedItem.id);
+            }else{ 
+                return [];
+            }
+        }
+    },
     methods : {
-        show(data) {
+        show(data,status) {
+            this.status = status;
             this.selected = data;
             this.showModal = true;
         },
         save(status,type){
             this.form = this.$inertia.form({
-                tsr_id: this.selected.sample.tsr.id,
-                id: this.selected.id,
+                tsr_id: this.selected.tsr.id,
+                id: this.tests,
                 status_id: status,
                 start_at: null,
                 end_at: null,
@@ -177,3 +230,11 @@ export default {
     }
 }
 </script>
+<style>
+.thead-fixed {
+   position: sticky;
+   top: 0;
+   background-color: #fff; /* Set the background color for the fixed header */
+   z-index: 1; /* Ensure the fixed header is above the scrolling content */
+}
+</style>
