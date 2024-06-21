@@ -5,11 +5,20 @@ namespace App\Services;
 use App\Models\Tsr;
 use App\Models\TsrSample;
 use App\Models\TsrPayment;
+use App\Models\Configuration;
 use App\Models\ListDropdown;
 use App\Http\Resources\SampleResource;
 
 class SampleService
 {
+    public $laboratory;
+
+    public function __construct()
+    {
+        $this->laboratory = (\Auth::user()->userrole) ? \Auth::user()->userrole->laboratory_id : null;
+        $this->configuration = Configuration::with('laboratory.address')->where('laboratory_id',$this->laboratory)->first();
+    }
+
     public function lists($request){
         $data = SampleResource::collection(
             TsrSample::query()->with('analyses.status','analyses.testservice.method.method','analyses.testservice.testname','analyses.sample','analyses.analyst.profile')->where('tsr_id',$request->id)
@@ -70,5 +79,15 @@ class SampleService
             $query->where('laboratory_id',$laboratory_type)->where('status_id','!=',1);
         })->whereYear('created_at',$year)->count();
         return $lab_type->others.'-'.$year.'-'.str_pad(($c+1), 5, '0', STR_PAD_LEFT); 
+    }
+
+    public function print($request){
+        $id = $request->id;
+        $array = [
+            'configuration' => $this->configuration,
+        ];
+
+        $pdf = \PDF::loadView('reports.test',$array)->setPaper('a4', 'portrait');
+        return $pdf->download('TestReport.pdf');
     }
 }

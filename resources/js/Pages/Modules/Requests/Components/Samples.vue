@@ -100,7 +100,7 @@
                         <b-button v-if="status.name != 'Pending'" @click="openQR(list)" class="me-1" variant="soft-success" v-b-tooltip.hover title="QR Code" size="sm">
                             <i class="ri-qr-code-fill align-bottom"></i>
                         </b-button>
-                        <b-button v-if="status.name != 'Pending'" @click="openCertificate(list)" variant="soft-primary" v-b-tooltip.hover title="Certificate" size="sm">
+                        <b-button v-if="status.name != 'Pending'" @click="openCertificate(list.id)" variant="soft-primary" v-b-tooltip.hover title="Certificate" size="sm">
                             <i class="ri-file-paper-2-fill align-bottom"></i>
                         </b-button>
                         <b-button v-if="status.name == 'Pending'" @click="openAnalysis(list,index)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Add Analysis" size="sm">
@@ -151,6 +151,9 @@ export default {
         },
         openCopy(sample){
             this.$refs.sample.copy(this.id,this.laboratory,sample);
+        },
+        openCertificate(id){
+            window.open(this.currentUrl + '/samples?option=print&id='+id);
         },
         openQR(sample){
             this.$refs.qr.show(sample,this.received,this.due);

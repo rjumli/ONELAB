@@ -12,49 +12,24 @@
                 </div>
             </div>
         </div>
+        <div class="card-header p-0 border-0 bg-light-subtle">
+            <div class="row g-0">
+                <div class="col-sm-6 text-start">
+                    <div class="p-3 border border-dashed border-start-0 border-end-0">
+                        <h5 class="mb-1 text-primary"><span>{{formatMoney(total)}}</span></h5>
+                        <p class="text-muted mb-0">Total worth of Services</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-end">
+                    <div class="p-3 border border-dashed border-start-0 border-end-0">
+                        <h5 class="mb-1 text-primary"><span>{{formatMoney(gratis)}}</span></h5>
+                        <p class="text-muted mb-0">Total Gratis and Discounts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-             <apexchart class="apex-charts" height="250" dir="ltr" :series="series"
-              :options="chartOptions"></apexchart>
-                <simplebar data-simplebar style="height: 200px" class="pe-2">
-                    <ul class="list-group list-group-flush border-dashed mb-0 mt-3 pt-2">
-                        <li class="list-group-item px-0" v-for="(list,index) in labs" v-bind:key="index">
-                            <div class="d-flex">
-                                <div class="flex-grow-1 ms-2">
-                                    <h6 class="mb-1">{{list.name}}</h6>
-                                    <p class="fs-12 mb-0 text-muted"><i class="mdi mdi-circle fs-10 align-middle text-primary me-1"></i>{{list.others}}
-                                    </p>
-                                </div>
-                                <div class="flex-shrink-0 text-end">
-                                    <h6 class="mb-1">{{formatMoney(list.total)}}</h6>
-                                    <p class="text-success fs-12 mb-0">{{formatMoney(list.discount)}} <span class="text-muted fs-10">(Discount)</span></p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </simplebar>
-            <!-- <div class="table-responsive">
-                <table class="table table-bordered align-middle table-centered table-nowrap mb-0">
-                    <thead class="text-muted table-light fs-10">
-                        <tr>
-                            <th width="60%" scope="col"></th>
-                            <th width="20%" class="text-center">Target</th>
-                            <th width="20%" class="text-center">Current</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="fs-12">
-                            <td>No. of Samples Received</td>
-                            <td class="text-center">1,200</td>
-                            <td class="text-center">500</td>
-                        </tr>
-                         <tr class="fs-12">
-                            <td>No. of Tests/Calibration Services Conducted</td>
-                            <td class="text-center">1,200</td>
-                            <td class="text-center">500</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
+            <apexchart class="apex-charts" height="380" dir="ltr" :series="series" :options="chartOptions"></apexchart>
         </div>
     </div>
 </template>
@@ -68,24 +43,80 @@ export default {
             currentUrl: window.location.origin,
             labs: [],
             type: null,
-            year: new Date().getFullYear(),
-            series: [44, 55, 13, 43, 22],
+            total: null,
+            gratis: null,
+            series: [
+            ],
             chartOptions: {
                 chart: {
-                height: 200,
-                type: "pie",
+                type: "bar",
+                height: 341,
+                toolbar: {
+                    show: false,
                 },
-                labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "65%",
+                },
+                },
+                stroke: {
+                show: true,
+                width: 5,
+                colors: ["transparent"],
+                },
+                xaxis: {
+                categories: [""],
+                axisTicks: {
+                    show: false,
+                    borderType: "solid",
+                    color: "#78909C",
+                    height: 6,
+                    offsetX: 0,
+                    offsetY: 0,
+                },
+                title: {
+                    text: "Total Collection per Status",
+                    offsetX: 0,
+                    offsetY: -30,
+                    style: {
+                    color: "#78909C",
+                    fontSize: "12px",
+                    fontWeight: 400,
+                    },
+                },
+                },
+                yaxis: {
+                labels: {
+                    formatter: function (value) {
+                    return "₱" + value + "k";
+                    },
+                },
+                tickAmount: 4,
+                min: 0,
+                },
+                fill: {
+                opacity: 1,
+                },
                 legend: {
-                show: false
+                show: true,
+                position: "bottom",
+                horizontalAlign: "center",
+                //   fontWeight: 500,
+                offsetX: 0,
+                offsetY: -14,
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 0,
                 },
-                dataLabels: {
-                dropShadow: {
-                    enabled: false,
+                markers: {
+                    width: 9,
+                    height: 9,
                 },
                 },
-                colors: ["#34c38f", "#556ee6", "#ea6868", "#f1b44c", "#a20cce", " #713d3d"],
-            },
+                colors: ["#f1b44c", "#34c38f", "#556ee6", "#ea6868", "#a20cce", " #713d3d"],
+            }
         }
     },
     created() {
@@ -95,13 +126,16 @@ export default {
         fetch() {
             axios.get(this.currentUrl + '/insights',{
                 params : {
-                    option : 'target',
+                    option : 'payment',
                     year: this.year,
                     laboratories: this.laboratories
                 }
             })
             .then(response => {
-                this.labs = response.data;
+                console.log(response.data);
+                this.series = response.data.data;
+                this.total = response.data.total;
+                this.gratis = response.data.gratis;
             })
             .catch(err => console.log(err));
         },

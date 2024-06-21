@@ -35,6 +35,9 @@ class InsightController extends Controller
             case 'target':
                 return $this->target($request);
             break;
+            case 'payment':
+                return $this->payment($request);
+            break;
         }   
     }
 
@@ -276,6 +279,39 @@ class InsightController extends Controller
         // return [
         //     'target' => $targets,
         // ];
+    }
+
+    public function payment($request){
+        $statuses = ListStatus::whereIn('id',[6,7,8,18])->where('type','Payment')->get();
+        foreach($statuses as $status){
+            $status_id = $status['id'];
+            $sum = TsrPayment::whereHas('tsr',function ($query){
+                $query->where('laboratory_id',14);
+            })->where('status_id',$status_id)->sum('subtotal');
+
+            if ($sum >= 1000 && $sum < 1000000) {
+                $total = [round($sum / 1000) . 'k'];
+            } elseif ($sum >= 1000000) {
+                $total = [round($sum / 1000000) . 'M'];
+            }else {
+                $total = [0];
+            }
+
+            $arr[] = [
+                'name' => $status['name'],
+                'data' => $total
+            ];
+        }
+
+        return [
+            'data' => $arr,
+            'total' => TsrPayment::whereHas('tsr',function ($query){
+                $query->where('laboratory_id',14);
+            })->whereIn('status_id',[6,7,8,18])->sum('subtotal'),
+            'gratis' => TsrPayment::whereHas('tsr',function ($query){
+                $query->where('laboratory_id',14);
+            })->whereIn('status_id',[6,7,8,18])->sum('discount'),
+        ];
     }
 
     public function topcustomers($request){
