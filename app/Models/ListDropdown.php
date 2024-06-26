@@ -13,4 +13,14 @@ class ListDropdown extends Model
     {
         return $this->hasMany('App\Models\TsrPayment', 'payment_id');
     } 
+
+    public function customer_industry()
+    {
+        return $this->hasMany('App\Models\Customer', 'industry_id');
+    } 
+
+    public function tsrs()
+    {
+        return $this->hasMany('App\Models\Tsr', 'laboratory_type');
+    }
 }

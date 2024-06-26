@@ -14,7 +14,6 @@ Route::middleware(['2fa','auth','verified'])->group(function () {
 
 Route::middleware(['2fa','auth','verified','is_active','menu'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/insights', [App\Http\Controllers\InsightController::class, 'index']);
 
     Route::resource('/customers', App\Http\Controllers\CustomerController::class);
     Route::resource('/requests', App\Http\Controllers\RequestController::class);
@@ -24,6 +23,14 @@ Route::middleware(['2fa','auth','verified','is_active','menu'])->group(function 
 
     Route::resource('/samples', App\Http\Controllers\SampleController::class);
     Route::resource('/analyses', App\Http\Controllers\AnalysisController::class);
+
+    Route::prefix('insights')->group(function(){
+        Route::controller(App\Http\Controllers\InsightController::class)->group(function () {
+            Route::get('/','index');
+            Route::get('/customers','customers_view');
+            Route::get('/laboratories','laboratories_view');
+        });
+    });
 
     Route::prefix('services')->group(function(){
         Route::resource('/testservices', App\Http\Controllers\Services\TestserviceController::class);

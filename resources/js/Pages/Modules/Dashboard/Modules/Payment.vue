@@ -49,71 +49,71 @@ export default {
             ],
             chartOptions: {
                 chart: {
-                type: "bar",
-                height: 341,
-                toolbar: {
-                    show: false,
-                },
+                    type: "bar",
+                    height: 341,
+                    toolbar: {
+                        show: false,
+                    },
                 },
                 plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: "65%",
-                },
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "65%",
+                    },
                 },
                 stroke: {
-                show: true,
-                width: 5,
-                colors: ["transparent"],
+                    show: true,
+                    width: 5,
+                    colors: ["transparent"],
                 },
                 xaxis: {
-                categories: [""],
-                axisTicks: {
-                    show: false,
-                    borderType: "solid",
-                    color: "#78909C",
-                    height: 6,
-                    offsetX: 0,
-                    offsetY: 0,
-                },
-                title: {
-                    text: "Total Collection per Status",
-                    offsetX: 0,
-                    offsetY: -30,
-                    style: {
-                    color: "#78909C",
-                    fontSize: "12px",
-                    fontWeight: 400,
+                    categories: [""],
+                    axisTicks: {
+                        show: false,
+                        borderType: "solid",
+                        color: "#78909C",
+                        height: 6,
+                        offsetX: 0,
+                        offsetY: 0,
                     },
-                },
+                    title: {
+                        text: "Total Collection per Status",
+                        offsetX: 0,
+                        offsetY: -30,
+                        style: {
+                        color: "#78909C",
+                        fontSize: "12px",
+                        fontWeight: 400,
+                        },
+                    },
                 },
                 yaxis: {
-                labels: {
-                    formatter: function (value) {
-                    return "₱" + value + "k";
+                    labels: {
+                        formatter: function (value) {
+                        return "₱" + value + "k";
+                        },
                     },
-                },
-                tickAmount: 4,
-                min: 0,
+                    tickAmount: 4,
+                    min: 0,
                 },
                 fill: {
-                opacity: 1,
+                    opacity: 1,
                 },
                 legend: {
-                show: true,
-                position: "bottom",
-                horizontalAlign: "center",
-                //   fontWeight: 500,
-                offsetX: 0,
-                offsetY: -14,
-                itemMargin: {
-                    horizontal: 8,
-                    vertical: 0,
-                },
-                markers: {
-                    width: 9,
-                    height: 9,
-                },
+                    show: true,
+                    position: "bottom",
+                    horizontalAlign: "center",
+                    //   fontWeight: 500,
+                    offsetX: 0,
+                    offsetY: -14,
+                    itemMargin: {
+                        horizontal: 8,
+                        vertical: 0,
+                    },
+                    markers: {
+                        width: 9,
+                        height: 9,
+                    },
                 },
                 colors: ["#f1b44c", "#34c38f", "#556ee6", "#ea6868", "#a20cce", " #713d3d"],
             }

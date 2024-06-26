@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->boolean('has_branches')->default(0);
             $table->boolean('is_active')->default(1);
-            $table->boolean('is_synced')->default(0);
+            // $table->boolean('is_synced')->default(0);
             $table->timestamps();
         });
     }

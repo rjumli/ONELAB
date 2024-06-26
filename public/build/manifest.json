@@ -9,6 +9,7 @@
   },
   "node_modules/leaflet/dist/images/marker-icon-2x.png": {
     "file": "assets/marker-icon-2x-1TirABJh.js",
+    "name": "marker-icon-2x",
     "src": "node_modules/leaflet/dist/images/marker-icon-2x.png",
     "isDynamicEntry": true,
     "assets": [
@@ -17,6 +18,7 @@
   },
   "node_modules/leaflet/dist/images/marker-icon.png": {
     "file": "assets/marker-icon-B6h-nX3D.js",
+    "name": "marker-icon",
     "src": "node_modules/leaflet/dist/images/marker-icon.png",
     "isDynamicEntry": true,
     "assets": [
@@ -25,6 +27,7 @@
   },
   "node_modules/leaflet/dist/images/marker-shadow.png": {
     "file": "assets/marker-shadow-B9CpECYs.js",
+    "name": "marker-shadow",
     "src": "node_modules/leaflet/dist/images/marker-shadow.png",
     "isDynamicEntry": true,
     "assets": [
@@ -33,6 +36,7 @@
   },
   "node_modules/leaflet/dist/leaflet-src.esm.js": {
     "file": "assets/leaflet-src.esm-HdBnhJze.js",
+    "name": "leaflet-src.esm",
     "src": "node_modules/leaflet/dist/leaflet-src.esm.js",
     "isDynamicEntry": true
   },
@@ -221,7 +225,8 @@
     "src": "public/images/sidebar/img-4.jpg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-DIZTdHx1.js",
+    "file": "assets/app-Dig8s0Yz.js",
+    "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -237,7 +242,7 @@
       "node_modules/leaflet/dist/leaflet-src.esm.js"
     ],
     "css": [
-      "assets/app-Cg-FmmQv.css"
+      "assets/app-D8ky5sf5.css"
     ],
     "assets": [
       "assets/logo-sm-BMbbSDmV.png",

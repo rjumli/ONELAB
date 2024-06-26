@@ -8,6 +8,10 @@ use App\Models\TsrPayment;
 use App\Models\Configuration;
 use App\Models\ListDropdown;
 use App\Http\Resources\SampleResource;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Writer;
 
 class SampleService
 {
@@ -83,11 +87,29 @@ class SampleService
 
     public function print($request){
         $id = $request->id;
+        $sample = TsrSample::with('analyses:id,testservice_id,sample_id','analyses.testservice:id,testname_id,sampletype_id,method_id','analyses.testservice.sampletype:id,name','analyses.testservice.testname:id,name','analyses.testservice.method:id,method_id,fee','analyses.testservice.method.method:id,name,short')
+        ->with('tsr:id,code,created_at,customer_id','tsr.customer:id,name_id,name,is_main','tsr.customer.customer_name:id,name,has_branches','tsr.customer.address:address,addressable_id,region_code,province_code,municipality_code,barangay_code','tsr.customer.address.region:code,name,region','tsr.customer.address.province:code,name','tsr.customer.address.municipality:code,name','tsr.customer.address.barangay:code,name')
+        ->where('id',$id)->first();
+        // return $sample;
+        $qrCodeBase64 = $this->generateQrCodeBase64($id);
+        dd($qrCodeBase64);
+
         $array = [
             'configuration' => $this->configuration,
+            'sample' => $sample
         ];
 
         $pdf = \PDF::loadView('reports.test',$array)->setPaper('a4', 'portrait');
         return $pdf->download('TestReport.pdf');
+    }
+
+    public function generateQrCodeBase64($data) {
+        $renderer = new ImageRenderer(
+            new RendererStyle(200),
+            new ImagickImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $qrCodeImage = $writer->writeString($data);
+        return base64_encode($qrCodeImage);
     }
 }

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('region_code')->references('code')->on('location_regions')->onDelete('cascade');
             $table->unsignedInteger('addressable_id');
             $table->string('addressable_type');
-            $table->boolean('is_synced')->default(0);
+            // $table->boolean('is_synced')->default(0);
             $table->timestamps();
         });
     }
